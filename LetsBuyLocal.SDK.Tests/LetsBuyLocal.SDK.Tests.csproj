@@ -52,12 +52,17 @@
   <ItemGroup>
     <Compile Include="TrainingServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ErrorServiceTest.cs" />
+    <Compile Include="DealServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LetsBuyLocal.SDK\LetsBuyLocal.SDK.csproj">
       <Project>{1b707d0f-63e5-4c26-a311-7bcb485dc849}</Project>
       <Name>LetsBuyLocal.SDK</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
