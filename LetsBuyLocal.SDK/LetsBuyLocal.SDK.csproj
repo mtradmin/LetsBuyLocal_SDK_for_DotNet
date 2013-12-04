@@ -75,7 +75,9 @@
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\DealService.cs" />
     <Compile Include="Services\ErrorService.cs" />
+    <Compile Include="Services\StoreService.cs" />
     <Compile Include="Services\TrainingService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

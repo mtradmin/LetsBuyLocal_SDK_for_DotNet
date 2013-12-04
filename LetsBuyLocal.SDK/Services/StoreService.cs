@@ -7,11 +7,12 @@ using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
 {
-    public class DealService : BaseService
+    public class StoreService : BaseService
     {
-        //public ResponseMessage<bool> CreateDeal(Deal deal)
+        //public ResponseMessage<bool> CreateStore(Store store)
         //{
-        //    return Post<ResponseMessage<bool>>("Deal", deal);
+        //    return Post<ResponseMessage<bool>>("Store", store);
         //}
+
     }
 }

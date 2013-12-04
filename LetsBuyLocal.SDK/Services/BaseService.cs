@@ -19,8 +19,8 @@ namespace LetsBuyLocal.SDK.Services
 
         static BaseService()
         {
-            BaseURL = "http://prerelease.api.letsbuylocal.com/";  //TODO: from config
-            ApiVersion = "v1"; //TODO: from config
+            BaseURL = ConfigurationManager.AppSettings["BaseUrl"];
+            ApiVersion = ConfigurationManager.AppSettings["ApiVersion"];
         }
 
         protected T Get<T>(string path)
