@@ -10,7 +10,5 @@ namespace LetsBuyLocal.SDK.Models
     public class BaseEntity
     {
         public virtual string Id { get; set; }
-        public DateTime? Created { get; set; }
-        public DateTime LastModified { get; set; }
     }
 }
