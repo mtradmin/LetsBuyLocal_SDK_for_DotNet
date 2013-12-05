@@ -88,7 +88,7 @@ namespace LetsBuyLocal.SDK.Models
 
         public List<object> LastViewedStoreDeals { get; set; }
 
-        public List<object> LastReadStoreAlerts { get; set; }
+        public List<object> LastReadStoreAlerts { get; set; } // List of storeId|datetime for when a message was read
 
         public List<object> LastStoreRewardIds { get; set; }
 

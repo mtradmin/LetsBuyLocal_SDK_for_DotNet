@@ -17,11 +17,11 @@ namespace LetsBuyLocal.SDK.Tests
             string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
             string atEmail = ConfigurationManager.AppSettings["AtEmail"];
 
-            user.Email = GetEmailAlias(baseEmailName, "@gmail.com");
-            user.Password = GetRandomString(7);
-            user.FirstName = GetRandomString(5);
-            user.LastName = GetRandomString(7); ;
-            user.MobilePhoneNumber = GetRandomString(10);
+            user.Email = getEmailAlias(baseEmailName, atEmail);
+            user.Password = this.getRandomString(8);
+            user.FirstName = this.getRandomString(12);
+            user.LastName = this.getRandomString(25); ;
+            user.MobilePhoneNumber = this.getRandomPhoneNo(10);
         
             UserService svc = new UserService();
             var resp = svc.CreateUser(user);
@@ -32,29 +32,80 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void GetUserByIdTest()
         {
-            string id = "3872417b-3657-47df-8661-e13557a056d3";
+            const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
             UserService svc = new UserService();
-            var resp = svc.GetUserById(id);
+            var resp = svc.GetUserById(ID);
             Assert.IsNotNull(resp.Object);
         }
 
-
-
-
-        private string GetRandomString(int len)
+        [TestMethod]
+        public void UpdateUserTest()
         {
-            Random r = new Random();
-            string str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-            StringBuilder sb = new StringBuilder();
-            while ((len) > 0)
-            {
-                sb.Append(str[(int) r.NextDouble()*str.Length]);
-                len--;
-            }
-            return sb.ToString();
+            const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23"; 
+            UserService svc = new UserService();
+            var user = svc.GetUserById(ID).Object;
+            var updatedUser = this.updateUser(user);
+
+            var resp = svc.UpdateUser(updatedUser);
+            Assert.IsNotNull(resp.Object);
         }
 
-        private string GetEmailAlias(string baseEmailName, string atEmail)
+        //[TestMethod]
+        //public void SetWhenMessageReadByUserTest()
+        //{
+        //    const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
+        //    UserService svc = new UserService();
+        //    var user = svc.GetUserById(ID).Object;
+
+        //}
+
+
+        #region Private Methods
+
+        private User updateUser(User user)
+        {
+            string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
+            string atEmail = ConfigurationManager.AppSettings["AtEmail"];
+
+            user.Email = getEmailAlias(baseEmailName, atEmail);
+            user.Password = this.getRandomString(8);
+            user.FirstName = this.getRandomString(12);
+            user.LastName = this.getRandomString(25); ;
+            user.MobilePhoneNumber = this.getRandomPhoneNo(10);
+            return user;
+        }
+
+        private string getRandomString(int len)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            var stringChars = new char[len];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new string(stringChars);
+            return finalString;
+        }
+
+        private string getRandomPhoneNo(int len)
+        {
+            const string chars = "1234567890";
+            var stringChars = new char[len];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new string(stringChars);
+            return finalString;
+        }
+
+        private string getEmailAlias(string baseEmailName, string atEmail)
         {
             StringBuilder sb = new StringBuilder();
             string s = string.Empty;
@@ -68,6 +119,7 @@ namespace LetsBuyLocal.SDK.Tests
             return s;
         }
 
+        #endregion
         
     }
 }
