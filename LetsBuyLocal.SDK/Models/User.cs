@@ -44,6 +44,27 @@ namespace LetsBuyLocal.SDK.Models
         public int CurrentLevel { get; set; }
         public bool HasFollowedStore { get; set; }
 
+        public DateTime? AgreedToTerms { get; set; }
+
+        #region Size Information
+        public string ShoeSize { get; set; }
+        public string GloveSize { get; set; }
+        public string FavoriteBrand { get; set; }
+        public string TshirtSize { get; set; }
+        public string PantsWaist { get; set; }
+        public string FavoriteColor { get; set; }
+        public string Dress { get; set; }
+        public string PantsInseam { get; set; }
+        public bool? ShareSizeInfo { get; set; }
+        #endregion
+
+        #region Marketing Information
+        public bool? SendOffersByEmail { get; set; }
+        public bool? SendOffersByText { get; set; }
+        public bool? SendOffersByFacebook { get; set; }
+        public bool? SendOffersByUSMail { get; set; }
+        #endregion
+
         public List<string> StoreIds { get; set; } //List of Ids for stores that the user wants to track
 
         public List<string> StoreRatings { get; set; } //List of concatenated StoreIds and their rating [ StoreId|Rating ]
