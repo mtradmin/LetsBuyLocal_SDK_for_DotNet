@@ -19,12 +19,6 @@ namespace LetsBuyLocal.SDK.Services
             return Post<ResponseMessage<User>>("User", user);
         }
 
-        //public ResponseMessage<IList<Video>> GetVideos()
-        //{
-        //    var videos = Get<ResponseMessage<IList<Video>>>("Training");
-        //    return videos;
-        //}
-
         public ResponseMessage<User> GetUserById(string id)
         {
             var user = Get<ResponseMessage<User>>("User" + "/" + id);
