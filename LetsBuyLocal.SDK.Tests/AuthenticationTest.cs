@@ -16,11 +16,11 @@ namespace LetsBuyLocal.SDK.Tests
         }
 
         [TestMethod]
-        public void RequestPasswordReset()
+        public void RequestPasswordResetTest()
         {
             var svc = new AuthenticationService();
 
-            var resp = svc.RequestPasswordReset("I want this test to fail");
+            var resp = svc.RequestPasswordReset(TestingHelper.TestEmail);
             Assert.IsTrue(resp.Success);
         }
     }
