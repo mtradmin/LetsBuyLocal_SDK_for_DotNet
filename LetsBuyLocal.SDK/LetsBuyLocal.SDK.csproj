@@ -72,6 +72,7 @@
     <Compile Include="Models\UserAlerts.cs" />
     <Compile Include="Models\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\DealService.cs" />
     <Compile Include="Services\ErrorService.cs" />

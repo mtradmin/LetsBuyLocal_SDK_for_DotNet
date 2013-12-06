@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace LetsBuyLocal.SDK.Models
@@ -26,7 +22,7 @@ namespace LetsBuyLocal.SDK.Models
         public int? PercentOff { get; set; }
         public string CopiedFromId { get; set; }
         public DateTime? PostedToFacebook { get; set; }
-        public string FBPostError { get; set; }
+        public string FbPostError { get; set; }
         public bool PublishCompleteActionDone { get; set; }
 
         public bool HasActiveReservations { get; set; }

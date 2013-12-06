@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -53,11 +50,11 @@ namespace LetsBuyLocal.SDK.Models
         public bool Published { get; set; }
         public bool Offline { get; set; }
         public DateTime? LastDealExpirationDate { get; set; }
-        public bool PublishAlertsToFB { get; set; }
-        public bool PublishDealsToFB { get; set; }
-        public string FBAccount { get; set; }
-        public string FBPage { get; set; }
-        public string FBPageAccessToken { get; set; }
+        public bool PublishAlertsToFb { get; set; }
+        public bool PublishDealsToFb{ get; set; }
+        public string FbAccount { get; set; }
+        public string FbPage { get; set; }
+        public string FbPageAccessToken { get; set; }
         public bool HasStoreRegisteredForRewards { get; set; }
         public string PrimaryColor { get; set; }
         public string SecondaryColor { get; set; }

@@ -13,17 +13,17 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void CreateUserTest()
         {
-            User user = new User();
+            var user = new User();
             string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
             string atEmail = ConfigurationManager.AppSettings["AtEmail"];
 
-            user.Email = getEmailAlias(baseEmailName, atEmail);
-            user.Password = this.getRandomString(8);
-            user.FirstName = this.getRandomString(12);
-            user.LastName = this.getRandomString(25); ;
-            user.MobilePhoneNumber = this.getRandomPhoneNo(10);
+            user.Email = GetEmailAlias(baseEmailName, atEmail);
+            user.Password = TestingHelper.GetRandomString(8);
+            user.FirstName = TestingHelper.GetRandomString(12);
+            user.LastName = TestingHelper.GetRandomString(25); 
+            user.MobilePhoneNumber = TestingHelper.GetRandomPhoneNo(10);
         
-            UserService svc = new UserService();
+            var svc = new UserService();
             var resp = svc.CreateUser(user);
 
             Assert.IsNotNull(resp.Object);
@@ -32,90 +32,85 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void GetUserByIdTest()
         {
-            const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
-            UserService svc = new UserService();
-            var resp = svc.GetUserById(ID);
+            var svc = new UserService();
+            var resp = svc.GetUserById(TestingHelper.TestUserId);
             Assert.IsNotNull(resp.Object);
         }
 
         [TestMethod]
         public void UpdateUserTest()
         {
-            const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23"; 
-            UserService svc = new UserService();
-            var user = svc.GetUserById(ID).Object;
-            var updatedUser = this.updateUser(user);
+            var svc = new UserService();
+            var user = svc.GetUserById(TestingHelper.TestUserId).Object;
+            var updatedUser = UpdateUser(user);
 
             var resp = svc.UpdateUser(updatedUser);
             Assert.IsNotNull(resp.Object);
         }
 
         //[TestMethod]
-        //public void SetWhenMessageReadByUserTest()
+        //public void SetWhenMessageReadByUserTest()S
         //{
         //    const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
         //    UserService svc = new UserService();
         //    var user = svc.GetUserById(ID).Object;
 
         //}
-
+        //Todo: Create enough services to get an alert to read
 
         #region Private Methods
 
-        private User updateUser(User user)
+        /// <summary>
+        /// Updates user.
+        /// </summary>
+        /// <param name="user">A User object to update</param>
+        /// <returns>A user object that has been updated</returns>
+        /// <remarks>
+        /// Test method subject to change; often used to create information that can be retrieved and used
+        /// </remarks>
+        private User UpdateUser(User user)
         {
-            string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
-            string atEmail = ConfigurationManager.AppSettings["AtEmail"];
+            //string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
+            //string atEmail = ConfigurationManager.AppSettings["AtEmail"];
 
-            user.Email = getEmailAlias(baseEmailName, atEmail);
-            user.Password = this.getRandomString(8);
-            user.FirstName = this.getRandomString(12);
-            user.LastName = this.getRandomString(25); ;
-            user.MobilePhoneNumber = this.getRandomPhoneNo(10);
+            //user.Email = getEmailAlias(baseEmailName, atEmail);
+            //user.Password = TestingHelper.GetRandomString(8);
+            //user.FirstName = TestingHelper.GetRandomString(12);
+            //user.LastName = TestingHelper.GetRandomString(25); ;
+
+            //user.Email = "margakkrumins@gmail.com";
+            //user.Password = "gibber1234";
+            //user.FirstName = "Marga";
+            //user.LastName = "Krumins";
+            if (user.Sex != null)
+            {
+                if (user.Sex.ToUpper() == "F")
+                    user.Sex = "M";
+                else if (user.Sex.ToUpper() == "M")
+                    user.Sex = "F";
+                else
+                    user.Sex = "F";
+            }
+            else
+            {
+                user.Sex = "F";
+            }
+            user.MobilePhoneNumber = TestingHelper.GetRandomPhoneNo(10);
+            user.l
             return user;
         }
 
-        private string getRandomString(int len)
+
+        private string GetEmailAlias(string baseEmailName, string atEmail)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            var stringChars = new char[len];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            var finalString = new string(stringChars);
-            return finalString;
-        }
-
-        private string getRandomPhoneNo(int len)
-        {
-            const string chars = "1234567890";
-            var stringChars = new char[len];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            var finalString = new string(stringChars);
-            return finalString;
-        }
-
-        private string getEmailAlias(string baseEmailName, string atEmail)
-        {
-            StringBuilder sb = new StringBuilder();
-            string s = string.Empty;
+            var sb = new StringBuilder();
             Guid guid = Guid.NewGuid();
 
             sb.Append(baseEmailName);
             sb.Append("+");
             sb.Append(guid.ToString());
             sb.Append(atEmail);
-            s = sb.ToString();
+            var s = sb.ToString();
             return s;
         }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using LetsBuyLocal.SDK.Models;
-using LetsBuyLocal.SDK.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LetsBuyLocal.SDK.Tests
 {

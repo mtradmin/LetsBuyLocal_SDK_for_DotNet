@@ -1,5 +1,4 @@
-﻿using System;
-using LetsBuyLocal.SDK.Models;
+﻿using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,8 +10,8 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void CreateErrorSuccess()
         {
-            ErrorService svc = new ErrorService();
-            Error error = new Error();
+            var svc = new ErrorService();
+            var error = new Error();
             error.UserId = "DEF456";
             error.StoreId = "ABC123";
             var resp = svc.CreateError(error);

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
@@ -53,7 +47,7 @@ namespace LetsBuyLocal.SDK.Services
         public ResponseMessage<User> SetWhenMessageReadByUser(User user)
         {
             //Updates Date of last read alert by Store [StoreId|DateTime] (LastReadStoreAlertsList property)
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("User");
             sb.Append("/");
             sb.Append("ReadAlert");
@@ -66,7 +60,7 @@ namespace LetsBuyLocal.SDK.Services
 
 
         //Todo: Post /v1/User/ViewedDeal/{id}
-        //Todo: POST /v1/User/Device/{id}
+        //Todo: Post /v1/User/Device/{id}
 
 
     }

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-
 
 namespace LetsBuyLocal.SDK.Models
 {
@@ -24,7 +19,7 @@ namespace LetsBuyLocal.SDK.Models
 
         public DateTime? PostedToFacebook { get; set; }
 
-        public string FBPostError { get; set; }
+        public string FbPostError { get; set; }
 
         public bool Read { get; set; } //used internally to know if the Alert has been read
     }
