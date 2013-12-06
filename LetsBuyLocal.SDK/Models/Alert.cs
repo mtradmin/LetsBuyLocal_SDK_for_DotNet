@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LetsBuyLocal.SDK.Models
 {
-    class Alert : BaseEntity
+    public class Alert : BaseEntity
     {
         [Required]
         public string StoreId { get; set; }
