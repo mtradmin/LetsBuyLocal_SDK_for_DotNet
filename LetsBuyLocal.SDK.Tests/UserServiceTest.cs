@@ -96,7 +96,6 @@ namespace LetsBuyLocal.SDK.Tests
                 user.Sex = "F";
             }
             user.MobilePhoneNumber = TestingHelper.GetRandomPhoneNo(10);
-            user.l
             return user;
         }
 
