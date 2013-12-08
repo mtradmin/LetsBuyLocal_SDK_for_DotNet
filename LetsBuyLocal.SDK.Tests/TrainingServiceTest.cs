@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LetsBuyLocal.SDK.Services;
 
 namespace LetsBuyLocal.SDK.Tests
@@ -10,7 +9,7 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void GetVideosTest()
         {
-            TrainingService svc = new TrainingService();
+            var svc = new TrainingService();
             var resp = svc.GetVideos();
             Assert.IsTrue(resp.Success);
         }

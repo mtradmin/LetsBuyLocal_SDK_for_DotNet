@@ -1,9 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace LetsBuyLocal.SDK.Models
@@ -62,7 +59,7 @@ namespace LetsBuyLocal.SDK.Models
         public bool? SendOffersByEmail { get; set; }
         public bool? SendOffersByText { get; set; }
         public bool? SendOffersByFacebook { get; set; }
-        public bool? SendOffersByUSMail { get; set; }
+        public bool? SendOffersByUsMail { get; set; }
         #endregion
 
         public List<string> StoreIds { get; set; } //List of Ids for stores that the user wants to track
@@ -88,7 +85,7 @@ namespace LetsBuyLocal.SDK.Models
 
         public List<object> LastViewedStoreDeals { get; set; }
 
-        public List<object> LastReadStoreAlerts { get; set; }
+        public List<object> LastReadStoreAlerts { get; set; } // List of storeId|datetime for when a message was read
 
         public List<object> LastStoreRewardIds { get; set; }
 
