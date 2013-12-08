@@ -59,6 +59,7 @@ namespace LetsBuyLocal.SDK.Models
         public string FBPage { get; set; }
         public string FBPageAccessToken { get; set; }
         public bool HasStoreRegisteredForRewards { get; set; }
+        public string CustomUrl { get; set; }
         public string PrimaryColor { get; set; }
         public string SecondaryColor { get; set; }
         public string TermsAndConditions { get; set; }
