@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Alert.cs" />
+    <Compile Include="Models\ArrayOfValues.cs" />
     <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\Authorization.cs" />
     <Compile Include="Models\BaseEntity.cs" />
@@ -54,6 +55,8 @@
     <Compile Include="Models\DealUnlock.cs" />
     <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\FBSettings.cs" />
+    <Compile Include="Models\GeoPoint.cs" />
     <Compile Include="Models\KeyToTheCity.cs" />
     <Compile Include="Models\Option.cs" />
     <Compile Include="Models\OptionSets.cs" />
