@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Text;
+using System.Collections.Generic;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,13 +17,17 @@ namespace LetsBuyLocal.SDK.Tests
             var user = new User();
             string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
             string atEmail = ConfigurationManager.AppSettings["AtEmail"];
+            var storeIds = new List<string>();
+
+            storeIds.Add("977572de-c1c2-4295-878f-447eb7485905");
 
             user.Email = GetEmailAlias(baseEmailName, atEmail);
             user.Password = TestingHelper.GetRandomString(8);
             user.FirstName = TestingHelper.GetRandomString(12);
-            user.LastName = TestingHelper.GetRandomString(25); 
+            user.LastName = TestingHelper.GetRandomString(25);
             user.MobilePhoneNumber = TestingHelper.GetRandomPhoneNo(10);
-        
+            user.StoreIds = storeIds;
+
             var svc = new UserService();
             var resp = svc.CreateUser(user);
 
@@ -48,17 +53,56 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp.Object);
         }
 
-        //[TestMethod]
-        //public void SetWhenMessageReadByUserTest()S
-        //{
-        //    const string ID = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
-        //    UserService svc = new UserService();
-        //    var user = svc.GetUserById(ID).Object;
+        [TestMethod]
+        public void UserReadStoreAlertTest()
+        {
+            const string userId = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
+            const string storeId = "977572de-c1c2-4295-878f-447eb7485905";
+            var readTime = DateTime.Now;
+            var dateParam = new DateParameter();
+            dateParam.datetime = readTime;
 
-        //}
-        //Todo: Create enough services to get an alert to read
+            var svc = new UserService();
+            var resp = svc.UserReadStoreAlert(userId, storeId, dateParam);
+            Assert.IsNotNull(resp.Object);
+        }
 
-        #region Private Methods
+        [TestMethod]
+        public void UserViewedDealTest()
+        {
+            const string userId = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
+            const string storeId = "977572de-c1c2-4295-878f-447eb7485905";
+            var readTime = DateTime.Now;
+            var dateParam = new DateParameter();
+            dateParam.datetime = readTime;
+
+            var svc = new UserService();
+            var resp = svc.UserViewedDeal(userId, storeId, dateParam);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void AssignDeviceToUserTest()
+        {
+            //Create a new device, so assured that is not already assigned.
+            var device = new Device();
+            device.Id = Guid.NewGuid().ToString();
+            device.Platform = TestingHelper.GetPlatform();
+            device.DeviceToken = TestingHelper.GetDeviceToken(device.Platform);
+
+            var tempSvc = new DeviceService();
+            var tempResp = tempSvc.CreateDevice(device);
+            string deviceId = tempResp.Object.Id;
+
+            var svc = new UserService();
+            var resp = svc.AssignDeviceToUser("caa2298a-e8d5-4d76-bce8-c98ffb102b23", deviceId);
+            Assert.IsTrue(resp.Success);
+        }
+        
+
+
+
+    #region Private Methods
 
         /// <summary>
         /// Updates user.

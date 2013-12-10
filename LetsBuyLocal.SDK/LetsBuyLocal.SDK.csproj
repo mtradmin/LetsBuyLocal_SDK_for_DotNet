@@ -80,10 +80,12 @@
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\DealService.cs" />
+    <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\ErrorService.cs" />
     <Compile Include="Services\StoreService.cs" />
     <Compile Include="Services\TrainingService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Shared\AlertTypes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
