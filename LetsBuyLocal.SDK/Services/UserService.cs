@@ -13,7 +13,10 @@ namespace LetsBuyLocal.SDK.Services
         /// Creates a new user
         /// </summary>
         /// <param name="user">User object.</param>
-        /// <returns>A ResponseMessage object of type User</returns>
+        /// <returns>
+        /// A ResponseMessage object of type User
+        /// </returns>
+        /// <exception cref="System.ApplicationException">Unable to create new user.  + ex.Message</exception>
         public ResponseMessage<User> CreateUser(User user)
         {
             try
@@ -31,7 +34,10 @@ namespace LetsBuyLocal.SDK.Services
         /// Gets a user by the specific id
         /// </summary>
         /// <param name="id">A unique ID string for a user</param>
-        /// <returns>A ResponseMessage object of type User</returns>
+        /// <returns>
+        /// A ResponseMessage object of type User
+        /// </returns>
+        /// <exception cref="System.ApplicationException">Unable to get user by Id.  + ex.Message</exception>
         public ResponseMessage<User> GetUserById(string id)
         {
             try
@@ -49,7 +55,10 @@ namespace LetsBuyLocal.SDK.Services
         /// Updates a user
         /// </summary>
         /// <param name="user">The User object to be updated</param>
-        /// <returns>A ResponseMessage object of type User</returns>
+        /// <returns>
+        /// A ResponseMessage object of type User
+        /// </returns>
+        /// <exception cref="System.ApplicationException">Unable to update user.  + ex.Message</exception>
         public ResponseMessage<User> UpdateUser(User user)
         {
             try
@@ -64,13 +73,16 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
-        /// Tracks when the last time a store's message was read, 
+        /// Tracks when the last time a store's message was read,
         /// updating the LastReadStoreAlertsList property for the user
         /// </summary>
         /// <param name="userId">The Id string for the user to be updated</param>
         /// <param name="storeId">The store Id string for the store whose alert has been read</param>
         /// <param name="dateParam">The DateParameter object for the datetime when the alert was read</param>
-        /// <returns>A ResponseMessage object of type User</returns>
+        /// <returns>
+        /// A ResponseMessage object of type User
+        /// </returns>
+        /// <exception cref="System.ApplicationException">Unable to update when user last read an alert from this store. + ex.Message</exception>
         public ResponseMessage<User> UserReadStoreAlert(string userId, string storeId, DateParameter dateParam)
         {
             try
@@ -102,6 +114,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="storeId">The Id string for the specified Store</param>
         /// <param name="dateParam">The DateParameter object containing the datetime</param>
         /// <returns></returns>
+        /// <exception cref="System.ApplicationException">Unable to update date when user last viewed a deal from this store. + ex.Message</exception>
         public ResponseMessage<User> UserViewedDeal(string userId, string storeId, DateParameter dateParam)
         {
             try
@@ -126,6 +139,13 @@ namespace LetsBuyLocal.SDK.Services
             }
         }
 
+        /// <summary>
+        /// Assigns the device to user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="deviceId">The device identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ApplicationException">Unable to assign this device to this user. + ex.Message</exception>
         public ResponseMessage<bool> AssignDeviceToUser(string userId, string deviceId)
         {
             try

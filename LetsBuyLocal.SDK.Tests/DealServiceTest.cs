@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using LetsBuyLocal.SDK.Models;
+using LetsBuyLocal.SDK.Services;
+using LetsBuyLocal.SDK.Shared;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LetsBuyLocal.SDK.Tests
 {
@@ -8,13 +12,15 @@ namespace LetsBuyLocal.SDK.Tests
         //[TestMethod]
         //public void CreateDealTest()
         //{
-        //    Deal deal = new Deal();
-        //    deal.StoreId = "ABC123";
-        //    deal.Title = "Test Deal";
-        //    deal.TotalAvailable = 1;
-        //    DealService svc = new DealService();
+        //    var deal = TestingHelper.CreateTestDealInMemory();
+
+        //    var svc = new DealService();
         //    var resp = svc.CreateDeal(deal);
+        //    if (resp.Errors.Count > 0)
+        //        throw new ApplicationException("Unable to create deal. " + Utilities.ResponseErrors(resp.Errors));
+
         //    Assert.IsTrue(resp.Success);
         //}
+
     }
 }

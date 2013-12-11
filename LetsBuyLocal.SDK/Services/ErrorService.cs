@@ -1,4 +1,5 @@
-﻿using LetsBuyLocal.SDK.Models;
+﻿using System;
+using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
 {
@@ -7,7 +8,15 @@ namespace LetsBuyLocal.SDK.Services
 
         public ResponseMessage<bool> CreateError(Error error)
         {
-            return Post<ResponseMessage<bool>>("Error", error);
+            try
+            {
+                var resp = Post<ResponseMessage<bool>>("Error", error);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to create error message. " + ex.Message);
+            }
         }
     }
 }

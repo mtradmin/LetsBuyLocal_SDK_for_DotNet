@@ -33,12 +33,11 @@ namespace LetsBuyLocal.SDK.Models
         public bool ShowStoreAlerts { get; set; }
         public bool ShowDealAlerts { get; set; }
         public bool ShowCouponAlerts { get; set; }
-        public bool Debug { get; set; }
-        public bool DismissedManagementMessage { get; set; }
         public string FacebookUserId { get; set; }
         public int ReservedDeals { get; set; }
         public int RedeemedDeals { get; set; }
         public int CurrentLevel { get; set; }
+        //Is set internally
         public bool HasFollowedStore { get; set; }
 
         public DateTime? AgreedToTerms { get; set; }

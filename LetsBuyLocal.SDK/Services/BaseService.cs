@@ -45,7 +45,7 @@ namespace LetsBuyLocal.SDK.Services
             }
             catch (Exception ex)
             {
-               throw new ApplicationException("Unable to Get object of specified type." + ex.Message);
+               throw new ApplicationException("Unable to Get object of specified type. " + ex.Message);
             }
         }
 
@@ -67,7 +67,7 @@ namespace LetsBuyLocal.SDK.Services
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unable to Post object of specified type with the specified data." + ex.Message);
+                throw new ApplicationException("Unable to Post object of specified type with the specified data. " + ex.Message);
             }
         }
 
@@ -87,7 +87,7 @@ namespace LetsBuyLocal.SDK.Services
             }
             catch (Exception ex)
             {
-               throw new ApplicationException("Unable to Post object of specified type." + ex.Message);
+               throw new ApplicationException("Unable to Post object of specified type. " + ex.Message);
             }
         }
 
@@ -109,7 +109,7 @@ namespace LetsBuyLocal.SDK.Services
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unable to Put specified object with the specified data." + ex.Message);
+                throw new ApplicationException("Unable to Put specified object with the specified data. " + ex.Message);
             }
         }
 

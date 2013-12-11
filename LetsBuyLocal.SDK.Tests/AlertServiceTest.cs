@@ -5,31 +5,58 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LetsBuyLocal.SDK.Tests
 {
-    [TestClass]
-    public class AlertServiceTest
-    {
-        [TestMethod]
-        public void CreateAlertTest()
-        {
-            var alert = new Alert();
-            alert.StoreId = "977572de-c1c2-4295-878f-447eb7485905";
-            alert.Description = TestingHelper.GetRandomString(30);
-            alert.Type = AlertTypes.StoreAlert;
+    //[TestClass]
+    //public class AlertServiceTest
+    //{
+    //    [TestMethod]
+    //    public void CreateAlertTest()
+    //    {
+    //        var alert = new Alert();
 
-            var svc = new AlertService();
-            var resp = svc.CreateAlert(alert);
+    //        //Create a new store for this test.
+    //        var store = new Store();
+    //        store = TestingHelper.CreateTestStore().Object;
 
-            Assert.IsNotNull(resp.Object);
-        }
+    //        alert.StoreId = store.Id;
+    //        alert.Description = TestingHelper.GetRandomString(30);
+    //        alert.Type = AlertTypes.StoreAlert;
 
-        [TestMethod]
-        public void GetAlertListForStoreByTypeTest()
-        {
-            const string storeId = "977572de-c1c2-4295-878f-447eb7485905";
-            var type = AlertTypes.StoreAlert;
+    //        var svc = new AlertService();
+    //        var resp = svc.CreateAlert(alert);
 
-            var svc = new AlertService();
-            var resp = svc.GetAlertListForStoreByType(storeId, type);
-        }
-    }
+    //        Assert.IsNotNull(resp.Object);
+    //    }
+
+    //    [TestMethod]
+    //    public void GetAlertTest()
+    //    {
+    //        //Create an alert for this test.
+    //        var alert = TestingHelper.CreateNewTestAlertInMemory();
+    //        var svc = new AlertService();
+    //        var createResp = svc.CreateAlert(alert);
+
+    //        var resp = svc.GetAlert(createResp.Object.Id);
+
+    //        Assert.IsNotNull(createResp.Object);
+    //    }
+
+    //    //[TestMethod]
+    //    //public void GetAlertListForStoreByTypeTest()
+    //    //{
+    //    //    var svc = new AlertService();
+    //    //    var resp = svc.GetAlertListForStoreByType(TestingHelper.TestStoreId, AlertTypes.StoreAlert);
+
+    //    //    Assert.IsNotNull(resp.Object);
+    //    //}
+
+    //    //[TestMethod]
+    //    //public void GetAlertListForUserByStoreByTypeTest()
+    //    //{
+    //    //    var svc = new AlertService();
+    //    //    var resp = svc.GetAlertListForUserByStoreByType(TestingHelper.TestStoreId, AlertTypes.StoreAlert,
+    //    //        TestingHelper.TestUserId);
+
+    //    //    Assert.IsNotNull(resp.Object);
+    //    //}
+    //}
 }

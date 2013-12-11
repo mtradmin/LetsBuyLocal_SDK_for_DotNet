@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Text;
 using System.Collections.Generic;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
+using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LetsBuyLocal.SDK.Tests
@@ -14,31 +16,31 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void CreateUserTest()
         {
-            var user = new User();
-            string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
-            string atEmail = ConfigurationManager.AppSettings["AtEmail"];
-            var storeIds = new List<string>();
-
-            storeIds.Add("977572de-c1c2-4295-878f-447eb7485905");
-
-            user.Email = GetEmailAlias(baseEmailName, atEmail);
-            user.Password = TestingHelper.GetRandomString(8);
-            user.FirstName = TestingHelper.GetRandomString(12);
-            user.LastName = TestingHelper.GetRandomString(25);
-            user.MobilePhoneNumber = TestingHelper.GetRandomPhoneNo(10);
-            user.StoreIds = storeIds;
-
             var svc = new UserService();
-            var resp = svc.CreateUser(user);
 
+            //Create a new user for this test.
+            var user = TestingHelper.CreateNewTestUserInMemory();
+
+            var resp = svc.CreateUser(user);
             Assert.IsNotNull(resp.Object);
+
+            //Create a new user (owner) for this test.
+            var owner = TestingHelper.CreateNewTestStoreOwnerInMemory();
+            var ownerResp = svc.CreateUser(owner);
+            Assert.IsNotNull((ownerResp.Object));
         }
 
         [TestMethod]
         public void GetUserByIdTest()
         {
             var svc = new UserService();
-            var resp = svc.GetUserById(TestingHelper.TestUserId);
+
+            //Create a new user for this test.
+            var user = TestingHelper.CreateNewTestUserInMemory();
+
+            var testUser = svc.CreateUser(user).Object;
+            var resp = svc.GetUserById(testUser.Id);
+
             Assert.IsNotNull(resp.Object);
         }
 
@@ -46,118 +48,70 @@ namespace LetsBuyLocal.SDK.Tests
         public void UpdateUserTest()
         {
             var svc = new UserService();
-            var user = svc.GetUserById(TestingHelper.TestUserId).Object;
-            var updatedUser = UpdateUser(user);
+
+            //Create a new user for this test.
+            var user = TestingHelper.CreateNewTestUserInMemory();
+            var testUser = svc.CreateUser(user).Object;
+            var updatedUser = TestingHelper.UpdateUser(testUser);
 
             var resp = svc.UpdateUser(updatedUser);
             Assert.IsNotNull(resp.Object);
+
+            //Now make the user an owner
+            var anotherUser = TestingHelper.CreateNewTestUserInMemory();
+            var anotherTestUser = svc.CreateUser(anotherUser).Object;
+            var updatedAsOwner = TestingHelper.UpdateUser(testUser, true);
+
+            var ownerResp = svc.UpdateUser(updatedAsOwner);
+            Assert.IsNotNull(ownerResp.Object);
         }
 
-        [TestMethod]
-        public void UserReadStoreAlertTest()
-        {
-            const string userId = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
-            const string storeId = "977572de-c1c2-4295-878f-447eb7485905";
-            var readTime = DateTime.Now;
-            var dateParam = new DateParameter();
-            dateParam.datetime = readTime;
-
-            var svc = new UserService();
-            var resp = svc.UserReadStoreAlert(userId, storeId, dateParam);
-            Assert.IsNotNull(resp.Object);
-        }
-
-        [TestMethod]
-        public void UserViewedDealTest()
-        {
-            const string userId = "caa2298a-e8d5-4d76-bce8-c98ffb102b23";
-            const string storeId = "977572de-c1c2-4295-878f-447eb7485905";
-            var readTime = DateTime.Now;
-            var dateParam = new DateParameter();
-            dateParam.datetime = readTime;
-
-            var svc = new UserService();
-            var resp = svc.UserViewedDeal(userId, storeId, dateParam);
-            Assert.IsNotNull(resp.Object);
-        }
-
-        [TestMethod]
-        public void AssignDeviceToUserTest()
-        {
-            //Create a new device, so assured that is not already assigned.
-            var device = new Device();
-            device.Id = Guid.NewGuid().ToString();
-            device.Platform = TestingHelper.GetPlatform();
-            device.DeviceToken = TestingHelper.GetDeviceToken(device.Platform);
-
-            var tempSvc = new DeviceService();
-            var tempResp = tempSvc.CreateDevice(device);
-            string deviceId = tempResp.Object.Id;
-
-            var svc = new UserService();
-            var resp = svc.AssignDeviceToUser("caa2298a-e8d5-4d76-bce8-c98ffb102b23", deviceId);
-            Assert.IsTrue(resp.Success);
-        }
-        
+        //ToDo: Create a user, store user is following that has deals as prerequisite
 
 
+        //[TestMethod]
+        //public void UserReadStoreAlertTest()
+        //{
+        //    var readTime = DateTime.Now;
+        //    var dateParam = new DateParameter();
+        //    dateParam.datetime = readTime;
+        //    var svc = new UserService();
+        //    var resp = svc.UserReadStoreAlert(userId, storeId, dateParam);
+        //    Assert.IsNotNull(resp.Object);
+        //}
 
-    #region Private Methods
+        //[TestMethod]
+        //public void UserViewedDealTest()
+        //{
+        //    const string userId = TestingHelper.TestUserId;
+        //    const string storeId = TestingHelper.TestStoreId;
+        //    var readTime = DateTime.Now;
+        //    var dateParam = new DateParameter();
+        //    dateParam.datetime = readTime;
 
-        /// <summary>
-        /// Updates user.
-        /// </summary>
-        /// <param name="user">A User object to update</param>
-        /// <returns>A user object that has been updated</returns>
-        /// <remarks>
-        /// Test method subject to change; often used to create information that can be retrieved and used
-        /// </remarks>
-        private User UpdateUser(User user)
-        {
-            //string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
-            //string atEmail = ConfigurationManager.AppSettings["AtEmail"];
+        //    var svc = new UserService();
+        //    var resp = svc.UserViewedDeal(userId, storeId, dateParam);
+        //    Assert.IsNotNull(resp.Object);
+        //}
 
-            //user.Email = getEmailAlias(baseEmailName, atEmail);
-            //user.Password = TestingHelper.GetRandomString(8);
-            //user.FirstName = TestingHelper.GetRandomString(12);
-            //user.LastName = TestingHelper.GetRandomString(25); ;
+        //[TestMethod]
+        //public void AssignDeviceToUserTest()
+        //{
+        //    //Create a new device, so assured that is not already assigned.
+        //    var device = new Device();
+        //    device.Id = Guid.NewGuid().ToString();
+        //    device.Platform = TestingHelper.GetPlatform();
+        //    device.DeviceToken = TestingHelper.GetDeviceToken(device.Platform);
 
-            //user.Email = "margakkrumins@gmail.com";
-            //user.Password = "gibber1234";
-            //user.FirstName = "Marga";
-            //user.LastName = "Krumins";
-            if (user.Sex != null)
-            {
-                if (user.Sex.ToUpper() == "F")
-                    user.Sex = "M";
-                else if (user.Sex.ToUpper() == "M")
-                    user.Sex = "F";
-                else
-                    user.Sex = "F";
-            }
-            else
-            {
-                user.Sex = "F";
-            }
-            user.MobilePhoneNumber = TestingHelper.GetRandomPhoneNo(10);
-            return user;
-        }
+        //    var tempSvc = new DeviceService();
+        //    var tempResp = tempSvc.CreateDevice(device);
+        //    string deviceId = tempResp.Object.Id;
 
+        //    var svc = new UserService();
+        //    var resp = svc.AssignDeviceToUser(TestingHelper.TestUserId, deviceId);
+        //    Assert.IsTrue(resp.Success);
+        //}
 
-        private string GetEmailAlias(string baseEmailName, string atEmail)
-        {
-            var sb = new StringBuilder();
-            Guid guid = Guid.NewGuid();
-
-            sb.Append(baseEmailName);
-            sb.Append("+");
-            sb.Append(guid.ToString());
-            sb.Append(atEmail);
-            var s = sb.ToString();
-            return s;
-        }
-
-        #endregion
         
     }
 }

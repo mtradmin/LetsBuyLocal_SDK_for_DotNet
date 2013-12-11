@@ -8,6 +8,6 @@ namespace LetsBuyLocal.SDK.Models
 {
     public class ArrayOfValues
     {
-        public string[] values { get; set; }
+        public string[] Values { get; set; }
     }
 }

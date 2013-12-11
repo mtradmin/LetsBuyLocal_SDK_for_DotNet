@@ -1,5 +1,5 @@
-﻿using LetsBuyLocal.SDK.Models;
-using LetsBuyLocal.SDK.Services;
+﻿using LetsBuyLocal.SDK.Services;
+using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LetsBuyLocal.SDK.Tests
@@ -10,29 +10,19 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void CreateStoreTest()
         {
-            string website = "http://www.zebrastore" + TestingHelper.GetRandomString(10) + ".com";
-
-            var store = new Store();
-            store.Website = website;
-            store.Name = TestingHelper.GetRandomString(30);
-            store.Phone = TestingHelper.GetRandomPhoneNo(10);
-            store.AddressLine1 = TestingHelper.GetRandomString(30);
-            store.City = TestingHelper.GetRandomString(15);
-            store.State = "WI";
-            store.Zip = "53186";
-            store.TimeZone = "CST";
-
-            var svc = new StoreService();
-            var resp = svc.CreateStore(store);
-            Assert.IsNotNull(resp);
+            var resp = TestingHelper.CreateTestStore();
+            Assert.IsNotNull(resp.Object);
         }
 
         [TestMethod]
         public void GetStoreByIdTest()
         {
-            const string id = "977572de-c1c2-4295-878f-447eb7485905";
             var svc = new StoreService();
-            var resp = svc.GetStoreById(id);
+
+            //Create a new store for this test
+            var store = TestingHelper.CreateTestStore().Object;
+
+            var resp = svc.GetStoreById(store.Id);
             Assert.IsNotNull(resp.Object);
         }
     }

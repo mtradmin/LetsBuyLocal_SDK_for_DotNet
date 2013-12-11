@@ -2,6 +2,10 @@
 
 namespace LetsBuyLocal.SDK.Models
 {
+    /// <summary>
+    /// A response message deserialized from LetsBuyLocal.API
+    /// </summary>
+    /// <typeparam name="T">Object Type</typeparam>
     public class ResponseMessage<T>
     {
         public T Object { get; set; }

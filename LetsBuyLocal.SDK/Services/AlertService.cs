@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
@@ -24,7 +25,23 @@ namespace LetsBuyLocal.SDK.Services
             }
         }
 
-        //Todo: GET /v1/Alert/{id}
+        /// <summary>
+        /// Gets the alert.
+        /// </summary>
+        /// <param name="alertId">The alert identifier string</param>
+        /// <returns>A ResponseMessage of type Alert</returns>
+        public ResponseMessage<Alert> GetAlert(string alertId)
+        {
+            try
+            {
+                var resp = Get<ResponseMessage<Alert>>("Alert" + "/" + alertId);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to get the alert. " + ex.Message);
+            }
+        }
 
         /// <summary>
         /// Gets list of alerts for store by type of alert.
@@ -36,7 +53,17 @@ namespace LetsBuyLocal.SDK.Services
         {
             try
             {
-                var resp = Get<ResponseMessage<IList<Alert>>>("Alert/List" + "/" + storeId + "/" + type);
+                var sb = new StringBuilder();
+                sb.Append("Alert");
+                sb.Append("/");
+                sb.Append("List");
+                sb.Append("/");
+                sb.Append(storeId);
+                sb.Append("/");
+                sb.Append(type);
+                string path = sb.ToString();
+
+                var resp = Get<ResponseMessage<IList<Alert>>>(path);
                 return resp;
             }
             catch (Exception ex)
@@ -45,7 +72,30 @@ namespace LetsBuyLocal.SDK.Services
             }
         }
 
-        //Todo: GET /v1/Alert/ListUserAlerts/{storeId}/{type}/{userId}
+        /// <summary>
+        /// Gets a list of alerts for user from specified store and of specified type (STORE/DEAL).
+        /// </summary>
+        /// <param name="storeId">The store identifier string.</param>
+        /// <param name="type">The alert type identifier string.</param>
+        /// <param name="userId">The user identifier string.</param>
+        /// <returns>A ResponseMessage of type IList of Alert.</returns>
+        public ResponseMessage<IList<Alert>> GetAlertListForUserByStoreByType(string storeId, string type, string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Alert");
+            sb.Append("/");
+            sb.Append("ListUserAlerts");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(type);
+            sb.Append("/");
+            sb.Append(userId);
+            string path = sb.ToString();
+
+            var resp = Get<ResponseMessage<IList<Alert>>>(path);
+            return resp;
+        }
 
         //Todo: POST /v1/Alert/DeleteUserAlert/{id}/{userId}
     }

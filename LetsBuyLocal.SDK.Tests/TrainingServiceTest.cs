@@ -6,6 +6,7 @@ namespace LetsBuyLocal.SDK.Tests
     [TestClass]
     public class TrainingServiceTest
     {
+       
         [TestMethod]
         public void GetVideosTest()
         {

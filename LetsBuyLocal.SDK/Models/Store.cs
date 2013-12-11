@@ -5,6 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LetsBuyLocal.SDK.Models
 {
+
+    /// <summary>
+    /// Represents a store entity
+    /// </summary>
+    /// <remarks>
+    /// A store will not be visible unless it has at least one active deal 
+    /// or the last active detail expired within the last 15 days
+    /// </remarks>
     public class Store : BaseEntity
     {
         [Required]
@@ -47,8 +55,8 @@ namespace LetsBuyLocal.SDK.Models
         public decimal Longitude { get; set; }
         public string ReceiptId { get; set; }
         public string RewardProgramType { get; set; } //null (no Rewards Program), ELECTRONIC, PHYSICAL
-        public bool Published { get; set; }
-        public bool Offline { get; set; }
+        public bool Published { get; set; } //Soft delete flag
+        public bool Offline { get; set; } //Visibility flag
         public DateTime? LastDealExpirationDate { get; set; }
         public bool PublishAlertsToFb { get; set; }
         public bool PublishDealsToFb{ get; set; }
