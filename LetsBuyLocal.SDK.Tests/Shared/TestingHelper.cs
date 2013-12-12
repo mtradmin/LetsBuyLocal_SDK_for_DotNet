@@ -12,6 +12,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
     /// </summary>
     public static class TestingHelper
     {
+        private const decimal Latitude = (decimal)42.870785;
+        private const decimal Longitude = (decimal)-87.976346;
+
         /// <summary>
         /// Creates a test user object.
         /// </summary>
@@ -30,7 +33,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.LastName = GetRandomString(25);                  //Required & valid
             user.Sex = GetSex();
             user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Koala.jpg";
-            user.MobilePhoneNumber = GetRandomNumeric(10);        //Required
+            user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
             user.HomePhoneNumber = string.Empty;
             user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
             user.AddressLine2 = string.Empty;
@@ -87,7 +90,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.LastName = GetRandomString(25);                  //Required & valid
             user.Sex = GetSex();
             user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Koala.jpg";
-            user.MobilePhoneNumber = GetRandomNumeric(10);        //Required
+            user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
             user.HomePhoneNumber = string.Empty;
             user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
             user.AddressLine2 = string.Empty;
@@ -148,8 +151,8 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             //user.Sex = TestingHelper.GetSex();
             user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Penguins.jpg";
             //Phone number & address info can be updated regardless of whether using Facebook account
-            user.MobilePhoneNumber = GetRandomNumeric(10);        //Required
-            user.HomePhoneNumber = GetRandomNumeric(10);
+            user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
+            user.HomePhoneNumber = GetRandomPhoneNumber(10);
             user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
             user.AddressLine2 = GetRandomString(5);
             user.City = GetRandomString(12);
@@ -218,7 +221,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             {
                 Website = "http://www." + TestingHelper.GetRandomString(10) + ".com",       //Required
                 Name = GetRandomString(30),                                                 //Required
-                Phone = GetRandomNumeric(10),                                               //Required, length = 10
+                Phone = GetRandomPhoneNumber(10),                                               //Required, length = 10
                 Description = GetRandomString(50),
                 Category = "Retailer - Boutique/Clothing/Accessories",                      //See: Configuration
                 AddressLine1 = GetRandomString(30),                                         //Required
@@ -243,14 +246,13 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 //public string FridayCloseTime { get; set; }
                 //public string SaturdayOpenTime { get; set; }
                 //public string SaturdayCloseTime { get; set; }
-
                 //public string PayPalEmail { get; set; }
                 //public decimal Latitude { get; set; }
                 //public decimal Longitude { get; set; }
                 //public string ReceiptId { get; set; }
-                //public string RewardProgramType { get; set; }             //null (no Rewards Program), ELECTRONIC, PHYSICAL
-                //public bool Published { get; set; }                       //Soft delete flag
-                //public bool Offline { get; set; }                         //Visibility flag
+                //public string RewardProgramType { get; set; } //null (no Rewards Program), ELECTRONIC, PHYSICAL
+                //public bool Published { get; set; } //Soft delete flag
+                //public bool Offline { get; set; } //Visibility flag
                 //public DateTime? LastDealExpirationDate { get; set; }
                 //public bool PublishAlertsToFb { get; set; }
                 //public bool PublishDealsToFb{ get; set; }
@@ -262,16 +264,16 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 PrimaryColor = "Green",
                 SecondaryColor = "Gold"
                 //public string TermsAndConditions { get; set; }
-                //public bool? DealsEnabled { get; set; }
-                //public bool? CheckInsEnabled { get; set; }
+                //public bool? DealsEnabled =
+                //public bool? CheckInsEnabled =
 
-                //public List<string> OwnerIds { get; set; }  //List of ids for users that have admin rights to the store
+                //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
 
-                //public bool WizardStep1Complete { get; set; }
-                //public bool WizardStep2Complete { get; set; }
-                //public bool WizardStep3Complete { get; set; }
+                //public bool WizardStep1Complete =
+                //public bool WizardStep2Complete =
+                //public bool WizardStep3Complete =
 
-                //public int UserRating { get; set; }
+                //public int UserRating =
 
                 //public string MoreThanRewardsUserId { get; set; }
 
@@ -287,6 +289,78 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
             var resp = svc.CreateStore(store);
             return resp;
+        }
+
+        public static Store UpdateStore(Store store)
+        {
+            store.Website = "http://www." + TestingHelper.GetRandomString(10) + ".com";       //Required
+            //store.Name = GetRandomString(30);                                                //Required
+            store.Phone = GetRandomPhoneNumber(10);                                               //Required, length = 10
+            store.Description = GetRandomString(50);
+            //store.Category = "Retailer - Boutique/Clothing/Accessories";                      //See: Configuration
+            store.AddressLine1 = GetRandomString(30);                                         //Required
+            store.AddressLine2 = GetRandomString(5);
+            store.City = GetRandomString(15);                                                 //Required
+            //store.State = "WI";                                                              //Required, See: Configuration
+            store.Zip = GetRandomNumeric(5);                                                  //Required
+            //store.Country = "USA";                                                            //See: Configuration
+            //store.TimeZone = "Central Standard Time";                                         //Required, See: Configuration
+
+            store.SundayOpenTime = null;
+            store.SundayCloseTime = null;
+            store.MondayOpenTime = "9";
+            store.MondayCloseTime = "5";
+            store.TuesdayOpenTime = "9";
+            store.TuesdayCloseTime = "5";
+            store.WednesdayOpenTime = "9";
+            store.WednesdayCloseTime = "5";
+            store.ThursdayOpenTime = "9";
+            store.ThursdayCloseTime = "5";
+            store.FridayOpenTime = "9";
+            store.FridayCloseTime = "5";
+            store.SaturdayOpenTime = "9";
+            store.SaturdayCloseTime = "5";
+
+            store.PayPalEmail = null;
+            store.Latitude = Latitude;
+            store.Longitude = Longitude;
+            store.ReceiptId = null;
+            store.RewardProgramType = null;            //null (no Rewards Program), ELECTRONIC, PHYSICAL
+            store.Published = true;                      //Soft delete flag
+            store.Offline = false;                        //Visibility flag
+            store.LastDealExpirationDate = null;
+            store.PublishAlertsToFb = false;
+            store.PublishDealsToFb = false;
+            store.FbAccount = null;
+            store.FbPage = null;
+            store.FbPageAccessToken = null;
+            store.HasStoreRegisteredForRewards = false;
+            store.CustomUrl = null;
+            store.PrimaryColor = "Blue";
+            store.SecondaryColor = "Gold";
+            store.TermsAndConditions = TestingHelper.GetRandomString(100);
+            store.DealsEnabled = true;
+            store.CheckInsEnabled = true;
+
+                //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
+
+                //public bool WizardStep1Complete =
+                //public bool WizardStep2Complete =
+                //public bool WizardStep3Complete =
+
+                //public int UserRating =
+
+            store.MoreThanRewardsUserId = null;
+
+                //public double Distance =
+
+                //public int Followers =
+
+            //store.PhoneString =
+
+                //public IDictionary<string, string> HoursOfOperation =
+
+            return store;
         }
 
         /// <summary>
@@ -364,6 +438,26 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         public static string GetRandomNumeric(int len)
         {
             const string chars = "1234567890";
+            var stringChars = new char[len];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new string(stringChars);
+            return finalString;
+        }
+
+        /// <summary>
+        /// Gets a random phone number string that does not use the digits 0 or 1.
+        /// </summary>
+        /// <param name="len">The length.</param>
+        /// <returns>A phone number string</returns>
+        public static string GetRandomPhoneNumber(int len)
+        {
+            const string chars = "23456789";
             var stringChars = new char[len];
             var random = new Random();
 

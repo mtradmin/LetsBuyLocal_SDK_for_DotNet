@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Shared;
 
@@ -48,16 +49,49 @@ namespace LetsBuyLocal.SDK.Services
             }
         }
 
+        /// <summary>
+        /// Gets the store's API key.
+        /// </summary>
+        /// <param name="id">The store's identifier string.</param>
+        /// <returns>ResponseMessage of type String</returns>
+        /// <exception cref="System.ApplicationException">Unable to get specified store's API Key.  + ex.Message</exception>
+        public ResponseMessage<Store> GetStoreApiKey(string id)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("API");
+                sb.Append("/");
+                var s = sb.ToString();
+
+                var resp = Get<ResponseMessage<Store>>(s + id);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to get specified store's API Key. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the store.
+        /// </summary>
+        /// <param name="id">The store identifier string.</param>
+        /// <param name="store">The store.</param>
+        /// <returns>The store</returns>
+        /// <exception cref="System.ApplicationException">Unable to update specified store.  + ex.Message</exception>
         public ResponseMessage<Store> UpdateStore(string id, Store store)
         {
             try
             {
-                //ToDo: Code this with correct return
-                return new ResponseMessage<Store>();
+                var resp = Put<ResponseMessage<Store>>("Store" + "/" + store.Id, store);
+                return resp;
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unable to update store '" + id + "'. " + ex.Message);
+                throw new ApplicationException("Unable to update specified store. " + ex.Message);
             }
 
         }
