@@ -52,6 +52,22 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp);
         }
 
+        [TestMethod]
+        public void UpdateStoreLocationTest()
+        {
+            var svc = new StoreService();
+
+            //Create a new store for this test and do standard updates
+            var store = TestingHelper.CreateTestStore().Object;
+            store = TestingHelper.UpdateStore(store);
+            store = svc.UpdateStore(store.Id, store).Object;
+
+            //Now update the location
+            var geoPoint = TestingHelper.GetGeoPoint();
+
+            var resp = svc.UpdateStoreLocation(store.Id, geoPoint);
+        }
+
     }
 
 

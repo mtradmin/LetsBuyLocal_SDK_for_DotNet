@@ -96,6 +96,25 @@ namespace LetsBuyLocal.SDK.Services
 
         }
 
+        /// <summary>
+        /// Updates the store's location.
+        /// </summary>
+        /// <param name="id">The store identifier.</param>
+        /// <param name="geoPoint">The GeoPoint object.</param>
+        /// <returns>a ResponseMessage containing an object of type Store.</returns>
+        public ResponseMessage<Store> UpdateStoreLocation(string id, GeoPoint geoPoint)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Location");
+            sb.Append("/");
+            var s = sb.ToString();
+
+            var resp = Post<ResponseMessage<Store>>(s + id, geoPoint);
+            return resp;
+        }
+
 
     }
 }

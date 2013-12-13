@@ -14,7 +14,7 @@ namespace LetsBuyLocal.SDK.Models
         public int TotalAvailable { get; set; }
         public string Hint { get; set; }
         public int ExtensionDays { get; set; }
-        public string OnCompleteAction { get; set; }
+        public string OnCompleteAction { get; set; }    //(RunAgain/SaveForLater/Delete)
         public DateTime? ExpirationDate { get; set; }
         public DateTime? StartDate { get; set; }
         public bool Published { get; set; }

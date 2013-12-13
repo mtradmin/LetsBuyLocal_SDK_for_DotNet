@@ -12,9 +12,6 @@ namespace LetsBuyLocal.SDK.Tests.Shared
     /// </summary>
     public static class TestingHelper
     {
-        private const decimal Latitude = (decimal)42.870785;
-        private const decimal Longitude = (decimal)-87.976346;
-
         /// <summary>
         /// Creates a test user object.
         /// </summary>
@@ -132,64 +129,46 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
         /// <summary>
-        /// Updates user.
+        /// Creates a test deal in memory.
         /// </summary>
-        /// <param name="user">A User object to update</param>
-        /// <param name="isOwner">if set to <c>true</c> [is owner].</param>
-        /// <returns>
-        /// A user object that has been updated
-        /// </returns>
-        public static User UpdateUser(User user, bool isOwner = false)
+        /// <returns>A Deal object.</returns>
+        public static Deal CreateTestDealInMemory()
         {
-            string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
-            string atEmail = ConfigurationManager.AppSettings["AtEmail"];
+            //Create a store that will run this deal.
+            var store = TestingHelper.CreateTestStore().Object;
 
-            user.Password = GetRandomString(8);
-            user.Email = GetEmailAlias(baseEmailName, atEmail);                 //Required & valid
-            user.FirstName = GetRandomString(25);                 //Required & valid
-            user.LastName = GetRandomString(25);                  //Required & valid
-            //user.Sex = TestingHelper.GetSex();
-            user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Penguins.jpg";
-            //Phone number & address info can be updated regardless of whether using Facebook account
-            user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
-            user.HomePhoneNumber = GetRandomPhoneNumber(10);
-            user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
-            user.AddressLine2 = GetRandomString(5);
-            user.City = GetRandomString(12);
-            user.State = "WI";
-            user.Zip = GetRandomNumeric(5);
-            user.Country = "USA";                                                   //See: GetConfiguration
-            user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
-            user.TimeZone = "Central Standard Time";                                //See: GetConfiguration
-            user.IsStoreOwner = isOwner;
-            user.ShowStoreAlerts = true;
-            user.ShowDealAlerts = true;
-            user.ShowCouponAlerts = true;
-            user.FacebookUserId = null;                     //Numeric string: https://developers.facebook.com/docs/graph-api/reference/user/
-            user.ReservedDeals = 0;
-            user.RedeemedDeals = 0;
-            user.CurrentLevel = 0;
-            //user.HasFollowedStore = false;                //Is set internally
-            user.AgreedToTerms = DateTime.Now;              //Nullable
+            var deal = new Deal
+            {
+                StoreId = store.Id,                                                     //Required
+                Title = "This deal is " + TestingHelper.GetRandomString(25),            //Required
+                Description = TestingHelper.GetRandomString(50),
+                TotalAvailable = Convert.ToInt32(TestingHelper.GetRandomNumeric(2)),    //Required
+                //Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
+                //public int ExtensionDays { get; set; }
+                //OnCompleteAction = "RunAgain",                              //(RunAgain/SaveForLater/Delete)
+                //ExpirationDate = DateTime.Now.AddMonths(1),                 //Nullable
+                //StartDate = DateTime.Now,                                   //Nullable
+                Published = false
+                //NormalPrice = 5.39m,                                             //Nullable
+                //PercentOff = 5,
+                //public string CopiedFromId { get; set; }
+                //public DateTime? PostedToFacebook { get; set; }
+                //public string FbPostError { get; set; }
+                //public bool PublishCompleteActionDone { get; set; }
 
-            //Size Information
-            user.ShoeSize = GetRandomNumeric(2);
-            user.GloveSize = GetRandomNumeric(1);
-            user.FavoriteBrand = GetRandomString(25);
-            user.TshirtSize = GetRandomString(2);
-            user.PantsWaist = GetRandomNumeric(2);
-            user.FavoriteColor = "Green";
-            user.Dress = GetRandomString(2);
-            user.PantsInseam = GetRandomNumeric(2);
-            user.ShareSizeInfo = false;
+                //public bool HasActiveReservations { get; set; }
 
-            //Marketing Information                         //All fields nullable
-            user.SendOffersByEmail = null;
-            user.SendOffersByText = null;
-            user.SendOffersByFacebook = null;
-            user.SendOffersByUsMail = null;
+                //public decimal? Savings { get; set; }
 
-            return user;
+                //public string NormalPriceString { get; set; }
+
+                //public string DealPriceString { get; set; }
+
+                //public string SavingsString { get; set; }
+
+                //public string PercentOffString { get; set; }
+            };
+            return deal;
         }
 
         /// <summary>
@@ -209,6 +188,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             return alert;
         }
 
+        
         /// <summary>
         /// Creates the test store.
         /// </summary>
@@ -291,6 +271,73 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             return resp;
         }
 
+
+        /// <summary>
+        /// Updates user.
+        /// </summary>
+        /// <param name="user">A User object to update</param>
+        /// <param name="isOwner">if set to <c>true</c> [is owner].</param>
+        /// <returns>
+        /// A user object that has been updated
+        /// </returns>
+        public static User UpdateUser(User user, bool isOwner = false)
+        {
+            string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
+            string atEmail = ConfigurationManager.AppSettings["AtEmail"];
+
+            user.Password = GetRandomString(8);
+            user.Email = GetEmailAlias(baseEmailName, atEmail);                 //Required & valid
+            user.FirstName = GetRandomString(25);                 //Required & valid
+            user.LastName = GetRandomString(25);                  //Required & valid
+            //user.Sex = TestingHelper.GetSex();
+            user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Penguins.jpg";
+            //Phone number & address info can be updated regardless of whether using Facebook account
+            user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
+            user.HomePhoneNumber = GetRandomPhoneNumber(10);
+            user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
+            user.AddressLine2 = GetRandomString(5);
+            user.City = GetRandomString(12);
+            user.State = "WI";
+            user.Zip = GetRandomNumeric(5);
+            user.Country = "USA";                                                   //See: GetConfiguration
+            user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
+            user.TimeZone = "Central Standard Time";                                //See: GetConfiguration
+            user.IsStoreOwner = isOwner;
+            user.ShowStoreAlerts = true;
+            user.ShowDealAlerts = true;
+            user.ShowCouponAlerts = true;
+            user.FacebookUserId = null;                     //Numeric string: https://developers.facebook.com/docs/graph-api/reference/user/
+            user.ReservedDeals = 0;
+            user.RedeemedDeals = 0;
+            user.CurrentLevel = 0;
+            //user.HasFollowedStore = false;                //Is set internally
+            user.AgreedToTerms = DateTime.Now;              //Nullable
+
+            //Size Information
+            user.ShoeSize = GetRandomNumeric(2);
+            user.GloveSize = GetRandomNumeric(1);
+            user.FavoriteBrand = GetRandomString(25);
+            user.TshirtSize = GetRandomString(2);
+            user.PantsWaist = GetRandomNumeric(2);
+            user.FavoriteColor = "Green";
+            user.Dress = GetRandomString(2);
+            user.PantsInseam = GetRandomNumeric(2);
+            user.ShareSizeInfo = false;
+
+            //Marketing Information                         //All fields nullable
+            user.SendOffersByEmail = null;
+            user.SendOffersByText = null;
+            user.SendOffersByFacebook = null;
+            user.SendOffersByUsMail = null;
+
+            return user;
+        }
+
+        /// <summary>
+        /// Updates the store.
+        /// </summary>
+        /// <param name="store">The store.</param>
+        /// <returns>A store object.</returns>
         public static Store UpdateStore(Store store)
         {
             store.Website = "http://www." + TestingHelper.GetRandomString(10) + ".com";       //Required
@@ -322,8 +369,8 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             store.SaturdayCloseTime = "5";
 
             store.PayPalEmail = null;
-            store.Latitude = Latitude;
-            store.Longitude = Longitude;
+            //store.Latitude = null;
+            //store.Longitude = null;
             store.ReceiptId = null;
             store.RewardProgramType = null;            //null (no Rewards Program), ELECTRONIC, PHYSICAL
             store.Published = true;                      //Soft delete flag
@@ -342,54 +389,49 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             store.DealsEnabled = true;
             store.CheckInsEnabled = true;
 
-                //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
+            //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
 
-                //public bool WizardStep1Complete =
-                //public bool WizardStep2Complete =
-                //public bool WizardStep3Complete =
+            //public bool WizardStep1Complete =
+            //public bool WizardStep2Complete =
+            //public bool WizardStep3Complete =
 
-                //public int UserRating =
+            //public int UserRating =
 
             store.MoreThanRewardsUserId = null;
 
-                //public double Distance =
+            //public double Distance =
 
-                //public int Followers =
+            //public int Followers =
 
             //store.PhoneString =
 
-                //public IDictionary<string, string> HoursOfOperation =
+            //public IDictionary<string, string> HoursOfOperation =
 
             return store;
         }
 
         /// <summary>
-        /// Creates a test deal in memory.
+        /// Updates the deal.
         /// </summary>
-        /// <returns>A Deal object</returns>
-        public static Deal CreateTestDealInMemory()
+        /// <param name="deal">The deal.</param>
+        /// <returns>The updated deal object.</returns>
+        public static Deal UpdateDeal(Deal deal)
         {
-            //Create a store that will run this deal.
-            var store = TestingHelper.CreateTestStore().Object;
+            //Regarding datetime values:
+            // "ExceptionMessage": 
+            //"The conversion could not be completed because the supplied DateTime did not have the Kind property set correctly. 
+            //For example, when the Kind property is DateTimeKind.Local, 
+            //the source time zone must be TimeZoneInfo.Local.\r\nParameter name: sourceTimeZone",
 
-            var deal = new Deal
-            {
-                Id = Guid.NewGuid().ToString(),
-                StoreId = store.Id,
-                Title = "This deal is " + TestingHelper.GetRandomString(25),
-                TotalAvailable = Convert.ToInt32(TestingHelper.GetRandomNumeric(2)),
-                Description = TestingHelper.GetRandomString(50),
-                Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
-
+            deal.TotalAvailable = Convert.ToInt32(TestingHelper.GetRandomNumeric(2));        //Required
+            deal.Hint = deal.Hint + " updated";
                 //public int ExtensionDays { get; set; }
-                //public string OnCompleteAction { get; set; }
-
-                //ExpirationDate = DateTime.Now.AddMonths(1),               Causes failure
-                StartDate = DateTime.Now,
-                //Published = true                                          Causes failure
-
-                //NormalPrice = 1
-                //public int? PercentOff { get; set; }
+            deal.OnCompleteAction = "RunAgain";                              //(RunAgain/SaveForLater/Delete)
+            deal.ExpirationDate = DateTime.Now.AddMonths(1).ToLocalTime();                 //Nullable
+            deal.StartDate = DateTime.Now.ToLocalTime();                                   //Nullable
+                //Published = false
+            deal.NormalPrice = 7.39m;                                             //Nullable
+            deal.PercentOff = 3;
                 //public string CopiedFromId { get; set; }
                 //public DateTime? PostedToFacebook { get; set; }
                 //public string FbPostError { get; set; }
@@ -406,8 +448,22 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 //public string SavingsString { get; set; }
 
                 //public string PercentOffString { get; set; }
-            };
+
             return deal;
+        }
+
+
+        /// <summary>
+        /// Gets the randomly generated geo point.
+        /// </summary>
+        /// <returns>A GeoPoint object.</returns>
+        public static GeoPoint GetGeoPoint()
+        {
+            decimal latitude = GetRandomLatitudeApproxWi();
+            decimal longitude = GetRandomLongitudeApproxWi();
+
+            var geoPoint = GetNewGeoPoint(latitude, longitude);
+            return geoPoint;
         }
 
         /// <summary>
@@ -430,12 +486,14 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             return finalString;
         }
 
+
+        #region Helper Methods
         /// <summary>
         /// Gets a random phone number with the specified number of digits
         /// </summary>
         /// <param name="len">Number of digits desired in number as an integer</param>
         /// <returns>A number of the specified length as a string</returns>
-        public static string GetRandomNumeric(int len)
+        private static string GetRandomNumeric(int len)
         {
             const string chars = "1234567890";
             var stringChars = new char[len];
@@ -455,7 +513,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </summary>
         /// <param name="len">The length.</param>
         /// <returns>A phone number string</returns>
-        public static string GetRandomPhoneNumber(int len)
+        private static string GetRandomPhoneNumber(int len)
         {
             const string chars = "23456789";
             var stringChars = new char[len];
@@ -478,7 +536,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <returns>
         /// A random integer within the specified range.
         /// </returns>
-        public static int GetRandomInteger(int min, int max)
+        private static int GetRandomInteger(int min, int max)
         {
             var random = new Random();
             var number = random.Next(min, max);
@@ -491,7 +549,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <param name="baseEmailName">Name of the base email.</param>
         /// <param name="atEmail">At email.</param>
         /// <returns>An email alias string.</returns>
-        public static string GetEmailAlias(string baseEmailName, string atEmail)
+        private static string GetEmailAlias(string baseEmailName, string atEmail)
         {
             var sb = new StringBuilder();
             Guid guid = Guid.NewGuid();
@@ -509,7 +567,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </summary>
         /// <param name="platform">A string specifying the type of device (ios or android)</param>
         /// <returns>A device token string for the specified platform</returns>
-        public static string GetDeviceToken(string platform)
+        private static string GetDeviceToken(string platform)
         {
             if (platform.ToLower() == "ios")
                 return TestingHelper.GetRandomString(32);
@@ -523,7 +581,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets a randomly generated device type (ios or android platform) 
         /// </summary>
         /// <returns>The platform (device type) string: ios or android</returns>
-        public static string GetPlatform()
+        private static string GetPlatform()
         {
             var rand = new Random();
             var value = rand.NextDouble();
@@ -537,7 +595,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets a randomly generated sex (Female/Male).
         /// </summary>
         /// <returns>Either F or M as a string</returns>
-        public static string GetSex()
+        private static string GetSex()
         {
             var rand = new Random();
             var value = rand.NextDouble();
@@ -547,6 +605,53 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 return "Male";
         }
 
+        /// <summary>
+        /// Gets the geo point.
+        /// </summary>
+        /// <param name="lat">The latitude.</param>
+        /// <param name="longitude">The longitude.</param>
+        /// <returns>A geopoint object</returns>
+        private static GeoPoint GetNewGeoPoint(decimal lat, decimal longitude)
+        {
+            var geoPoint = new GeoPoint {Latitude = lat, Longitude = longitude};
+            return geoPoint;
+        }
+
+        /// <summary>
+        /// Gets the random latitude for a location roughly somewhere in WI.
+        /// </summary>
+        /// <returns>A decimal representing latitude</returns>
+        private static decimal GetRandomLatitudeApproxWi()
+        {
+            var dbl = new Random();;
+            const double min = 42.5;
+            const double max = 47.05;
+
+            //Get a random decimal between 42° 30'N to 47° 3'N
+            var raw = dbl.NextDouble() * (max - min) + min;
+            decimal latitude = Convert.ToDecimal(raw);
+
+            return latitude;
+        }
+
+        /// <summary>
+        /// Gets the random longitude for a location roughly somewhere in WI.
+        /// </summary>
+        /// <returns>A decimal representing longitude</returns>
+        private static decimal GetRandomLongitudeApproxWi()
+        {
+            var dbl = new Random();
+            var min = 86.81666667;
+            var max = 92.9;
+
+            //Get a random decimal between 86° 49'W to 92° 54'W
+            var raw = dbl.NextDouble()*(max - min) + min;
+            decimal longitude = Convert.ToDecimal(raw);
+
+            return longitude;
+        }
+
+        #endregion
 
     }
 }
