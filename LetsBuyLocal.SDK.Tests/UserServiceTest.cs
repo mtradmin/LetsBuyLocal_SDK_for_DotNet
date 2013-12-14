@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.Diagnostics;
-using System.Text;
-using System.Collections.Generic;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
@@ -36,10 +32,9 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new UserService();
 
             //Create a new user for this test.
-            var user = TestingHelper.CreateNewTestUserInMemory();
+            var user = TestingHelper.NewUser(svc);
 
-            var testUser = svc.CreateUser(user).Object;
-            var resp = svc.GetUserById(testUser.Id);
+            var resp = svc.GetUserById(user.Id);
 
             Assert.IsNotNull(resp.Object);
         }
@@ -50,68 +45,129 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new UserService();
 
             //Create a new user for this test.
-            var user = TestingHelper.CreateNewTestUserInMemory();
-            var testUser = svc.CreateUser(user).Object;
-            var updatedUser = TestingHelper.UpdateUser(testUser);
+            var user = TestingHelper.NewUser(svc);
+            var updatedUser = TestingHelper.UpdateUser(user);
 
             var resp = svc.UpdateUser(updatedUser);
             Assert.IsNotNull(resp.Object);
 
-            //Now make the user an owner
-            var anotherUser = TestingHelper.CreateNewTestUserInMemory();
-            var anotherTestUser = svc.CreateUser(anotherUser).Object;
-            var updatedAsOwner = TestingHelper.UpdateUser(testUser, true);
+            //Now make another user that is an owner
+            var ownerUser = TestingHelper.CreateNewTestUserInMemory();
+            var ownerTestUser = svc.CreateUser(ownerUser).Object;
+            var updatedAsOwner = TestingHelper.UpdateUser(ownerTestUser, true);
 
             var ownerResp = svc.UpdateUser(updatedAsOwner);
             Assert.IsNotNull(ownerResp.Object);
         }
 
-        //ToDo: Create a user, store user is following that has deals as prerequisite
+        [TestMethod]
+        public void UserReadStoreAlertTest()
+        {
+            var svc = new UserService();
+            var readTime = DateTime.Now;
+            var dateParam = new DateParameter {Datetime = readTime};
 
+            //Create a user for this test.
+            var user = TestingHelper.NewUser(svc);
 
-        //[TestMethod]
-        //public void UserReadStoreAlertTest()
-        //{
-        //    var readTime = DateTime.Now;
-        //    var dateParam = new DateParameter();
-        //    dateParam.datetime = readTime;
-        //    var svc = new UserService();
-        //    var resp = svc.UserReadStoreAlert(userId, storeId, dateParam);
-        //    Assert.IsNotNull(resp.Object);
-        //}
+            //Create a store for this test.
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "green", "brown");
 
-        //[TestMethod]
-        //public void UserViewedDealTest()
-        //{
-        //    const string userId = TestingHelper.TestUserId;
-        //    const string storeId = TestingHelper.TestStoreId;
-        //    var readTime = DateTime.Now;
-        //    var dateParam = new DateParameter();
-        //    dateParam.datetime = readTime;
+            var resp = svc.UserReadStoreAlert(user.Id, store.Id, dateParam);
+            Assert.IsNotNull(resp.Object);
+        }
 
-        //    var svc = new UserService();
-        //    var resp = svc.UserViewedDeal(userId, storeId, dateParam);
-        //    Assert.IsNotNull(resp.Object);
-        //}
+        [TestMethod]
+        public void UserViewedDealTest()
+        {
+            var svc = new UserService();
+            
+            var readTime = DateTime.Now;
+            var dateParam = new DateParameter {Datetime = readTime};
 
-        //[TestMethod]
-        //public void AssignDeviceToUserTest()
-        //{
-        //    //Create a new device, so assured that is not already assigned.
-        //    var device = new Device();
-        //    device.Id = Guid.NewGuid().ToString();
-        //    device.Platform = TestingHelper.GetPlatform();
-        //    device.DeviceToken = TestingHelper.GetDeviceToken(device.Platform);
+            //Create a user for this test.
+            var user = TestingHelper.NewUser(svc);
 
-        //    var tempSvc = new DeviceService();
-        //    var tempResp = tempSvc.CreateDevice(device);
-        //    string deviceId = tempResp.Object.Id;
+            //Create a store for this test.
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "red", "grey");
 
-        //    var svc = new UserService();
-        //    var resp = svc.AssignDeviceToUser(TestingHelper.TestUserId, deviceId);
-        //    Assert.IsTrue(resp.Success);
-        //}
+            var resp = svc.UserViewedDeal(user.Id, store.Id, dateParam);
+            Assert.IsNotNull(resp.Object);
+        }
 
-        
+        [TestMethod]
+        public void CreateListOfStoresUserFollowingTest()
+        {
+            var svc = new UserService();
+
+            //Create a new user for this test
+            var user = TestingHelper.NewUser(svc);
+
+            //Create two new stores to be added to an ArrayOfValues
+            string categoryA = TestingHelper.GetRandomStoreCategory();
+            var storeA = TestingHelper.NewStore(categoryA, "green", "lightgreen");
+
+            string categoryB = TestingHelper.GetRandomStoreCategory();
+            var storeB = TestingHelper.NewStore(categoryB, "blue", "lightblue");
+
+            //Add the two stores' Ids to an ArrayOfValues object
+            var storesInit = new[] {storeA.Id, storeB.Id};
+            var valuesInit = new ArrayOfValues {Values = storesInit};
+
+            //Test creation of initial list
+            var initResp = svc.CreateListOfStoresUserFollowing(user.Id, valuesInit);
+            Assert.IsNotNull(initResp.Object);
+
+            //Test modification of list
+            //Add
+            string category = TestingHelper.GetRandomStoreCategory();
+            var storeC = TestingHelper.NewStore(category, "green", "gold");
+
+            var storesAdd = new[] { storeA.Id, storeB.Id, storeC.Id };
+            var valuesAdd = new ArrayOfValues { Values = storesAdd };
+            var addResp = svc.CreateListOfStoresUserFollowing(user.Id, valuesAdd);
+            Assert.IsNotNull(addResp.Object);
+
+            //Remove
+            var storesRemove = new[] { storeB.Id, storeC.Id };
+            var valuesRemove = new ArrayOfValues { Values = storesRemove };
+            var removeResp = svc.CreateListOfStoresUserFollowing(user.Id, valuesRemove);
+            Assert.IsNotNull(removeResp.Object);
+
+            //Test deletion of list
+            var valuesDelete = new ArrayOfValues {Values = null};
+            var delResp = svc.CreateListOfStoresUserFollowing(user.Id, valuesDelete);
+            var num = delResp.Object.Count;
+            Assert.IsNotNull(delResp.Object);
+            Assert.AreEqual(0, num);
+
+        }
+
+        [TestMethod]
+        public void AssignDeviceToUserTest()
+        {
+            var svc = new UserService();
+            var deviceSvc = new DeviceService();
+
+            //Create a new user for this test.
+            var user = TestingHelper.NewUser(svc);
+
+            //Create a new device, so assured that is not already assigned.
+            var device = new Device
+            {
+                Id = Guid.NewGuid().ToString(), 
+                Platform = TestingHelper.GetPlatform()
+            };
+            device.DeviceToken = TestingHelper.GetDeviceToken(device.Platform);
+
+            var createResp = deviceSvc.CreateDevice(device);
+            string deviceId = createResp.Object.Id;
+
+            var resp = svc.AssignDeviceToUser(user.Id, deviceId);
+
+            Assert.IsTrue(resp.Success);
+        }
     }
 }

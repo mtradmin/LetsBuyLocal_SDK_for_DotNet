@@ -79,6 +79,7 @@
     <Compile Include="Services\AlertService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="Services\DealService.cs" />
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\ErrorService.cs" />

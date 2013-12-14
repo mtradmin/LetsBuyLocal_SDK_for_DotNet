@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Text;
 using LetsBuyLocal.SDK.Models;
-using LetsBuyLocal.SDK.Shared;
 
 namespace LetsBuyLocal.SDK.Services
 {
+    /// <summary>
+    /// Handles CRUD operations for stores.
+    /// </summary>
     public class StoreService : BaseService
     {
         /// <summary>

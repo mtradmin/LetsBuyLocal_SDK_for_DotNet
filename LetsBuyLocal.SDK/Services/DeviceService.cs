@@ -1,29 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LetsBuyLocal.SDK.Models;
+using System.Collections.Generic;
 
 namespace LetsBuyLocal.SDK.Services
 {
+    /// <summary>
+    /// Handles CRUD operations for Devices.
+    /// </summary>
     public class DeviceService : BaseService
     {
         /// <summary>
         /// Creates a new device (ios or android)
         /// </summary>
         /// <param name="device">A Device object</param>
-        /// <returns>A ResponseMessage containing the created Device object</returns>
+        /// <returns>A ResponseMessage containing an object of type Device.</returns>
+        /// <exception cref="System.Exception">Unable to create device.  + ex.Message</exception>
         public ResponseMessage<Device> CreateDevice(Device device)
         {
-            var newDevice = Post<ResponseMessage<Device>>("Device", device);
-            return newDevice;
+            try
+            {
+                var resp = Post<ResponseMessage<Device>>("Device", device);
+                return resp;
+            }
+            catch (Exception ex)            
+            {
+                throw new Exception("Unable to create device. " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Gets the device by identifier.
+        /// </summary>
+        /// <param name="id">The identifier string.</param>
+        /// <returns>A ResponseMessage containing an object of type Device.</returns>
+        /// <exception cref="System.ApplicationException">Unable to get specified device.  + ex.Message</exception>
         public ResponseMessage<Device> GetDeviceById(string id)
         {
-            var device = Get<ResponseMessage<Device>>("Device" + "/" + id);
-            return device;
+            try
+            {
+                var resp = Get<ResponseMessage<Device>>("Device" + "/" + id);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to get specified device. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the device details for devices.
+        /// </summary>
+        /// <param name="devices">The devices as an ArrayOfValues.</param>
+        /// <returns>A List of Decice objects.</returns>
+        /// <exception cref="System.ApplicationException">Unable to get the list of devices details.  + ex.Message</exception>
+        public ResponseMessage<IList<Device>> GetDeviceDetailsForDevices(ArrayOfValues devices)
+        {
+            try
+            {
+                var resp = Post<ResponseMessage<IList<Device>>>("Deal/List", devices);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to get the list of devices details. " + ex.Message);
+            }
         }
     }
 }

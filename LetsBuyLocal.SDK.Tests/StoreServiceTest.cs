@@ -11,8 +11,9 @@ namespace LetsBuyLocal.SDK.Tests
         public void CreateStoreTest()
         {
             //Create a new store for this test
-            var resp = TestingHelper.CreateTestStore();
-            Assert.IsNotNull(resp.Object);
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "green", "gold");
+            Assert.IsNotNull(store);
         }
 
         [TestMethod]
@@ -21,7 +22,8 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
-            var store = TestingHelper.CreateTestStore().Object;
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "green", "gold");
 
             var resp = svc.GetStoreById(store.Id);
             Assert.IsNotNull(resp.Object);
@@ -33,7 +35,8 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
-            var store = TestingHelper.CreateTestStore().Object;
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "green", "gold");
 
             var resp = svc.GetStoreApiKey(store.Id);
             Assert.IsNotNull(resp);
@@ -45,7 +48,8 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
-            var store = TestingHelper.CreateTestStore().Object;
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "blue", "gold");
             TestingHelper.UpdateStore(store);
 
             var resp = svc.UpdateStore(store.Id, store);
@@ -58,7 +62,8 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test and do standard updates
-            var store = TestingHelper.CreateTestStore().Object;
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, "purple", "gold");
             store = TestingHelper.UpdateStore(store);
             store = svc.UpdateStore(store.Id, store).Object;
 
@@ -66,6 +71,7 @@ namespace LetsBuyLocal.SDK.Tests
             var geoPoint = TestingHelper.GetGeoPoint();
 
             var resp = svc.UpdateStoreLocation(store.Id, geoPoint);
+            Assert.IsNotNull(resp.Object);
         }
 
     }

@@ -5,6 +5,9 @@ using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
 {
+    /// <summary>
+    /// Handles CRUD operations for Alerts.
+    /// </summary>
     public class AlertService : BaseService
     {
         /// <summary>
@@ -12,14 +15,14 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="alert">An alert object</param>
         /// <returns>A ResponseMessage object of type Alert</returns>
-        public ResponseMessage<User> CreateAlert(Alert alert)
+        public ResponseMessage<Alert> CreateAlert(Alert alert)
         {
             try
             {
-                var resp = Post<ResponseMessage<User>>("Alert", alert);
+                var resp = Post<ResponseMessage<Alert>>("Alert", alert);
                 return resp;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new ApplicationException("Unable to create the alert." + ex.Message);
             }
@@ -30,7 +33,7 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="alertId">The alert identifier string</param>
         /// <returns>A ResponseMessage of type Alert</returns>
-        public ResponseMessage<Alert> GetAlert(string alertId)
+        public ResponseMessage<Alert> GetAlertById(string alertId)
         {
             try
             {
@@ -68,7 +71,7 @@ namespace LetsBuyLocal.SDK.Services
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unable to get a list of alerts for this store of the specified type." + ex.Message);
+                throw new ApplicationException("Unable to get a list of the specified type of alerts for this store." + ex.Message);
             }
         }
 
@@ -97,6 +100,26 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
-        //Todo: POST /v1/Alert/DeleteUserAlert/{id}/{userId}
+        /// <summary>
+        /// Deletes the user alert.
+        /// </summary>
+        /// <param name="alertId">The alert identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>true, if successful; else, false</returns>
+        public ResponseMessage<bool> DeleteUserAlert(string alertId, string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Alert");
+            sb.Append("/");
+            sb.Append("DeleteUserAlert");
+            sb.Append("/");
+            sb.Append(alertId);
+            sb.Append("/");
+            sb.Append(userId);
+            string path = sb.ToString();
+
+            var resp = Post<ResponseMessage<bool>>(path);
+            return resp;
+        }
     }
 }

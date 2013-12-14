@@ -4,6 +4,9 @@ using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
 {
+    /// <summary>
+    /// Handles CRUD operations for training videos.
+    /// </summary>
     public class TrainingService : BaseService
     {
         /// <summary>

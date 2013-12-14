@@ -60,6 +60,7 @@
     <Compile Include="AuthenticationTest.cs" />
     <Compile Include="AlertServiceTest.cs" />
     <Compile Include="DeviceServiceTest.cs" />
+    <Compile Include="ConfigurationServiceTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

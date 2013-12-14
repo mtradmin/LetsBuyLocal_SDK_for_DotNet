@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
 {
     /// <summary>
-    /// Handles CRUD operations for User model through Base Service
+    /// Handles CRUD operations for users.
     /// </summary>
     public class UserService : BaseService
     {
@@ -140,6 +141,43 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
+        /// Updates the list of stores that the user is following.
+        /// </summary>
+        /// <param name="userId">The user identifier string.</param>
+        /// <param name="stores">The stores ArrayofValues.</param>
+        /// <returns>
+        /// A  ResponseMethod containing an IList of Store object.
+        /// </returns>
+        /// <exception cref="System.ApplicationException">Unable to create list of stores that user is following.  + ex.Message</exception>
+        /// <remarks>
+        /// The underlying API is a full update.  So you have to send the full list of stores every time.
+        /// If you want to remove a store, then you just don’t send the id to the api.
+        /// If you want to add a new one, you send the current list along with the new id.
+        /// If you want to remove all of them, you send an empty list.
+        /// </remarks>
+        public ResponseMessage<IList<Store>> CreateListOfStoresUserFollowing(string userId, ArrayOfValues stores)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("User");
+                sb.Append("/");
+                sb.Append("Stores");
+                sb.Append("/");
+                sb.Append(userId);
+                var path = sb.ToString();
+
+                var resp = Post<ResponseMessage<IList<Store>>>(path, stores);
+                return resp;
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to create list of stores that user is following. " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Assigns the device to user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -148,25 +186,25 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to assign this device to this user. + ex.Message</exception>
         public ResponseMessage<bool> AssignDeviceToUser(string userId, string deviceId)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("User");
-                sb.Append("/");
-                sb.Append("Device");
-                sb.Append("/");
-                sb.Append(userId);
-                sb.Append("/");
-                sb.Append(deviceId);
-                string path = sb.ToString();
+                try
+                {
+                    var sb = new StringBuilder();
+                    sb.Append("User");
+                    sb.Append("/");
+                    sb.Append("Device");
+                    sb.Append("/");
+                    sb.Append(userId);
+                    sb.Append("/");
+                    sb.Append(deviceId);
+                    string path = sb.ToString();
 
-                var resp = Post<ResponseMessage<bool>>(path);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to assign this device to this user." + ex.Message);
-            }
+                    var resp = Post<ResponseMessage<bool>>(path);
+                    return resp;
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException("Unable to assign specified device to user. " + ex.Message);
+                }
         }
 
 

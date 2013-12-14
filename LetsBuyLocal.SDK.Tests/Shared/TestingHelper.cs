@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
-using LetsBuyLocal.SDK.Shared;
 
 namespace LetsBuyLocal.SDK.Tests.Shared
 {
@@ -12,6 +12,120 @@ namespace LetsBuyLocal.SDK.Tests.Shared
     /// </summary>
     public static class TestingHelper
     {
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="svc">The UserService</param>
+        /// <returns>A new User object from the service's response</returns>
+        public static User NewUser(UserService svc)
+        {
+            var user = CreateNewTestUserInMemory();
+            var testUser = svc.CreateUser(user).Object;
+            return testUser;
+        }
+
+        /// <summary>
+        /// Creates the test store.
+        /// </summary>
+        /// <param name="category">The store category.</param>
+        /// <param name="primaryColor">Primary color.</param>
+        /// <param name="secondaryColor">Secondary color.</param>
+        /// <returns>A  Store.</returns>
+        public static Store NewStore(string category, string primaryColor, string secondaryColor)
+        {
+            var svc = new StoreService();
+
+            var store = new Store
+            {
+                Website = "http://www." + GetRandomString(10) + ".com",       //Required
+                Name = GetRandomString(30),                                                 //Required
+                Phone = GetRandomPhoneNumber(10),                                               //Required, length = 10
+                Description = GetRandomString(50),
+                Category = category,                                                         //See: Configuration
+                AddressLine1 = GetRandomString(30),                                         //Required
+                AddressLine2 = GetRandomString(5),
+                City = GetRandomString(15),                                                 //Required
+                State = "WI",                                                               //Required, See: Configuration
+                Zip = GetRandomNumeric(5),                                                  //Required
+                Country = "USA",                                                            //See: Configuration
+                TimeZone = TimeZoneInfo.Local.ToString(),                                         //Required, See: Configuration
+
+                //public string SundayOpenTime { get; set; }
+                //public string SundayCloseTime { get; set; }
+                //public string MondayOpenTime { get; set; }
+                //public string MondayCloseTime { get; set; }
+                //public string TuesdayOpenTime { get; set; }
+                //public string TuesdayCloseTime { get; set; }
+                //public string WednesdayOpenTime { get; set; }
+                //public string WednesdayCloseTime { get; set; }
+                //public string ThursdayOpenTime { get; set; }
+                //public string ThursdayCloseTime { get; set; }
+                //public string FridayOpenTime { get; set; }
+                //public string FridayCloseTime { get; set; }
+                //public string SaturdayOpenTime { get; set; }
+                //public string SaturdayCloseTime { get; set; }
+                //public string PayPalEmail { get; set; }
+                //public decimal Latitude { get; set; }
+                //public decimal Longitude { get; set; }
+                //public string ReceiptId { get; set; }
+                //public string RewardProgramType { get; set; } //null (no Rewards Program), ELECTRONIC, PHYSICAL
+                //public bool Published { get; set; } //Soft delete flag
+                //public bool Offline { get; set; } //Visibility flag
+                //public DateTime? LastDealExpirationDate { get; set; }
+                //public bool PublishAlertsToFb { get; set; }
+                //public bool PublishDealsToFb{ get; set; }
+                //public string FbAccount { get; set; }
+                //public string FbPage { get; set; }
+                //public string FbPageAccessToken { get; set; }
+                //public bool HasStoreRegisteredForRewards { get; set; }
+                //public string CustomUrl { get; set; }
+                PrimaryColor = primaryColor,
+                SecondaryColor = secondaryColor
+                //public string TermsAndConditions { get; set; }
+                //public bool? DealsEnabled =
+                //public bool? CheckInsEnabled =
+
+                //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
+
+                //public bool WizardStep1Complete =
+                //public bool WizardStep2Complete =
+                //public bool WizardStep3Complete =
+
+                //public int UserRating =
+
+                //public string MoreThanRewardsUserId { get; set; }
+
+                //public double Distance { get; set; }
+
+                //public int Followers { get; set; }
+
+                //public string PhoneString { get; set; }
+
+                //public IDictionary<string, string> HoursOfOperation { get; set; }
+            };
+
+
+            var resp = svc.CreateStore(store);
+            return resp.Object;
+        }
+
+        /// <summary>
+        /// Creates a new alert.
+        /// </summary>
+        /// <param name="svc">The AlertService.</param>
+        /// <param name="type">The alert type.</param>
+        /// <param name="storeId">The store identifier.</param>
+        /// <returns>
+        /// A new Alert object from the service's response
+        /// </returns>
+        public static Alert NewAlert(AlertService svc, string type, string storeId)
+        {
+            var alert = CreateNewTestAlertInMemory(type, storeId);
+            var createResp = svc.CreateAlert(alert);
+            var newAlert = createResp.Object;
+            return newAlert;
+        }
+
         /// <summary>
         /// Creates a test user object.
         /// </summary>
@@ -31,9 +145,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.Sex = GetSex();
             user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Koala.jpg";
             user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
-            user.HomePhoneNumber = string.Empty;
-            user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
-            user.AddressLine2 = string.Empty;
+            user.HomePhoneNumber = String.Empty;
+            user.AddressLine1 = GetRandomNumeric(3) + GetRandomString(25);
+            user.AddressLine2 = String.Empty;
             user.City = GetRandomString(12);
             user.State = "WI";
             user.Zip = GetRandomNumeric(5);
@@ -88,9 +202,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.Sex = GetSex();
             user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Koala.jpg";
             user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
-            user.HomePhoneNumber = string.Empty;
-            user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
-            user.AddressLine2 = string.Empty;
+            user.HomePhoneNumber = String.Empty;
+            user.AddressLine1 = GetRandomNumeric(3) + GetRandomString(25);
+            user.AddressLine2 = String.Empty;
             user.City = GetRandomString(12);
             user.State = "WI";
             user.Zip = GetRandomNumeric(5);
@@ -135,14 +249,15 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         public static Deal CreateTestDealInMemory()
         {
             //Create a store that will run this deal.
-            var store = TestingHelper.CreateTestStore().Object;
+            string category = GetRandomStoreCategory();
+            var store = NewStore(category, "green", "gold");
 
             var deal = new Deal
             {
                 StoreId = store.Id,                                                     //Required
-                Title = "This deal is " + TestingHelper.GetRandomString(25),            //Required
-                Description = TestingHelper.GetRandomString(50),
-                TotalAvailable = Convert.ToInt32(TestingHelper.GetRandomNumeric(2)),    //Required
+                Title = "This deal is " + GetRandomString(25),            //Required
+                Description = GetRandomString(50),
+                TotalAvailable = Convert.ToInt32(GetRandomNumeric(2)),    //Required
                 //Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
                 //public int ExtensionDays { get; set; }
                 //OnCompleteAction = "RunAgain",                              //(RunAgain/SaveForLater/Delete)
@@ -172,106 +287,36 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
         /// <summary>
+        /// Creates the device in memory.
+        /// </summary>
+        /// <returns>A new Device object.</returns>
+        public static Device CreateDeviceInMemory()
+        {
+            var device = new Device
+            {
+                Id = Guid.NewGuid().ToString(),
+                Platform = GetPlatform()
+            };
+            device.DeviceToken = GetDeviceToken(device.Platform);
+            return device;
+        }
+
+        /// <summary>
         /// Creates the test alert object.
         /// </summary>
         /// <returns></returns>
-        public static Alert CreateNewTestAlertInMemory()
+        public static Alert CreateNewTestAlertInMemory(string type, string storeId)
         {
-            //Create a test store for this method.
-            var store = CreateTestStore().Object;
-
-            var alert = new Alert();
-            alert.StoreId = store.Id;
-            alert.Description = TestingHelper.GetRandomString(30);
-            alert.Type = AlertTypes.StoreAlert;
+            var alert = new Alert
+            {
+                StoreId = storeId,
+                Description = GetRandomString(30), 
+                Type = type
+            };
 
             return alert;
         }
-
         
-        /// <summary>
-        /// Creates the test store.
-        /// </summary>
-        /// <returns>A ResponseMessage containing an object of type Store.</returns>
-        public static ResponseMessage<Store> CreateTestStore()
-        {
-            var svc = new StoreService();
-
-            var store = new Store
-            {
-                Website = "http://www." + TestingHelper.GetRandomString(10) + ".com",       //Required
-                Name = GetRandomString(30),                                                 //Required
-                Phone = GetRandomPhoneNumber(10),                                               //Required, length = 10
-                Description = GetRandomString(50),
-                Category = "Retailer - Boutique/Clothing/Accessories",                      //See: Configuration
-                AddressLine1 = GetRandomString(30),                                         //Required
-                AddressLine2 = GetRandomString(5),
-                City = GetRandomString(15),                                                 //Required
-                State = "WI",                                                               //Required, See: Configuration
-                Zip = GetRandomNumeric(5),                                                  //Required
-                Country = "USA",                                                            //See: Configuration
-                TimeZone = "Central Standard Time",                                         //Required, See: Configuration
-
-                //public string SundayOpenTime { get; set; }
-                //public string SundayCloseTime { get; set; }
-                //public string MondayOpenTime { get; set; }
-                //public string MondayCloseTime { get; set; }
-                //public string TuesdayOpenTime { get; set; }
-                //public string TuesdayCloseTime { get; set; }
-                //public string WednesdayOpenTime { get; set; }
-                //public string WednesdayCloseTime { get; set; }
-                //public string ThursdayOpenTime { get; set; }
-                //public string ThursdayCloseTime { get; set; }
-                //public string FridayOpenTime { get; set; }
-                //public string FridayCloseTime { get; set; }
-                //public string SaturdayOpenTime { get; set; }
-                //public string SaturdayCloseTime { get; set; }
-                //public string PayPalEmail { get; set; }
-                //public decimal Latitude { get; set; }
-                //public decimal Longitude { get; set; }
-                //public string ReceiptId { get; set; }
-                //public string RewardProgramType { get; set; } //null (no Rewards Program), ELECTRONIC, PHYSICAL
-                //public bool Published { get; set; } //Soft delete flag
-                //public bool Offline { get; set; } //Visibility flag
-                //public DateTime? LastDealExpirationDate { get; set; }
-                //public bool PublishAlertsToFb { get; set; }
-                //public bool PublishDealsToFb{ get; set; }
-                //public string FbAccount { get; set; }
-                //public string FbPage { get; set; }
-                //public string FbPageAccessToken { get; set; }
-                //public bool HasStoreRegisteredForRewards { get; set; }
-                //public string CustomUrl { get; set; }
-                PrimaryColor = "Green",
-                SecondaryColor = "Gold"
-                //public string TermsAndConditions { get; set; }
-                //public bool? DealsEnabled =
-                //public bool? CheckInsEnabled =
-
-                //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
-
-                //public bool WizardStep1Complete =
-                //public bool WizardStep2Complete =
-                //public bool WizardStep3Complete =
-
-                //public int UserRating =
-
-                //public string MoreThanRewardsUserId { get; set; }
-
-                //public double Distance { get; set; }
-
-                //public int Followers { get; set; }
-
-                //public string PhoneString { get; set; }
-
-                //public IDictionary<string, string> HoursOfOperation { get; set; }
-            };
-
-
-            var resp = svc.CreateStore(store);
-            return resp;
-        }
-
-
         /// <summary>
         /// Updates user.
         /// </summary>
@@ -294,7 +339,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             //Phone number & address info can be updated regardless of whether using Facebook account
             user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
             user.HomePhoneNumber = GetRandomPhoneNumber(10);
-            user.AddressLine1 = GetRandomNumeric(3) + TestingHelper.GetRandomString(25);
+            user.AddressLine1 = GetRandomNumeric(3) + GetRandomString(25);
             user.AddressLine2 = GetRandomString(5);
             user.City = GetRandomString(12);
             user.State = "WI";
@@ -340,7 +385,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <returns>A store object.</returns>
         public static Store UpdateStore(Store store)
         {
-            store.Website = "http://www." + TestingHelper.GetRandomString(10) + ".com";       //Required
+            store.Website = "http://www." + GetRandomString(10) + ".com";       //Required
             //store.Name = GetRandomString(30);                                                //Required
             store.Phone = GetRandomPhoneNumber(10);                                               //Required, length = 10
             store.Description = GetRandomString(50);
@@ -385,7 +430,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             store.CustomUrl = null;
             store.PrimaryColor = "Blue";
             store.SecondaryColor = "Gold";
-            store.TermsAndConditions = TestingHelper.GetRandomString(100);
+            store.TermsAndConditions = GetRandomString(100);
             store.DealsEnabled = true;
             store.CheckInsEnabled = true;
 
@@ -417,13 +462,15 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <returns>The updated deal object.</returns>
         public static Deal UpdateDeal(Deal deal)
         {
+            //******************************************************************************************************************
             //Regarding datetime values:
             // "ExceptionMessage": 
             //"The conversion could not be completed because the supplied DateTime did not have the Kind property set correctly. 
             //For example, when the Kind property is DateTimeKind.Local, 
             //the source time zone must be TimeZoneInfo.Local.\r\nParameter name: sourceTimeZone",
+            //******************************************************************************************************************
 
-            deal.TotalAvailable = Convert.ToInt32(TestingHelper.GetRandomNumeric(2));        //Required
+            deal.TotalAvailable = Convert.ToInt32(GetRandomNumeric(2));        //Required
             deal.Hint = deal.Hint + " updated";
                 //public int ExtensionDays { get; set; }
             deal.OnCompleteAction = "RunAgain";                              //(RunAgain/SaveForLater/Delete)
@@ -452,6 +499,32 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             return deal;
         }
 
+        /// <summary>
+        /// Gets the random store category.
+        /// </summary>
+        /// <returns>A category string.</returns>
+        public static string GetRandomStoreCategory()
+        {
+            var random = new Random();
+
+            var categories = GetStoreCategories();
+            int r = random.Next(0, categories.Count - 1);
+            var category = categories[r];
+
+            return category;
+        }
+
+        /// <summary>
+        /// Gets the store categories.
+        /// </summary>
+        /// <returns>A List of StoreCategories strings.</returns>
+        public static IList<string> GetStoreCategories()
+        {
+            var svc = new ConfigurationService();
+            var resp = svc.GetListOfStandardOptions();
+            var categories = resp.Object.StoreCategories;
+            return categories;
+        }
 
         /// <summary>
         /// Gets the randomly generated geo point.
@@ -486,8 +559,36 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             return finalString;
         }
 
+        /// <summary>
+        /// Gets a random device token for the specified type of device
+        /// </summary>
+        /// <param name="platform">A string specifying the type of device (ios or android)</param>
+        /// <returns>A device token string for the specified platform</returns>
+        public static string GetDeviceToken(string platform)
+        {
+            if (platform.ToLower() == "ios")
+                return GetRandomString(32);
+            if (platform.ToLower() == "android")
+                return GetRandomString(16);
+            return String.Empty;
+        }
+
+        /// <summary>
+        /// Gets a randomly generated device type (ios or android platform) 
+        /// </summary>
+        /// <returns>The platform (device type) string: ios or android</returns>
+        public static string GetPlatform()
+        {
+            var rand = new Random();
+            var value = rand.NextDouble();
+            if (value > 0.5)
+                return "ios";
+            return "android";
+        }
+
 
         #region Helper Methods
+
         /// <summary>
         /// Gets a random phone number with the specified number of digits
         /// </summary>
@@ -563,35 +664,6 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
         /// <summary>
-        /// Gets a random device token for the specified type of device
-        /// </summary>
-        /// <param name="platform">A string specifying the type of device (ios or android)</param>
-        /// <returns>A device token string for the specified platform</returns>
-        private static string GetDeviceToken(string platform)
-        {
-            if (platform.ToLower() == "ios")
-                return TestingHelper.GetRandomString(32);
-            else if (platform.ToLower() == "android")
-                return TestingHelper.GetRandomString(16);
-            else
-                return string.Empty;
-        }
-
-        /// <summary>
-        /// Gets a randomly generated device type (ios or android platform) 
-        /// </summary>
-        /// <returns>The platform (device type) string: ios or android</returns>
-        private static string GetPlatform()
-        {
-            var rand = new Random();
-            var value = rand.NextDouble();
-            if (value > 0.5)
-                return "ios";
-            else
-                return "android";
-        }
-
-        /// <summary>
         /// Gets a randomly generated sex (Female/Male).
         /// </summary>
         /// <returns>Either F or M as a string</returns>
@@ -601,8 +673,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             var value = rand.NextDouble();
             if (value > 0.5)
                 return "Female";
-            else
-                return "Male";
+            return "Male";
         }
 
         /// <summary>
@@ -623,7 +694,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <returns>A decimal representing latitude</returns>
         private static decimal GetRandomLatitudeApproxWi()
         {
-            var dbl = new Random();;
+            var dbl = new Random();
             const double min = 42.5;
             const double max = 47.05;
 
@@ -641,8 +712,8 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         private static decimal GetRandomLongitudeApproxWi()
         {
             var dbl = new Random();
-            var min = 86.81666667;
-            var max = 92.9;
+            const double min = 86.81666667;
+            const double max = 92.9;
 
             //Get a random decimal between 86° 49'W to 92° 54'W
             var raw = dbl.NextDouble()*(max - min) + min;
@@ -652,6 +723,5 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
         #endregion
-
     }
 }

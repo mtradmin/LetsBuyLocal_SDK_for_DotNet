@@ -1,9 +1,11 @@
 ﻿using System;
-using LetsBuyLocal.SDK.Shared;
 using LetsBuyLocal.SDK.Models;
 
 namespace LetsBuyLocal.SDK.Services
 {
+    /// <summary>
+    /// Handles CRUD operations for Deals.
+    /// </summary>
     public class DealService : BaseService
     {
         /// <summary>
