@@ -52,6 +52,46 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
+        /// Updates the store.
+        /// </summary>
+        /// <param name="id">The store identifier string.</param>
+        /// <param name="store">The store.</param>
+        /// <returns>The store</returns>
+        /// <exception cref="System.ApplicationException">Unable to update specified store.  + ex.Message</exception>
+        public ResponseMessage<Store> UpdateStore(string id, Store store)
+        {
+            try
+            {
+                var resp = Put<ResponseMessage<Store>>("Store" + "/" + store.Id, store);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to update specified store. " + ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Deletes the store.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>True, if successful; else, false.</returns>eturns>
+        /// <exception cref="System.ApplicationException">Unable to delete specified store.  + ex.Message</exception>
+        public ResponseMessage<bool> DeleteStore(string id)
+        {
+            try
+            {
+                var resp = Post<ResponseMessage<bool>>("Store/" + id);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to delete specified store. " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Gets the store's API key.
         /// </summary>
         /// <param name="id">The store's identifier string.</param>
@@ -78,24 +118,33 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
-        /// Updates the store.
+        /// Loads the store details by user.
         /// </summary>
-        /// <param name="id">The store identifier string.</param>
-        /// <param name="store">The store.</param>
-        /// <returns>The store</returns>
-        /// <exception cref="System.ApplicationException">Unable to update specified store.  + ex.Message</exception>
-        public ResponseMessage<Store> UpdateStore(string id, Store store)
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type Store</returns>
+        /// <exception cref="System.ApplicationException">Unable to load the specified store's details for the specified user.  + ex.Message</exception>
+        public ResponseMessage<Store> LoadStoreDetailsByUser(string storeId, string userId)
         {
-            try
-            {
-                var resp = Put<ResponseMessage<Store>>("Store" + "/" + store.Id, store);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update specified store. " + ex.Message);
-            }
+            try 
+	        {	        
+		        var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("LoadDetails");
+                sb.Append("/");
+                sb.Append(storeId);
+                sb.Append("/");
+                sb.Append(userId);
+	            var path = sb.ToString();
 
+                var resp = Get<ResponseMessage<Store>>(path);
+                return resp;
+	        }
+	        catch (Exception ex)
+	        {
+		        throw new ApplicationException("Unable to load the specified store's details for the specified user. " + ex.Message);
+	        }
         }
 
         /// <summary>
@@ -106,17 +155,152 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>a ResponseMessage containing an object of type Store.</returns>
         public ResponseMessage<Store> UpdateStoreLocation(string id, GeoPoint geoPoint)
         {
-            var sb = new StringBuilder();
-            sb.Append("Store");
-            sb.Append("/");
-            sb.Append("Location");
-            sb.Append("/");
-            var s = sb.ToString();
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("Location");
+                sb.Append("/");
+                var s = sb.ToString();
 
-            var resp = Post<ResponseMessage<Store>>(s + id, geoPoint);
-            return resp;
+                var resp = Post<ResponseMessage<Store>>(s + id, geoPoint);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to update specified store's location. " + ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Links the store to facebook account.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="settings">The FBSettings object.</param>
+        /// <returns>A ResponseMessage containing an object of type Store.</returns>
+        /// <exception cref="System.ApplicationException">Unable to link specified store to a Facebook account.  + ex.Message</exception>
+        public ResponseMessage<Store> LinkStoreToFacebookAccount(string storeId, FBSettings settings)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("Facebook");
+                sb.Append("/");
+                var s = sb.ToString();
 
+                var resp = Post<ResponseMessage<Store>>(s + storeId, settings);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to link specified store to a Facebook account. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Removes the facebook account from the store.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type Store.</returns>
+        /// <exception cref="System.ApplicationException">Unable to remove Facebook account from specified store.  + ex.Message</exception>
+        public ResponseMessage<Store> RemoveFacebookAccountFromStore(string storeId)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("Facebook");
+                sb.Append("/");
+                var s = sb.ToString();
+
+                var resp = Delete<ResponseMessage<Store>>(s + storeId);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to remove Facebook account from specified store. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Orders a Media Kit for user.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="user">The user.</param>
+        /// <returns>A ResponseMessage containing an object of type Store.</returns>
+        public ResponseMessage<Store> OrderMediaKit(string storeId, User user)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("OrderMediaKit");
+                sb.Append("/");
+                var s = sb.ToString();
+
+                var resp = Post<ResponseMessage<Store>>(s + storeId, user);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to order media kit for the specified store and user. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Submits an email for a Media Kit for a user.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="user">The user.</param>
+        /// <returns>A ResponseMessage containing an object of type Store.</returns>
+        public ResponseMessage<Store> EmailMediaKit(string storeId, User user)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("EmailMediaKit");
+                sb.Append("/");
+                var s = sb.ToString();
+
+                var resp = Post<ResponseMessage<Store>>(s + storeId, user);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to submit an email for a media kit for the specified store and user. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Checks if a store already exists for the given Url.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>A ResponseMessage containing an object of type Store.</returns>
+        public ResponseMessage<Store> StoreExistsForUrl(string url)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("Exists");
+                sb.Append("/");
+                var s = sb.ToString();
+
+                var resp = Get<ResponseMessage<Store>>(s + url);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to determine if a store already exists for the specified Url. " + ex.Message);
+            }
+        }
     }
 }

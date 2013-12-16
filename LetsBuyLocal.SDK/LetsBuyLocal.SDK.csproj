@@ -83,11 +83,11 @@
     <Compile Include="Services\DealService.cs" />
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\ErrorService.cs" />
+    <Compile Include="Services\QrCodeService.cs" />
     <Compile Include="Services\StoreService.cs" />
     <Compile Include="Services\TrainingService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Shared\AlertTypes.cs" />
-    <Compile Include="Shared\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

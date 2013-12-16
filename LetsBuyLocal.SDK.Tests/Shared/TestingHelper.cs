@@ -37,7 +37,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
             var store = new Store
             {
-                Website = "http://www." + GetRandomString(10) + ".com",       //Required
+                Website = @"http://www." + GetRandomString(30) + ".com",       //Required
                 Name = GetRandomString(30),                                                 //Required
                 Phone = GetRandomPhoneNumber(10),                                               //Required, length = 10
                 Description = GetRandomString(50),
@@ -250,7 +250,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         {
             //Create a store that will run this deal.
             string category = GetRandomStoreCategory();
-            var store = NewStore(category, "green", "gold");
+            var store = NewStore(category, Colors.Green, Colors.DarkOrange);
 
             var deal = new Deal
             {
@@ -560,6 +560,27 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
         /// <summary>
+        /// Gets a random phone number with the specified number of digits
+        /// </summary>
+        /// <param name="len">Number of digits desired in number as an integer</param>
+        /// <returns>A number of the specified length as a string</returns>
+        public static string GetRandomNumeric(int len)
+        {
+            const string chars = "1234567890";
+            var stringChars = new char[len];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new string(stringChars);
+            return finalString;
+        }
+
+
+        /// <summary>
         /// Gets a random device token for the specified type of device
         /// </summary>
         /// <param name="platform">A string specifying the type of device (ios or android)</param>
@@ -587,27 +608,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
 
-        #region Helper Methods
-
-        /// <summary>
-        /// Gets a random phone number with the specified number of digits
-        /// </summary>
-        /// <param name="len">Number of digits desired in number as an integer</param>
-        /// <returns>A number of the specified length as a string</returns>
-        private static string GetRandomNumeric(int len)
-        {
-            const string chars = "1234567890";
-            var stringChars = new char[len];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            var finalString = new string(stringChars);
-            return finalString;
-        }
+        #region Private Helper Methods
 
         /// <summary>
         /// Gets a random phone number string that does not use the digits 0 or 1.

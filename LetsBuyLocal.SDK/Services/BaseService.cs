@@ -92,6 +92,27 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
+        /// Handles deleting the specified object.
+        /// </summary>
+        /// <typeparam name="T">Type of object.</typeparam>
+        /// <param name="path">Object path.</param>
+        /// <returns>A response object.</returns>
+        protected T Delete<T>(string path)
+        {
+            try
+            {
+                var serializer = new JavaScriptSerializer();
+                string response = GetClient().UploadString(BuildPath(path), "Delete");
+                return serializer.Deserialize<T>(response);
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to Delete object of specified type. " + ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Handles updating the specified object
         /// </summary>
         /// <typeparam name="T">Type of object</typeparam>

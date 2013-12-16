@@ -15,7 +15,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a new store for this test.
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "green", "gold");
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
 
             //Create 3 different types of alerts for this test.
             var alertS = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);
@@ -34,7 +34,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create new store for this test.
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "green", "gold");
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
 
             //Create 3 different types of alerts for this test.
             var alertS = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);
@@ -58,7 +58,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a new store & alert for this test.
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "green", "blue");
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.Blue);
             var alertA = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);
 
             var resp = svc.GetAlertListForStoreByType(store.Id, alertA.Type);
@@ -76,7 +76,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a new store
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "green", "gold");
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
 
             //Create 2 types of alerts for the store
             //Should get
@@ -102,7 +102,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a new store
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "green", "gold");
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
 
             //Create an alert for the store
             var alert = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);

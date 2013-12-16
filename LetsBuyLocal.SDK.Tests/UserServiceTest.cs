@@ -72,7 +72,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a store for this test.
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "green", "brown");
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.Brown);
 
             var resp = svc.UserReadStoreAlert(user.Id, store.Id, dateParam);
             Assert.IsNotNull(resp.Object);
@@ -91,7 +91,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a store for this test.
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, "red", "grey");
+            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray);
 
             var resp = svc.UserViewedDeal(user.Id, store.Id, dateParam);
             Assert.IsNotNull(resp.Object);
@@ -107,10 +107,10 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create two new stores to be added to an ArrayOfValues
             string categoryA = TestingHelper.GetRandomStoreCategory();
-            var storeA = TestingHelper.NewStore(categoryA, "green", "lightgreen");
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Green, Colors.CornflowerBlue);
 
             string categoryB = TestingHelper.GetRandomStoreCategory();
-            var storeB = TestingHelper.NewStore(categoryB, "blue", "lightblue");
+            var storeB = TestingHelper.NewStore(categoryB, Colors.Blue, Colors.CornflowerBlue);
 
             //Add the two stores' Ids to an ArrayOfValues object
             var storesInit = new[] {storeA.Id, storeB.Id};
@@ -123,7 +123,7 @@ namespace LetsBuyLocal.SDK.Tests
             //Test modification of list
             //Add
             string category = TestingHelper.GetRandomStoreCategory();
-            var storeC = TestingHelper.NewStore(category, "green", "gold");
+            var storeC = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
 
             var storesAdd = new[] { storeA.Id, storeB.Id, storeC.Id };
             var valuesAdd = new ArrayOfValues { Values = storesAdd };
