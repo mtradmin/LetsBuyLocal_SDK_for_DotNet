@@ -7,11 +7,13 @@ namespace LetsBuyLocal.SDK.Models
 {
 
     /// <summary>
-    /// Represents a store entity
+    /// Represents a Store entity
     /// </summary>
     /// <remarks>
-    /// A store will not be visible unless it has at least one active deal 
-    /// or the last active detail expired within the last 15 days
+    /// 1. A Store will not be visible unless it has at least one active Deal 
+    ///    or the last active Deal expired within the last 15 days.
+    /// 2. A User who is an owner of a Store is identified based on the User that creates the store.
+    /// 3. Owners cannot be added to an existing store.
     /// </remarks>
     public class Store : BaseEntity
     {

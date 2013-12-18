@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Security.Permissions;
 using System.Web.Script.Serialization;
 
 namespace LetsBuyLocal.SDK.Services
@@ -46,6 +49,19 @@ namespace LetsBuyLocal.SDK.Services
             catch (Exception ex)
             {
                throw new ApplicationException("Unable to Get object of specified type. " + ex.Message);
+            }
+        }
+
+        protected Byte[] GetImageBytes(string url)
+        {
+            try
+            {
+                byte [] fileBytes = GetClient().DownloadData(BuildPath(url));
+                return fileBytes;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to get QRCode image. " + ex.Message);
             }
         }
 
@@ -102,7 +118,7 @@ namespace LetsBuyLocal.SDK.Services
             try
             {
                 var serializer = new JavaScriptSerializer();
-                string response = GetClient().UploadString(BuildPath(path), "Delete");
+                string response = GetClient().UploadString(BuildPath(path), "DELETE", string.Empty);
                 return serializer.Deserialize<T>(response);
 
             }

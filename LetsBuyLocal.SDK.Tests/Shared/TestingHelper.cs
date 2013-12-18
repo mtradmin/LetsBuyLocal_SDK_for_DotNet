@@ -37,7 +37,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
             var store = new Store
             {
-                Website = @"http://www." + GetRandomString(30) + ".com",       //Required
+                Website = "http://www." + GetRandomString(30) + ".com",       //Required
                 Name = GetRandomString(30),                                                 //Required
                 Phone = GetRandomPhoneNumber(10),                                               //Required, length = 10
                 Description = GetRandomString(50),
@@ -124,6 +124,19 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             var createResp = svc.CreateAlert(alert);
             var newAlert = createResp.Object;
             return newAlert;
+        }
+
+        /// <summary>
+        /// Creates a new reward.
+        /// </summary>
+        /// <param name="svc">The RewardService.</param>
+        /// <param name="storeId">The store identifier.</param>
+        /// <returns>A new Reward object from the service's response.</returns>
+        public static Reward NewReward(RewardService svc, string storeId)
+        {
+            var reward = CreateNewRewardInMemory(storeId);
+            var testReward = svc.CreateReward(reward);
+            return testReward.Object;
         }
 
         /// <summary>
@@ -315,6 +328,26 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             };
 
             return alert;
+        }
+
+        /// <summary>
+        /// Creates the new reward in memory.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <returns>A new Reward object.</returns>
+        public static Reward CreateNewRewardInMemory(string storeId)
+        {
+            var reward = new Reward
+            {
+                Title = GetRandomString(25),
+                Description = GetRandomString(50),
+                Hint = "Hint Hint: " + GetRandomString(10),
+                //SortOrder                
+                StoreId = storeId,
+                ExpireDate = DateTime.Now.AddDays(10.0)
+            };
+
+            return reward;
         }
         
         /// <summary>

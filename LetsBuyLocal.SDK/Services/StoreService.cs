@@ -76,18 +76,43 @@ namespace LetsBuyLocal.SDK.Services
         /// Deletes the store.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>True, if successful; else, false.</returns>eturns>
+        /// <returns>True, if successful; else, false.</returns>
         /// <exception cref="System.ApplicationException">Unable to delete specified store.  + ex.Message</exception>
         public ResponseMessage<bool> DeleteStore(string id)
         {
             try
             {
-                var resp = Post<ResponseMessage<bool>>("Store/" + id);
+                var resp = Delete<ResponseMessage<bool>>("Store/" + id);
                 return resp;
             }
             catch (Exception ex)
             {
                 throw new ApplicationException("Unable to delete specified store. " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the store by its URL.
+        /// </summary>
+        /// <param name="store">The store.</param>
+        /// <returns> A ResponsMessage containing an object of type Store.</returns>
+        /// <exception cref="System.ApplicationException">Unable to get specified store by its Url.  + ex.Message</exception>
+        public ResponseMessage<Store> GetStoreByUrl(Store store)
+        {
+            try
+            {
+                var sb = new StringBuilder();
+                sb.Append("Store");
+                sb.Append("/");
+                sb.Append("Url");
+                var path = sb.ToString();
+
+                var resp = Post<ResponseMessage<Store>>(path, store.Website);
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Unable to get specified store by its Url. " + ex.Message);
             }
         }
 
@@ -281,7 +306,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <summary>
         /// Checks if a store already exists for the given Url.
         /// </summary>
-        /// <param name="url">The URL.</param>
+        /// <param name="url">The URL that would match the Website of the store being sought.</param>
         /// <returns>A ResponseMessage containing an object of type Store.</returns>
         public ResponseMessage<Store> StoreExistsForUrl(string url)
         {
@@ -291,10 +316,11 @@ namespace LetsBuyLocal.SDK.Services
                 sb.Append("Store");
                 sb.Append("/");
                 sb.Append("Exists");
-                sb.Append("/");
                 var s = sb.ToString();
 
-                var resp = Get<ResponseMessage<Store>>(s + url);
+                var store = new Store {Website = url};
+
+                var resp = Post<ResponseMessage<Store>>(s, store);
                 return resp;
             }
             catch (Exception ex)

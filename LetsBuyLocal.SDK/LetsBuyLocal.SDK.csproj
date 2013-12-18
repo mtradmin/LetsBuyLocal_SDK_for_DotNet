@@ -34,6 +34,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -84,6 +85,7 @@
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\ErrorService.cs" />
     <Compile Include="Services\QrCodeService.cs" />
+    <Compile Include="Services\RewardService.cs" />
     <Compile Include="Services\StoreService.cs" />
     <Compile Include="Services\TrainingService.cs" />
     <Compile Include="Services\UserService.cs" />

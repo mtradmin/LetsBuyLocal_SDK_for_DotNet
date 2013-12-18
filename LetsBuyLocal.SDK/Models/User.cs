@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LetsBuyLocal.SDK.Models
 {
+
+    /// <summary>
+    /// Represents a user entity.  
+    /// A user who is an owner of a Store is identified based on the user that creates the store.
+    /// </summary>
     public class User : BaseEntity
     {
         public string Password { get; set; }

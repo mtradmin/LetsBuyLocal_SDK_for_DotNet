@@ -46,6 +46,19 @@ namespace LetsBuyLocal.SDK.Tests
         }
 
         [TestMethod]
+        public void GetStoreByUrlTest()
+        {
+            var svc = new StoreService();
+
+            //Create a new store for this test
+            string category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.BurlyWood);
+
+            var resp = svc.GetStoreByUrl(store);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
         public void GetStoreApiKeyTest()
         {
             var svc = new StoreService();
@@ -189,8 +202,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Now test ordering a media kit
             var resp = svc.OrderMediaKit(store.Id, owner);
-            Assert.IsTrue(resp.Success);
-            //ToDo: If return type really should not be null object, even where Success:true, then will need to change assertion.
+            Assert.IsNotNull(resp.Object);
         }
 
         [TestMethod]
@@ -209,8 +221,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Now test by submitting an email for a media kit for a user
             var resp = svc.EmailMediaKit(store.Id, owner);
-            Assert.IsTrue(resp.Success);
-            //ToDo: If return type really should not be null object, even where Success:true, then will need to change assertion.
+            Assert.IsNotNull(resp.Object);
 
         }
 
@@ -224,13 +235,8 @@ namespace LetsBuyLocal.SDK.Tests
             var store = TestingHelper.NewStore(category, Colors.CornflowerBlue, Colors.BurlyWood);
 
             //Now check if we can find it by Url
-            var posResp = svc.StoreExistsForUrl(store.Website);
-            Assert.IsNotNull(posResp);
-
-            //Now look for a 'nonsense' url and check that a store (should not be) found for it
-            var negResp = svc.StoreExistsForUrl(@"http://www." + TestingHelper.GetRandomString(50));
-            Assert.IsNull(negResp);
-
+            var resp = svc.StoreExistsForUrl(store.Website);
+            Assert.IsNotNull(resp);
         }
 
     }

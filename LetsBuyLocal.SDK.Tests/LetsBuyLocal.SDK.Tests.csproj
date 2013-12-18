@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -62,6 +63,8 @@
     <Compile Include="AlertServiceTest.cs" />
     <Compile Include="DeviceServiceTest.cs" />
     <Compile Include="ConfigurationServiceTest.cs" />
+    <Compile Include="QrCodeServiceTest.cs" />
+    <Compile Include="RewardServiceTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

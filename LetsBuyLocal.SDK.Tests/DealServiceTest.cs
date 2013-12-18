@@ -1,4 +1,6 @@
-﻿using LetsBuyLocal.SDK.Services;
+﻿using System;
+using System.Management.Instrumentation;
+using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -48,6 +50,49 @@ namespace LetsBuyLocal.SDK.Tests
 
             Assert.IsNotNull(resp.Object);
         }
+
+        [TestMethod]
+        public void DeleteDealTest()
+        {
+            var svc = new DealService();
+
+            //Create a deal to delete
+            var deal = TestingHelper.CreateTestDealInMemory();
+            var createdResp = svc.CreateDeal(deal);
+
+            var resp = svc.DeleteDeal(createdResp.Object.Id);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void GetNumberAvailableReservationsTest()
+        {
+            var svc = new DealService();
+
+            //Create a deal for this test.
+            var deal = TestingHelper.CreateTestDealInMemory();
+            var createdResp = svc.CreateDeal(deal);
+
+            //Check that the method was able to return its response, since the number could be 0.
+            var resp = svc.GetNumberAvailableReservations(createdResp.Object.Id);
+            Assert.IsTrue(resp.Success);
+            //ToDo: Once users can reserve deals, add making reservations and recode test for anticipated number
+        }
+
+        [TestMethod]
+        public void DealHasActiveReservationsTest()
+        {
+            var svc = new DealService();
+
+            //Create a deal for this test.
+            var deal = TestingHelper.CreateTestDealInMemory();
+            var createdResp = svc.CreateDeal(deal);
+
+            var resp = svc.DealHasActiveReservations(createdResp.Object.Id);
+            Assert.IsTrue(resp.Success);
+            //ToDo: Once users can reserve deals, add making a reservation and recode test for resp.Object isTrue
+        }
+
 
     }
 }

@@ -2,6 +2,7 @@
 {
     public class FBSettings
     {
+        //Facebook Id
         //Might be 9-digit string
         public string Account { get; set; }
         public string Page { get; set; }
