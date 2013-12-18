@@ -18,15 +18,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to authenticate user, using specified email and password.  + ex.Message</exception>
         public ResponseMessage<User> Authenticate(User user)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<User>>("Authentication", user);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to authenticate user, using specified email and password. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<User>>("Authentication", user);
+            return resp;
         }
 
         /// <summary>
@@ -39,15 +32,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to process password reset using the specified email. + ex.Message</exception>
         public ResponseMessage<bool> RequestPasswordReset(User user)
         {
-            try
-            {
-                var isSuccessResp = Post<ResponseMessage<bool>>("Authentication/ForgotPassword", user);
-                return isSuccessResp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to process password reset using the specified email." + ex.Message);
-            }
+            var isSuccessResp = Post<ResponseMessage<bool>>("Authentication/ForgotPassword", user);
+            return isSuccessResp;
         }
 
     }

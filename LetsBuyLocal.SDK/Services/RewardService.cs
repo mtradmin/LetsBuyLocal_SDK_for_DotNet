@@ -21,15 +21,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to create a the reward.  + ex.Message</exception>
         public ResponseMessage<Reward> CreateReward(Reward reward)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<Reward>>("Reward", reward);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to create a the reward. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Reward>>("Reward", reward);
+            return resp;
         }
 
         /// <summary>
@@ -40,15 +33,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get the specified reward.  + ex.Message</exception>
         public ResponseMessage<Reward> GetRewardById(string id)
         {
-            try
-            {
-                var resp = Get<ResponseMessage<Reward>>("Reward" + "/" + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get the specified reward. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<Reward>>("Reward" + "/" + id);
+            return resp;
         }
 
         /// <summary>
@@ -59,15 +45,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to update the specified reward. + ex.Message</exception>
         public ResponseMessage<Reward> UpdateReward(Reward reward)
         {
-            try
-            {
-                var resp = Put<ResponseMessage<Reward>>("Reward" + "/" + reward.Id, reward);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update the specified reward. " + ex.Message);
-            }
+            var resp = Put<ResponseMessage<Reward>>("Reward" + "/" + reward.Id, reward);
+            return resp;
         }
 
         /// <summary>
@@ -78,15 +57,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to delete the specified reward.  + ex.Message</exception>
         public ResponseMessage<bool> DeleteReward(string id)
         {
-            try
-            {
-                var resp = Delete<ResponseMessage<bool>>("Reward/" + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to delete the specified reward. " + ex.Message);
-            }
+            var resp = Delete<ResponseMessage<bool>>("Reward/" + id);
+            return resp;
         }
     }
 }

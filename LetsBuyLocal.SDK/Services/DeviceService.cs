@@ -17,15 +17,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.Exception">Unable to create device.  + ex.Message</exception>
         public ResponseMessage<Device> CreateDevice(Device device)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<Device>>("Device", device);
-                return resp;
-            }
-            catch (Exception ex)            
-            {
-                throw new Exception("Unable to create device. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Device>>("Device", device);
+            return resp;
         }
 
         /// <summary>
@@ -36,15 +29,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get specified device.  + ex.Message</exception>
         public ResponseMessage<Device> GetDeviceById(string id)
         {
-            try
-            {
-                var resp = Get<ResponseMessage<Device>>("Device" + "/" + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get specified device. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<Device>>("Device" + "/" + id);
+            return resp;
         }
 
         /// <summary>
@@ -55,15 +41,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get the list of devices details.  + ex.Message</exception>
         public ResponseMessage<IList<Device>> GetDeviceDetailsForDevices(ArrayOfValues devices)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<IList<Device>>>("Deal/List", devices);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get the list of devices details. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<IList<Device>>>("Deal/List", devices);
+            return resp;
         }
     }
 }

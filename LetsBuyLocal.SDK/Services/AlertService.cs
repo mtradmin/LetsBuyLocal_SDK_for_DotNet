@@ -17,15 +17,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A ResponseMessage object of type Alert</returns>
         public ResponseMessage<Alert> CreateAlert(Alert alert)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<Alert>>("Alert", alert);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to create the alert." + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Alert>>("Alert", alert);
+            return resp;
         }
 
         /// <summary>
@@ -35,15 +28,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A ResponseMessage of type Alert</returns>
         public ResponseMessage<Alert> GetAlertById(string alertId)
         {
-            try
-            {
-                var resp = Get<ResponseMessage<Alert>>("Alert" + "/" + alertId);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get the alert. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<Alert>>("Alert" + "/" + alertId);
+            return resp;
         }
 
         /// <summary>
@@ -54,25 +40,18 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A ResponseMessage object of type IList of Alert objects</returns>
         public ResponseMessage<IList<Alert>> GetAlertListForStoreByType(string storeId, string type)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Alert");
-                sb.Append("/");
-                sb.Append("List");
-                sb.Append("/");
-                sb.Append(storeId);
-                sb.Append("/");
-                sb.Append(type);
-                string path = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Alert");
+            sb.Append("/");
+            sb.Append("List");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(type);
+            string path = sb.ToString();
 
-                var resp = Get<ResponseMessage<IList<Alert>>>(path);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get a list of the specified type of alerts for this store." + ex.Message);
-            }
+            var resp = Get<ResponseMessage<IList<Alert>>>(path);
+            return resp;
         }
 
         /// <summary>

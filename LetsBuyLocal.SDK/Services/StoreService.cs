@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using LetsBuyLocal.SDK.Models;
 
@@ -19,15 +20,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to create store.  + ex.Message</exception>
         public ResponseMessage<Store> CreateStore(Store store)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<Store>>("Store", store);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to create store. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>("Store", store);
+            return resp;
         }
 
         /// <summary>
@@ -40,15 +34,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get specified store.  + ex.Message</exception>
         public ResponseMessage<Store> GetStoreById(string id)
         {
-            try
-            {
-                var resp = Get<ResponseMessage<Store>>("Store" + "/" + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get specified store. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<Store>>("Store" + "/" + id);
+            return resp;
         }
 
         /// <summary>
@@ -60,16 +47,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to update specified store.  + ex.Message</exception>
         public ResponseMessage<Store> UpdateStore(string id, Store store)
         {
-            try
-            {
-                var resp = Put<ResponseMessage<Store>>("Store" + "/" + store.Id, store);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update specified store. " + ex.Message);
-            }
-
+            var resp = Put<ResponseMessage<Store>>("Store" + "/" + store.Id, store);
+            return resp;
         }
 
         /// <summary>
@@ -80,15 +59,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to delete specified store.  + ex.Message</exception>
         public ResponseMessage<bool> DeleteStore(string id)
         {
-            try
-            {
-                var resp = Delete<ResponseMessage<bool>>("Store/" + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to delete specified store. " + ex.Message);
-            }
+            var resp = Delete<ResponseMessage<bool>>("Store/" + id);
+            return resp;
         }
 
         /// <summary>
@@ -99,21 +71,14 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get specified store by its Url.  + ex.Message</exception>
         public ResponseMessage<Store> GetStoreByUrl(Store store)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("Url");
-                var path = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Url");
+            var path = sb.ToString();
 
-                var resp = Post<ResponseMessage<Store>>(path, store.Website);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get specified store by its Url. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>(path, store.Website);
+            return resp;
         }
 
         /// <summary>
@@ -124,22 +89,15 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get specified store's API Key.  + ex.Message</exception>
         public ResponseMessage<Store> GetStoreApiKey(string id)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("API");
-                sb.Append("/");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("API");
+            sb.Append("/");
+            var s = sb.ToString();
 
-                var resp = Get<ResponseMessage<Store>>(s + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get specified store's API Key. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<Store>>(s + id);
+            return resp;
         }
 
         /// <summary>
@@ -151,25 +109,18 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to load the specified store's details for the specified user.  + ex.Message</exception>
         public ResponseMessage<Store> LoadStoreDetailsByUser(string storeId, string userId)
         {
-            try 
-	        {	        
-		        var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("LoadDetails");
-                sb.Append("/");
-                sb.Append(storeId);
-                sb.Append("/");
-                sb.Append(userId);
-	            var path = sb.ToString();
+		    var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("LoadDetails");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(userId);
+	        var path = sb.ToString();
 
-                var resp = Get<ResponseMessage<Store>>(path);
-                return resp;
-	        }
-	        catch (Exception ex)
-	        {
-		        throw new ApplicationException("Unable to load the specified store's details for the specified user. " + ex.Message);
-	        }
+            var resp = Get<ResponseMessage<Store>>(path);
+            return resp;
         }
 
         /// <summary>
@@ -180,22 +131,15 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>a ResponseMessage containing an object of type Store.</returns>
         public ResponseMessage<Store> UpdateStoreLocation(string id, GeoPoint geoPoint)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("Location");
-                sb.Append("/");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Location");
+            sb.Append("/");
+            var s = sb.ToString();
 
-                var resp = Post<ResponseMessage<Store>>(s + id, geoPoint);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update specified store's location. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>(s + id, geoPoint);
+            return resp;
         }
 
         /// <summary>
@@ -207,22 +151,15 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to link specified store to a Facebook account.  + ex.Message</exception>
         public ResponseMessage<Store> LinkStoreToFacebookAccount(string storeId, FBSettings settings)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("Facebook");
-                sb.Append("/");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Facebook");
+            sb.Append("/");
+            var s = sb.ToString();
 
-                var resp = Post<ResponseMessage<Store>>(s + storeId, settings);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to link specified store to a Facebook account. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>(s + storeId, settings);
+            return resp;
         }
 
         /// <summary>
@@ -233,22 +170,15 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to remove Facebook account from specified store.  + ex.Message</exception>
         public ResponseMessage<Store> RemoveFacebookAccountFromStore(string storeId)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("Facebook");
-                sb.Append("/");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Facebook");
+            sb.Append("/");
+            var s = sb.ToString();
 
-                var resp = Delete<ResponseMessage<Store>>(s + storeId);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to remove Facebook account from specified store. " + ex.Message);
-            }
+            var resp = Delete<ResponseMessage<Store>>(s + storeId);
+            return resp;
         }
 
         /// <summary>
@@ -259,22 +189,15 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A ResponseMessage containing an object of type Store.</returns>
         public ResponseMessage<Store> OrderMediaKit(string storeId, User user)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("OrderMediaKit");
-                sb.Append("/");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("OrderMediaKit");
+            sb.Append("/");
+            var s = sb.ToString();
 
-                var resp = Post<ResponseMessage<Store>>(s + storeId, user);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to order media kit for the specified store and user. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>(s + storeId, user);
+            return resp;
         }
 
         /// <summary>
@@ -285,22 +208,15 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A ResponseMessage containing an object of type Store.</returns>
         public ResponseMessage<Store> EmailMediaKit(string storeId, User user)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("EmailMediaKit");
-                sb.Append("/");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("EmailMediaKit");
+            sb.Append("/");
+            var s = sb.ToString();
 
-                var resp = Post<ResponseMessage<Store>>(s + storeId, user);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to submit an email for a media kit for the specified store and user. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>(s + storeId, user);
+            return resp;
         }
 
         /// <summary>
@@ -310,23 +226,100 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A ResponseMessage containing an object of type Store.</returns>
         public ResponseMessage<Store> StoreExistsForUrl(string url)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append("Exists");
-                var s = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Exists");
+            var s = sb.ToString();
 
-                var store = new Store {Website = url};
+            var store = new Store {Website = url};
 
-                var resp = Post<ResponseMessage<Store>>(s, store);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to determine if a store already exists for the specified Url. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<Store>>(s, store);
+            return resp;
         }
+
+        /// <summary>
+        /// Gets the stores for owner.
+        /// </summary>
+        /// <param name="ownerId">The owner identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type IList Of Store.</returns>
+        public ResponseMessage<IList<Store>> GetStoresForOwner(string ownerId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("List");
+            sb.Append("/");
+            sb.Append(ownerId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<IList<Store>>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Locates the store by latitude/longitude.
+        /// </summary>
+        /// <param name="location">The location as a GeoPoint object.</param>
+        /// <returns>A ResponseMessage containing an object of type IList Of Store.</returns>
+        public ResponseMessage<IList<Store>> LocateStore(GeoPoint location)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Locate");
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<IList<Store>>>(path, location);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets the last store checkin for a user.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type StoreCheckin.</returns>
+        public ResponseMessage<StoreCheckin> GetLastStoreCheckinForUser(string storeId, string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Checkin");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<StoreCheckin>>(path);
+            return resp;
+        }
+
+
+
+        /// <summary>
+        /// Checks the user in at a store.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="geoPoint">The geo point.</param>
+        /// <returns>A ResponseMessage containing an object of type StoreCheckin.</returns>
+        public ResponseMessage<StoreCheckin> CheckInAtStore(string storeId, string userId, GeoPoint geoPoint)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Checkin");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<StoreCheckin>>(path, geoPoint);
+            return resp;
+        }
+
     }
 }

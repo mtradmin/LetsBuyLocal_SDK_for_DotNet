@@ -16,15 +16,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get list of standard options.  + ex.Message</exception>
         public ResponseMessage<OptionSets> GetListOfStandardOptions()
         {
-            try
-            {
-                var resp = Get<ResponseMessage<OptionSets>>("Configuration");
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get list of standard options. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<OptionSets>>("Configuration");
+            return resp;
         }
     }
 }

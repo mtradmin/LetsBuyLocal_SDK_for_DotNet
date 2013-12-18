@@ -20,15 +20,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to create new user.  + ex.Message</exception>
         public ResponseMessage<User> CreateUser(User user)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<User>>("User", user);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to create new user. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<User>>("User", user);
+            return resp;
         }
 
         /// <summary>
@@ -41,15 +34,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to get user by Id.  + ex.Message</exception>
         public ResponseMessage<User> GetUserById(string id)
         {
-            try
-            {
-                var resp = Get<ResponseMessage<User>>("User" + "/" + id);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get user by Id. " + ex.Message);
-            }
+            var resp = Get<ResponseMessage<User>>("User" + "/" + id);
+            return resp;
         }
 
         /// <summary>
@@ -62,15 +48,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to update user.  + ex.Message</exception>
         public ResponseMessage<User> UpdateUser(User user)
         {
-            try
-            {
-                var resp = Put<ResponseMessage<User>>("User" + "/" + user.Id, user);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update user. " + ex.Message);
-            }
+            var resp = Put<ResponseMessage<User>>("User" + "/" + user.Id, user);
+            return resp;
         }
 
         /// <summary>
@@ -86,26 +65,19 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to update when user last read an alert from this store. + ex.Message</exception>
         public ResponseMessage<User> UserReadStoreAlert(string userId, string storeId, DateParameter dateParam)
         {
-            try
-            {
-                //Updates Date when last read Alert by Store
-                var sb = new StringBuilder();
-                sb.Append("User");
-                sb.Append("/");
-                sb.Append("ReadAlert");
-                sb.Append("/");
-                sb.Append(userId);
-                sb.Append("/");
-                sb.Append(storeId);
-                string path = sb.ToString();
+            //Updates Date when last read Alert by Store
+            var sb = new StringBuilder();
+            sb.Append("User");
+            sb.Append("/");
+            sb.Append("ReadAlert");
+            sb.Append("/");
+            sb.Append(userId);
+            sb.Append("/");
+            sb.Append(storeId);
+            string path = sb.ToString();
 
-                var resp = Post<ResponseMessage<User>>(path, dateParam);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update when user last read an alert from this store." + ex.Message);
-            }
+            var resp = Post<ResponseMessage<User>>(path, dateParam);
+            return resp;
         }
 
         /// <summary>
@@ -118,26 +90,19 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to update date when user last viewed a deal from this store. + ex.Message</exception>
         public ResponseMessage<User> UserViewedDeal(string userId, string storeId, DateParameter dateParam)
         {
-            try
-            {
-                //Updates Date when last viewed Deal by Store
-                var sb = new StringBuilder();
-                sb.Append("User");
-                sb.Append("/");
-                sb.Append("ViewedDeal");
-                sb.Append("/");
-                sb.Append(userId);
-                sb.Append("/");
-                sb.Append(storeId);
-                string path = sb.ToString();
+            //Updates Date when last viewed Deal by Store
+            var sb = new StringBuilder();
+            sb.Append("User");
+            sb.Append("/");
+            sb.Append("ViewedDeal");
+            sb.Append("/");
+            sb.Append(userId);
+            sb.Append("/");
+            sb.Append(storeId);
+            string path = sb.ToString();
 
-                var resp = Post<ResponseMessage<User>>(path, dateParam);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to update date when user last viewed a deal from this store." + ex.Message);
-            }
+            var resp = Post<ResponseMessage<User>>(path, dateParam);
+            return resp;
         }
 
         /// <summary>
@@ -157,24 +122,16 @@ namespace LetsBuyLocal.SDK.Services
         /// </remarks>
         public ResponseMessage<IList<Store>> CreateListOfStoresUserFollowing(string userId, ArrayOfValues stores)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("User");
-                sb.Append("/");
-                sb.Append("Stores");
-                sb.Append("/");
-                sb.Append(userId);
-                var path = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("User");
+            sb.Append("/");
+            sb.Append("Stores");
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
 
-                var resp = Post<ResponseMessage<IList<Store>>>(path, stores);
-                return resp;
-
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to create list of stores that user is following. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<IList<Store>>>(path, stores);
+            return resp;
         }
 
         /// <summary>
@@ -186,25 +143,18 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to assign this device to this user. + ex.Message</exception>
         public ResponseMessage<bool> AssignDeviceToUser(string userId, string deviceId)
         {
-                try
-                {
-                    var sb = new StringBuilder();
-                    sb.Append("User");
-                    sb.Append("/");
-                    sb.Append("Device");
-                    sb.Append("/");
-                    sb.Append(userId);
-                    sb.Append("/");
-                    sb.Append(deviceId);
-                    string path = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("User");
+            sb.Append("/");
+            sb.Append("Device");
+            sb.Append("/");
+            sb.Append(userId);
+            sb.Append("/");
+            sb.Append(deviceId);
+            string path = sb.ToString();
 
-                    var resp = Post<ResponseMessage<bool>>(path);
-                    return resp;
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException("Unable to assign specified device to user. " + ex.Message);
-                }
+            var resp = Post<ResponseMessage<bool>>(path);
+            return resp;
         }
 
 

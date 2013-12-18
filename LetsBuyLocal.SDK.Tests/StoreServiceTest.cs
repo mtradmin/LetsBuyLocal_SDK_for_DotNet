@@ -239,6 +239,75 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp);
         }
 
+        [TestMethod]
+        public void GetStoresForOwnerTest()
+        {
+            var svc = new StoreService();
+
+            //Create a store for this test.
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+
+            //Create a new user (owner) for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.CreateNewTestStoreOwnerInMemory();
+            var ownerResp = userSvc.CreateUser(owner);
+
+            //Now get this store for this owner
+            var resp = svc.GetStoresForOwner(ownerResp.Object.Id);
+            Assert.IsNotNull(resp.Object);
+            //ToDo: Once know how store-owner relationship maintained, create 2 stores for owner and Assert count == 2.
+        }
+
+        [TestMethod]
+        public void LocateStoreTest()
+        {
+            var svc = new StoreService();
+
+            //Create a store at a location for this test
+            var categoryA = TestingHelper.GetRandomStoreCategory();
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Brown, Colors.BurlyWood);
+            var geoPointA = TestingHelper.GetGeoPoint();
+            storeA = svc.UpdateStoreLocation(storeA.Id, geoPointA).Object;
+
+            //Create another store at a nearby location
+            var offset = Convert.ToDecimal(.001);
+
+            var categoryB = TestingHelper.GetRandomStoreCategory();
+            var storeB = TestingHelper.NewStore(categoryB, Colors.CornflowerBlue, Colors.Blue);
+            var geoPointB = new GeoPoint
+            {
+                Latitude = geoPointA.Latitude + offset,
+                Longitude = geoPointA.Latitude + offset
+            };
+            storeB = svc.UpdateStoreLocation(storeB.Id, geoPointB).Object;
+
+            var resp = svc.LocateStore(geoPointA);
+            //ToDo add an Assert here.
+        }
+
+        [TestMethod]
+        public void CheckInAtStoreTest()
+        {
+            var svc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a store for this test
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+
+            //Create a user for this test
+            var user = TestingHelper.NewUser(userSvc);
+
+            //Co-locate the store and user.
+            var geoPoint = TestingHelper.GetGeoPoint();
+            store = svc.UpdateStoreLocation(store.Id, geoPoint).Object;
+
+            //Now check the user in at store
+            var resp = svc.CheckInAtStore(store.Id, user.Id, geoPoint);
+            Assert.IsNotNull(resp.Object);
+        }
+
     }
 
 

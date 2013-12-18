@@ -21,15 +21,8 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         static BaseService()
         {
-            try
-            {
-                BaseUrl = ConfigurationManager.AppSettings["BaseUrl"];
-                ApiVersion = ConfigurationManager.AppSettings["ApiVersion"];
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to initialize LetsBuyLocal.SDK.Services.BaseService. " + ex.Message);
-            }
+            BaseUrl = ConfigurationManager.AppSettings["BaseUrl"];
+            ApiVersion = ConfigurationManager.AppSettings["ApiVersion"];
         }
 
         /// <summary>
@@ -40,29 +33,20 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object</returns>
         protected T Get<T>(string path)
         {
-            try
-            {
-                string response = GetClient().DownloadString(BuildPath(path));
-                var serializer = new JavaScriptSerializer();
-                return serializer.Deserialize<T>(response);
-            }
-            catch (Exception ex)
-            {
-               throw new ApplicationException("Unable to Get object of specified type. " + ex.Message);
-            }
+            string response = GetClient().DownloadString(BuildPath(path));
+            var serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<T>(response);
         }
 
+        /// <summary>
+        /// Gets the image bytes from an HTTPResponseMessage.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns>A response containing an Array of Bytes.</returns>
         protected Byte[] GetImageBytes(string url)
         {
-            try
-            {
-                byte [] fileBytes = GetClient().DownloadData(BuildPath(url));
-                return fileBytes;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get QRCode image. " + ex.Message);
-            }
+            byte [] fileBytes = GetClient().DownloadData(BuildPath(url));
+            return fileBytes;
         }
 
         /// <summary>
@@ -74,17 +58,10 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object</returns>
         protected T Post<T>(string path, Object data)
         {
-            try
-            {
-                var serializer = new JavaScriptSerializer();
-                string dataString = serializer.Serialize(data);
-                string response = GetClient().UploadString(BuildPath(path), "Post", dataString);
-                return serializer.Deserialize<T>(response);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to Post object of specified type with the specified data. " + ex.Message);
-            }
+            var serializer = new JavaScriptSerializer();
+            string dataString = serializer.Serialize(data);
+            string response = GetClient().UploadString(BuildPath(path), "Post", dataString);
+            return serializer.Deserialize<T>(response);
         }
 
         /// <summary>
@@ -95,16 +72,9 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object</returns>
         protected T Post<T>(string path)
         {
-            try
-            {
-                var serializer = new JavaScriptSerializer();
-                string response = GetClient().UploadString(BuildPath(path), "Post");
-                return serializer.Deserialize<T>(response);
-            }
-            catch (Exception ex)
-            {
-               throw new ApplicationException("Unable to Post object of specified type. " + ex.Message);
-            }
+            var serializer = new JavaScriptSerializer();
+            string response = GetClient().UploadString(BuildPath(path), "Post");
+            return serializer.Deserialize<T>(response);
         }
 
         /// <summary>
@@ -115,17 +85,10 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object.</returns>
         protected T Delete<T>(string path)
         {
-            try
-            {
-                var serializer = new JavaScriptSerializer();
-                string response = GetClient().UploadString(BuildPath(path), "DELETE", string.Empty);
-                return serializer.Deserialize<T>(response);
+            var serializer = new JavaScriptSerializer();
+            string response = GetClient().UploadString(BuildPath(path), "DELETE", string.Empty);
+            return serializer.Deserialize<T>(response);
 
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to Delete object of specified type. " + ex.Message);
-            }
         }
 
         /// <summary>
@@ -137,17 +100,10 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object</returns>
         protected T Put<T>(string path, Object data)
         {
-            try
-            {
-                var serializer = new JavaScriptSerializer();
-                string dataString = serializer.Serialize(data);
-                string response = GetClient().UploadString(BuildPath(path), "Put", dataString);
-                return serializer.Deserialize<T>(response);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to Put specified object with the specified data. " + ex.Message);
-            }
+            var serializer = new JavaScriptSerializer();
+            string dataString = serializer.Serialize(data);
+            string response = GetClient().UploadString(BuildPath(path), "Put", dataString);
+            return serializer.Deserialize<T>(response);
         }
 
         /// <summary>

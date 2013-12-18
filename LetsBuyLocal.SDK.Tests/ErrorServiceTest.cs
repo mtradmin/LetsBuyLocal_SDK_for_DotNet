@@ -13,19 +13,30 @@ namespace LetsBuyLocal.SDK.Tests
         public void CreateErrorTest()
         {
             var svc = new ErrorService();
+            var userSvc = new UserService();
+            var storeSvc = new StoreService();
 
+            //Create a new user for this test
+            var user = TestingHelper.NewUser(userSvc);
+
+            //Create a new store for this test
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+
+            //Create an error for this test
             var error = new Error
             {
-                UserId = "DEF456",
-                StoreId = "ABC123",
+                UserId = user.Id,
+                StoreId = store.Id,
                 Screen = TestingHelper.GetRandomString(5),
                 Api = ConfigurationManager.AppSettings["ApiVersion"],
                 Data = TestingHelper.GetRandomString(100),
                 Description = TestingHelper.GetRandomString(50)
             };
 
+            //Now check if successfully create error
             var resp = svc.CreateError(error);
-            Assert.IsTrue(resp.Success);
+            Assert.IsTrue(resp.Object);
         }
 
     }

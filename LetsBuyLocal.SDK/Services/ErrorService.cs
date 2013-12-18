@@ -17,15 +17,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <exception cref="System.ApplicationException">Unable to create error message.  + ex.Message</exception>
         public ResponseMessage<bool> CreateError(Error error)
         {
-            try
-            {
-                var resp = Post<ResponseMessage<bool>>("Error", error);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to create error message. " + ex.Message);
-            }
+            var resp = Post<ResponseMessage<bool>>("Error", error);
+            return resp;
         }
     }
 }

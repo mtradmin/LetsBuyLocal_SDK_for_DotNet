@@ -18,23 +18,16 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A Byte arrau whose content is a PNG image stream.</returns>
         public Byte[] GetQrCodeForStore(string storeId)
         {
-            try
-            {
-                var sb = new StringBuilder();
-                sb.Append("QRCode");
-                sb.Append("/");
-                sb.Append("Store");
-                sb.Append("/");
-                sb.Append(storeId);
-                var path = sb.ToString();
+            var sb = new StringBuilder();
+            sb.Append("QRCode");
+            sb.Append("/");
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append(storeId);
+            var path = sb.ToString();
 
-                var resp = GetImageBytes(path);
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Unable to get QRCode for the specified store. " + ex.Message);
-            }
+            var resp = GetImageBytes(path);
+            return resp;
         }
     }
 }
