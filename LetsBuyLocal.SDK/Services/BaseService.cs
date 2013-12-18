@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.Net;
-using System.Web.Script.Serialization;
 
 namespace LetsBuyLocal.SDK.Services
 {
@@ -40,8 +40,7 @@ namespace LetsBuyLocal.SDK.Services
             try
             {
                 string response = GetClient().DownloadString(BuildPath(path));
-                var serializer = new JavaScriptSerializer();
-                return serializer.Deserialize<T>(response);
+                return JsonConvert.DeserializeObject<T>(response);
             }
             catch (Exception ex)
             {
@@ -60,10 +59,9 @@ namespace LetsBuyLocal.SDK.Services
         {
             try
             {
-                var serializer = new JavaScriptSerializer();
-                string dataString = serializer.Serialize(data);
+                string dataString = JsonConvert.SerializeObject(data);
                 string response = GetClient().UploadString(BuildPath(path), "Post", dataString);
-                return serializer.Deserialize<T>(response);
+                return JsonConvert.DeserializeObject<T>(response);
             }
             catch (Exception ex)
             {
@@ -81,9 +79,8 @@ namespace LetsBuyLocal.SDK.Services
         {
             try
             {
-                var serializer = new JavaScriptSerializer();
                 string response = GetClient().UploadString(BuildPath(path), "Post");
-                return serializer.Deserialize<T>(response);
+                return JsonConvert.DeserializeObject<T>(response);
             }
             catch (Exception ex)
             {
@@ -101,9 +98,8 @@ namespace LetsBuyLocal.SDK.Services
         {
             try
             {
-                var serializer = new JavaScriptSerializer();
                 string response = GetClient().UploadString(BuildPath(path), "Delete");
-                return serializer.Deserialize<T>(response);
+                return JsonConvert.DeserializeObject<T>(response);
 
             }
             catch (Exception ex)
@@ -123,10 +119,9 @@ namespace LetsBuyLocal.SDK.Services
         {
             try
             {
-                var serializer = new JavaScriptSerializer();
-                string dataString = serializer.Serialize(data);
+                string dataString = JsonConvert.SerializeObject(data);
                 string response = GetClient().UploadString(BuildPath(path), "Put", dataString);
-                return serializer.Deserialize<T>(response);
+                return JsonConvert.DeserializeObject<T>(response);
             }
             catch (Exception ex)
             {
