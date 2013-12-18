@@ -55,7 +55,7 @@ namespace LetsBuyLocal.SDK.Services
         protected T Post<T>(string path, Object data)
         {
             string dataString = JsonConvert.SerializeObject(data);
-            string response = GetClient().UploadString(BuildPath(path), "Post", dataString);
+            string response = GetClient().UploadString(BuildPath(path), "POST", dataString);
             return JsonConvert.DeserializeObject<T>(response);
         }
 
@@ -67,7 +67,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object</returns>
         protected T Post<T>(string path)
         {
-            string response = GetClient().UploadString(BuildPath(path), "Post");
+            string response = GetClient().UploadString(BuildPath(path), "POST");
             return JsonConvert.DeserializeObject<T>(response);
         }
 
@@ -79,9 +79,8 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>A response object.</returns>
         protected T Delete<T>(string path)
         {
-            string response = GetClient().UploadString(BuildPath(path), "Delete");
+            string response = GetClient().UploadString(BuildPath(path), "DELETE", string.Empty);
             return JsonConvert.DeserializeObject<T>(response);
-
         }
 
         /// <summary>
@@ -94,7 +93,7 @@ namespace LetsBuyLocal.SDK.Services
         protected T Put<T>(string path, Object data)
         {
             string dataString = JsonConvert.SerializeObject(data);
-            string response = GetClient().UploadString(BuildPath(path), "Put", dataString);
+            string response = GetClient().UploadString(BuildPath(path), "PUT", dataString);
             return JsonConvert.DeserializeObject<T>(response);
         }
 
