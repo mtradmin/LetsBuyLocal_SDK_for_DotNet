@@ -265,26 +265,31 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store at a location for this test
-            var categoryA = TestingHelper.GetRandomStoreCategory();
-            var storeA = TestingHelper.NewStore(categoryA, Colors.Brown, Colors.BurlyWood);
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
             var geoPointA = TestingHelper.GetGeoPoint();
-            storeA = svc.UpdateStoreLocation(storeA.Id, geoPointA).Object;
-
-            //Create another store at a nearby location
-            var offset = Convert.ToDecimal(.001);
-
-            var categoryB = TestingHelper.GetRandomStoreCategory();
-            var storeB = TestingHelper.NewStore(categoryB, Colors.CornflowerBlue, Colors.Blue);
-            var geoPointB = new GeoPoint
-            {
-                Latitude = geoPointA.Latitude + offset,
-                Longitude = geoPointA.Latitude + offset
-            };
-            storeB = svc.UpdateStoreLocation(storeB.Id, geoPointB).Object;
+            store = svc.UpdateStoreLocation(store.Id, geoPointA).Object;
 
             var resp = svc.LocateStore(geoPointA);
-            //ToDo add an Assert here.
+            bool isGreaterThanZero = resp.Object.Count > 0;
+            Assert.IsTrue(isGreaterThanZero);
         }
+        
+        [TestMethod]
+        public void CheckIfIsAtStoreTest()
+        {
+            var svc = new StoreService();
+
+            //Create a store at a location for this test
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+            var geoPointA = TestingHelper.GetGeoPoint();
+            store = svc.UpdateStoreLocation(store.Id, geoPointA).Object;
+
+            var resp = svc.CheckIfIsAtStore(store.Id, geoPointA);
+            Assert.IsTrue(resp.Object);
+        }
+
 
         [TestMethod]
         public void CheckInAtStoreTest()

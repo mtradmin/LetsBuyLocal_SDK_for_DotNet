@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Configuration;
 using LetsBuyLocal.SDK.Models;
@@ -41,14 +42,14 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 Name = GetRandomString(30),                                                 //Required
                 Phone = GetRandomPhoneNumber(10),                                               //Required, length = 10
                 Description = GetRandomString(50),
-                Category = category,                                                         //See: Configuration
+                Category = category,                                                         //See: ConfigurationService.GetListOfStandardOptions
                 AddressLine1 = GetRandomString(30),                                         //Required
                 AddressLine2 = GetRandomString(5),
                 City = GetRandomString(15),                                                 //Required
-                State = "WI",                                                               //Required, See: Configuration
+                State = "WI",                                                               //Required, See: ConfigurationService.GetListOfStandardOptions
                 Zip = GetRandomNumeric(5),                                                  //Required
                 Country = "USA",                                                            //See: Configuration
-                TimeZone = TimeZoneInfo.Local.ToString(),                                         //Required, See: Configuration
+                TimeZone = "Central Standard Time",                                         //Required, See: ConfigurationService.GetListOfStandardOptions
 
                 //public string SundayOpenTime { get; set; }
                 //public string SundayCloseTime { get; set; }
@@ -267,17 +268,17 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
             var deal = new Deal
             {
-                StoreId = store.Id,                                                     //Required
-                Title = "This deal is " + GetRandomString(25),            //Required
+                StoreId = store.Id,                                             //Required
+                Title = "This deal is " + GetRandomString(25),                  //Required
                 Description = GetRandomString(50),
-                TotalAvailable = Convert.ToInt32(GetRandomNumeric(2)),    //Required
+                TotalAvailable = Convert.ToInt32(GetRandomNumeric(2)),          //Required
                 //Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
                 //public int ExtensionDays { get; set; }
-                //OnCompleteAction = "RunAgain",                              //(RunAgain/SaveForLater/Delete)
-                //ExpirationDate = DateTime.Now.AddMonths(1),                 //Nullable
-                //StartDate = DateTime.Now,                                   //Nullable
+                //OnCompleteAction = "RunAgain",                                //(RunAgain/SaveForLater/Delete)
+                //ExpirationDate = DateTime.Now.AddMonths(1),                   //Nullable
+                //StartDate = DateTime.Now,                                     //Nullable
                 Published = false
-                //NormalPrice = 5.39m,                                             //Nullable
+                //NormalPrice = 5.39m,                                          //Nullable
                 //PercentOff = 5,
                 //public string CopiedFromId { get; set; }
                 //public DateTime? PostedToFacebook { get; set; }
@@ -422,14 +423,14 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             //store.Name = GetRandomString(30);                                                //Required
             store.Phone = GetRandomPhoneNumber(10);                                               //Required, length = 10
             store.Description = GetRandomString(50);
-            //store.Category = "Retailer - Boutique/Clothing/Accessories";                      //See: Configuration
+            //store.Category = "Retailer - Boutique/Clothing/Accessories";                      //See: ConfigurationService.GetListOfStandardOptions
             store.AddressLine1 = GetRandomString(30);                                         //Required
             store.AddressLine2 = GetRandomString(5);
             store.City = GetRandomString(15);                                                 //Required
-            //store.State = "WI";                                                              //Required, See: Configuration
+            //store.State = "WI";                                                              //Required, See: ConfigurationService.GetListOfStandardOptions
             store.Zip = GetRandomNumeric(5);                                                  //Required
-            //store.Country = "USA";                                                            //See: Configuration
-            //store.TimeZone = "Central Standard Time";                                         //Required, See: Configuration
+            //store.Country = "USA";                                                            //See: ConfigurationService.GetListOfStandardOptions
+            //store.TimeZone = "Central Standard Time";                                         //Required, See: ConfigurationService.GetListOfStandardOptions
 
             store.SundayOpenTime = null;
             store.SundayCloseTime = null;
@@ -507,8 +508,8 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             deal.Hint = deal.Hint + " updated";
                 //public int ExtensionDays { get; set; }
             deal.OnCompleteAction = "RunAgain";                              //(RunAgain/SaveForLater/Delete)
-            deal.ExpirationDate = DateTime.Now.AddMonths(1).ToLocalTime();                 //Nullable
-            deal.StartDate = DateTime.Now.ToLocalTime();                                   //Nullable
+            deal.ExpirationDate = DateTime.Now.AddMonths(1);                 //Nullable
+            deal.StartDate = DateTime.Now;                                   //Nullable
                 //Published = false
             deal.NormalPrice = 7.39m;                                             //Nullable
             deal.PercentOff = 3;
@@ -638,6 +639,27 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             if (value > 0.5)
                 return "ios";
             return "android";
+        }
+
+        /// <summary>
+        /// Copies the Crysanthemum image from the Pictures\Samples,
+        /// into the ForUpload folder and renames it using the id passed in.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>True, if successful; else, false.</returns>
+        public static bool AbleToCopyAndRenameSourceImage(string id)
+        {
+            const string sourcePath = @"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.png";
+            const string newBasePath = @"C:\Users\marga\Pictures\ForUpload\";
+            const string fileType = ".png";
+
+            var newPath = newBasePath + id + fileType;
+            File.Copy(sourcePath, newPath);
+
+            if (File.Exists(newPath))
+                return true;
+            else
+                return false;
         }
 
 

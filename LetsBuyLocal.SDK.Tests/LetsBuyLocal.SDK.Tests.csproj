@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Shared\Colors.cs" />
+    <Compile Include="Shared\ImageTypes.cs" />
     <Compile Include="Shared\TestingHelper.cs" />
     <Compile Include="TrainingServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="ConfigurationServiceTest.cs" />
     <Compile Include="QrCodeServiceTest.cs" />
     <Compile Include="RewardServiceTest.cs" />
+    <Compile Include="ImageTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

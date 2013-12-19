@@ -25,19 +25,19 @@ namespace LetsBuyLocal.SDK.Models
         [StringLength(10, MinimumLength = 10)]
         public string Phone { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
+        public string Category { get; set; }                //Must be IN ConfigurationService.GetListOfStandardOptions
         [Required]
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
-        public string State { get; set; }
+        public string State { get; set; }                   //Must be IN ConfigurationService.GetListOfStandardOptions
         [Required]
         public string Zip { get; set; }
-        public string Country { get; set; }
+        public string Country { get; set; }                 //Must be IN ConfigurationService.GetListOfStandardOptions
         [Required]
-        public string TimeZone { get; set; }
+        public string TimeZone { get; set; }                //Must be IN ConfigurationService.GetListOfStandardOptions
         public string SundayOpenTime { get; set; }
         public string SundayCloseTime { get; set; }
         public string MondayOpenTime { get; set; }
@@ -56,19 +56,19 @@ namespace LetsBuyLocal.SDK.Models
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public string ReceiptId { get; set; }
-        public string RewardProgramType { get; set; } //null (no Rewards Program), ELECTRONIC, PHYSICAL
-        public bool Published { get; set; } //Soft delete flag
-        public bool Offline { get; set; } //Visibility flag
+        public string RewardProgramType { get; set; }   //null (no Rewards Program), ELECTRONIC, PHYSICAL
+        public bool Published { get; set; }             //Soft delete flag
+        public bool Offline { get; set; }               //Visibility flag
         public DateTime? LastDealExpirationDate { get; set; }
         public bool PublishAlertsToFb { get; set; }
         public bool PublishDealsToFb{ get; set; }
-        public string FbAccount { get; set; }
+        public string FbAccount { get; set; }           //Facebook Id
         public string FbPage { get; set; }
         public string FbPageAccessToken { get; set; }
         public bool HasStoreRegisteredForRewards { get; set; }
         public string CustomUrl { get; set; }
-        public string PrimaryColor { get; set; }
-        public string SecondaryColor { get; set; }
+        public string PrimaryColor { get; set; }        //Hex value
+        public string SecondaryColor { get; set; }      //Hex value
         public string TermsAndConditions { get; set; }
         public bool? DealsEnabled { get; set; }
         public bool? CheckInsEnabled { get; set; }

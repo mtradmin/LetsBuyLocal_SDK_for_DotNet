@@ -87,6 +87,7 @@
     <Compile Include="Services\DealService.cs" />
     <Compile Include="Services\DeviceService.cs" />
     <Compile Include="Services\ErrorService.cs" />
+    <Compile Include="Services\ImageService.cs" />
     <Compile Include="Services\QrCodeService.cs" />
     <Compile Include="Services\RewardService.cs" />
     <Compile Include="Services\StoreService.cs" />

@@ -296,7 +296,25 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
+        /// <summary>
+        /// Checks if user is at store, using the specified latitude and longitude of the geo point.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="geoPoint">The geo point.</param>
+        /// <returns>A ResponseMessage containing an object of type Boolean.</returns>
+        public ResponseMessage<bool> CheckIfIsAtStore(string storeId, GeoPoint geoPoint)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("IsAtStore");
+            sb.Append("/");
+            sb.Append(storeId);
+            var path = sb.ToString();
 
+            var resp = Post<ResponseMessage<bool>>(path, geoPoint);
+            return resp;
+        }
 
         /// <summary>
         /// Checks the user in at a store.
