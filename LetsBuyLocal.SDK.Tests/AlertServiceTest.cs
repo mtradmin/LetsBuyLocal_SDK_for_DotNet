@@ -14,8 +14,10 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new AlertService();
 
             //Create a new store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             //Create 3 different types of alerts for this test.
             var alertS = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);
@@ -33,8 +35,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new AlertService();
 
             //Create new store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             //Create 3 different types of alerts for this test.
             var alertS = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);
@@ -57,8 +62,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new AlertService();
 
             //Create a new store & alert for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.Blue);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.Blue, owner.Id);
             var alertA = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);
 
             var resp = svc.GetAlertListForStoreByType(store.Id, alertA.Type);
@@ -72,11 +80,13 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a user for this test
             var userSvc = new UserService();
-            var user = TestingHelper.NewUser(userSvc);
+            var user = TestingHelper.NewUser(userSvc, false);
 
             //Create a new store
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             //Create 2 types of alerts for the store
             //Should get
@@ -98,11 +108,13 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a user for this test
             var userSvc = new UserService();
-            var user = TestingHelper.NewUser(userSvc);
+            var user = TestingHelper.NewUser(userSvc, false);
 
             //Create a new store
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             //Create an alert for the store
             var alert = TestingHelper.NewAlert(svc, AlertTypes.StoreAlert, store.Id);

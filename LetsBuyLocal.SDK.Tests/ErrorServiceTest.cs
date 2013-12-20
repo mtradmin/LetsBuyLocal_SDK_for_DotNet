@@ -17,11 +17,13 @@ namespace LetsBuyLocal.SDK.Tests
             var storeSvc = new StoreService();
 
             //Create a new user for this test
-            var user = TestingHelper.NewUser(userSvc);
+            var user = TestingHelper.NewUser(userSvc, false);
 
             //Create a new store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             //Create an error for this test
             var error = new Error

@@ -14,8 +14,10 @@ namespace LetsBuyLocal.SDK.Tests
         public void CreateStoreTest()
         {
             //Create a new store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
             Assert.IsNotNull(store);
         }
 
@@ -25,8 +27,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             var resp = svc.GetStoreById(store.Id);
             Assert.IsNotNull(resp.Object);
@@ -38,8 +43,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             var resp = svc.DeleteStore(store.Id);
             Assert.IsTrue(resp.Object);
@@ -51,8 +59,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.BurlyWood);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.BurlyWood, owner.Id);
 
             var resp = svc.GetStoreByUrl(store);
             Assert.IsNotNull(resp.Object);
@@ -64,8 +75,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             var resp = svc.GetStoreApiKey(store.Id);
             Assert.IsNotNull(resp);
@@ -77,8 +91,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Blue, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.Blue, Colors.DarkOrange, owner.Id);
             TestingHelper.UpdateStore(store);
 
             var resp = svc.UpdateStore(store.Id, store);
@@ -99,7 +116,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a user for this test
             var userSvc = new UserService();
-            var user = TestingHelper.NewUser(userSvc);
+            var user = TestingHelper.NewUser(userSvc, false);
             if (user == null)
                 throw new ApplicationException("Unable to create a user as part of the set up for this test.");
 
@@ -119,8 +136,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a new store for this test and do standard updates
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkMagenta, Colors.DarkOrange);
+            var store = TestingHelper.NewStore(category, Colors.DarkMagenta, Colors.DarkOrange, owner.Id);
             store = TestingHelper.UpdateStore(store);
             store = svc.UpdateStore(store.Id, store).Object;
 
@@ -139,8 +159,11 @@ namespace LetsBuyLocal.SDK.Tests
                 var svc = new StoreService();
 
                 //Create a store for this test.
+                var userSvc = new UserService();
+                var owner = TestingHelper.NewUser(userSvc, true);
+
                 var category = TestingHelper.GetRandomStoreCategory();
-                var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+                var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
 
                 var settings = new FBSettings
                 {
@@ -166,8 +189,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
 
             //Link its Facebook settings
             var settings = new FBSettings
@@ -192,13 +218,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store for this test.
-            var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
-
-            //Create a new user (owner) for this test.
             var userSvc = new UserService();
-            var owner = TestingHelper.CreateNewTestStoreOwnerInMemory();
-            var ownerResp = userSvc.CreateUser(owner);
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
 
             //Now test ordering a media kit
             var resp = svc.OrderMediaKit(store.Id, owner);
@@ -211,13 +235,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store for this test.
-            var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
-
-            //Create a new user (owner) for this test.
             var userSvc = new UserService();
-            var owner = TestingHelper.CreateNewTestStoreOwnerInMemory();
-            var ownerResp = userSvc.CreateUser(owner);
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
 
             //Now test by submitting an email for a media kit for a user
             var resp = svc.EmailMediaKit(store.Id, owner);
@@ -231,8 +253,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.CornflowerBlue, Colors.BurlyWood);
+            var store = TestingHelper.NewStore(category, Colors.CornflowerBlue, Colors.BurlyWood, owner.Id);
 
             //Now check if we can find it by Url
             var resp = svc.StoreExistsForUrl(store.Website);
@@ -245,16 +270,15 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store for this test.
-            var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
-
-            //Create a new user (owner) for this test.
             var userSvc = new UserService();
-            var owner = TestingHelper.CreateNewTestStoreOwnerInMemory();
-            var ownerResp = userSvc.CreateUser(owner);
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
+
 
             //Now get this store for this owner
-            var resp = svc.GetStoresForOwner(ownerResp.Object.Id);
+            var resp = svc.GetStoresForOwner(owner.Id);
             Assert.IsNotNull(resp.Object);
             //ToDo: Once know how store-owner relationship maintained, create 2 stores for owner and Assert count == 2.
         }
@@ -265,8 +289,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store at a location for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
             var geoPointA = TestingHelper.GetGeoPoint();
             store = svc.UpdateStoreLocation(store.Id, geoPointA).Object;
 
@@ -281,8 +308,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new StoreService();
 
             //Create a store at a location for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
             var geoPointA = TestingHelper.GetGeoPoint();
             store = svc.UpdateStoreLocation(store.Id, geoPointA).Object;
 
@@ -298,11 +328,13 @@ namespace LetsBuyLocal.SDK.Tests
             var userSvc = new UserService();
 
             //Create a store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood);
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
 
             //Create a user for this test
-            var user = TestingHelper.NewUser(userSvc);
+            var user = TestingHelper.NewUser(userSvc, false);
 
             //Co-locate the store and user.
             var geoPoint = TestingHelper.GetGeoPoint();

@@ -180,7 +180,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a user and have user track this store
             var userSvc = new UserService();
-            var user = TestingHelper.NewUser(userSvc);
+            var user = TestingHelper.NewUser(userSvc, false);
             user.StoreIds.Add(expiredDeal.Id);
             var userResp = userSvc.UpdateUser(user);
 

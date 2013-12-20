@@ -37,8 +37,11 @@ namespace LetsBuyLocal.SDK.Tests
             else if (imageType == ImageTypes.Stores)
             {
                 //Will need to create a Store and get its Id
+                var userSvc = new UserService();
+                var owner = TestingHelper.NewUser(userSvc, true);
+
                 string category = TestingHelper.GetRandomStoreCategory();
-                var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+                var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
                 //Create an image to upload
                 copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(store.Id);
@@ -49,7 +52,7 @@ namespace LetsBuyLocal.SDK.Tests
             {
                 //Create a User and get its Id
                 var uSvc = new UserService();
-                var user = TestingHelper.NewUser(uSvc);
+                var user = TestingHelper.NewUser(uSvc, false);
 
                 //Create an image to upload
                 copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(user.Id);

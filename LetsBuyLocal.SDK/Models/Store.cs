@@ -110,9 +110,10 @@ namespace LetsBuyLocal.SDK.Models
         public bool? DealsEnabled { get; set; } 
 
         /// <summary>
-        /// Tie between user/owner(s) and store
+        /// List of ids for users that have admin rights to the store (owners).
         /// </summary>
-        public List<string> OwnerIds { get; set; }  //List of ids for users that have admin rights to the store
+        /// <remarks>Tie between user/owner(s) and store.</remarks>
+        public List<string> OwnerIds { get; set; }
 
         public bool WizardStep1Complete { get; set; }   //Business setup wizard
         public bool WizardStep2Complete { get; set; }   //Rewards (Checkins) setup wizard

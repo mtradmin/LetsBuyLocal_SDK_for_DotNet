@@ -32,7 +32,7 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new UserService();
 
             //Create a new user for this test.
-            var user = TestingHelper.NewUser(svc);
+            var user = TestingHelper.NewUser(svc, false);
 
             var resp = svc.GetUserById(user.Id);
 
@@ -45,7 +45,7 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new UserService();
 
             //Create a new user for this test.
-            var user = TestingHelper.NewUser(svc);
+            var user = TestingHelper.NewUser(svc, false);
             var updatedUser = TestingHelper.UpdateUser(user);
 
             var resp = svc.UpdateUser(updatedUser);
@@ -68,11 +68,14 @@ namespace LetsBuyLocal.SDK.Tests
             var dateParam = new DateParameter {Datetime = readTime};
 
             //Create a user for this test.
-            var user = TestingHelper.NewUser(svc);
+            var user = TestingHelper.NewUser(svc, false);
 
             //Create a store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Green, Colors.Brown);
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.Brown, owner.Id);
 
             var resp = svc.UserReadStoreAlert(user.Id, store.Id, dateParam);
             Assert.IsNotNull(resp.Object);
@@ -87,11 +90,14 @@ namespace LetsBuyLocal.SDK.Tests
             var dateParam = new DateParameter {Datetime = readTime};
 
             //Create a user for this test.
-            var user = TestingHelper.NewUser(svc);
+            var user = TestingHelper.NewUser(svc, false);
 
             //Create a store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray);
+            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray, owner.Id);
 
             var resp = svc.UserViewedDeal(user.Id, store.Id, dateParam);
             Assert.IsNotNull(resp.Object);
@@ -103,14 +109,16 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new UserService();
 
             //Create a new user for this test
-            var user = TestingHelper.NewUser(svc);
+            var user = TestingHelper.NewUser(svc, false);
 
             //Create two new stores to be added to an ArrayOfValues
+            var owner = TestingHelper.NewUser(svc, true);
+
             string categoryA = TestingHelper.GetRandomStoreCategory();
-            var storeA = TestingHelper.NewStore(categoryA, Colors.Green, Colors.CornflowerBlue);
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Green, Colors.CornflowerBlue, owner.Id);
 
             string categoryB = TestingHelper.GetRandomStoreCategory();
-            var storeB = TestingHelper.NewStore(categoryB, Colors.Blue, Colors.CornflowerBlue);
+            var storeB = TestingHelper.NewStore(categoryB, Colors.Blue, Colors.CornflowerBlue, owner.Id);
 
             //Add the two stores' Ids to an ArrayOfValues object
             var storesInit = new[] {storeA.Id, storeB.Id};
@@ -123,7 +131,7 @@ namespace LetsBuyLocal.SDK.Tests
             //Test modification of list
             //Add
             string category = TestingHelper.GetRandomStoreCategory();
-            var storeC = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange);
+            var storeC = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             var storesAdd = new[] { storeA.Id, storeB.Id, storeC.Id };
             var valuesAdd = new ArrayOfValues { Values = storesAdd };
@@ -152,7 +160,7 @@ namespace LetsBuyLocal.SDK.Tests
             var deviceSvc = new DeviceService();
 
             //Create a new user for this test.
-            var user = TestingHelper.NewUser(svc);
+            var user = TestingHelper.NewUser(svc, false);
 
             //Create a new device, so assured that is not already assigned.
             var device = new Device

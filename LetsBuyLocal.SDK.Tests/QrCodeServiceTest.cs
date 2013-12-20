@@ -17,8 +17,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new QrCodeService();
 
             //Create a store for this test.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkMagenta, Colors.Gray);
+            var store = TestingHelper.NewStore(category, Colors.DarkMagenta, Colors.Gray, owner.Id);
 
             var resp = svc.GetQrCodeForStore(store.Id);
             Assert.IsNotNull(resp);

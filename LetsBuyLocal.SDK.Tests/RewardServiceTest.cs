@@ -1,4 +1,5 @@
 ﻿using System;
+using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,8 +15,10 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new RewardService();
 
             //Create a store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray);
+            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray, owner.Id);
 
             //Create a Reward object.
             var reward = TestingHelper.CreateNewRewardInMemory(store.Id);
@@ -30,8 +33,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new RewardService();
 
             //Create a store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray);
+            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray, owner.Id);
 
             //Create a reward for this test
             var reward = TestingHelper.NewReward(svc, store.Id);
@@ -46,8 +52,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new RewardService();
 
             //Create a store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray);
+            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray, owner.Id);
 
             //Create a reward for this test
             var reward = TestingHelper.NewReward(svc, store.Id);
@@ -65,8 +74,11 @@ namespace LetsBuyLocal.SDK.Tests
             var svc = new RewardService();
 
             //Create a store for this test
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray);
+            var store = TestingHelper.NewStore(category, Colors.DarkRed, Colors.Gray, owner.Id);
 
             //Create a reward for this test
             var reward = TestingHelper.NewReward(svc, store.Id);

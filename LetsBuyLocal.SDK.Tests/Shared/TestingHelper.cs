@@ -19,11 +19,21 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Creates a new user.
         /// </summary>
         /// <param name="svc">The UserService</param>
-        /// <returns>A new User object from the service's response</returns>
-        public static User NewUser(UserService svc)
+        /// <param name="isAnOwner">if set to <c>true</c> [is an owner].</param>
+        /// <returns>
+        /// A new User object from the service's response
+        /// </returns>
+        public static User NewUser(UserService svc, bool isAnOwner)
         {
-            var user = CreateNewTestUserInMemory();
+            User user;
+
+            if (isAnOwner)
+                user = CreateNewTestUserInMemory();
+            else
+                user = CreateNewTestStoreOwnerInMemory();
+
             var testUser = svc.CreateUser(user).Object;
+
             return testUser;
         }
 
@@ -34,7 +44,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <param name="primaryColor">Primary color.</param>
         /// <param name="secondaryColor">Secondary color.</param>
         /// <returns>A  Store.</returns>
-        public static Store NewStore(string category, string primaryColor, string secondaryColor)
+        public static Store NewStore(string category, string primaryColor, string secondaryColor, string ownerId)
         {
             var svc = new StoreService();
 
@@ -68,8 +78,8 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 //public string SaturdayOpenTime { get; set; }
                 //public string SaturdayCloseTime { get; set; }
                 //public string PayPalEmail { get; set; }
-                //public decimal Latitude { get; set; }
-                //public decimal Longitude { get; set; }
+                Latitude = GetRandomLatitudeApproxWi(),
+                Longitude = GetRandomLongitudeApproxWi(),
                 //public string ReceiptId { get; set; }
                 //public string RewardProgramType { get; set; } //null (no Rewards Program), ELECTRONIC, PHYSICAL
                 //public bool Published { get; set; } //Soft delete flag
@@ -83,12 +93,12 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 //public bool HasStoreRegisteredForRewards { get; set; }
                 //public string CustomUrl { get; set; }
                 PrimaryColor = primaryColor,
-                SecondaryColor = secondaryColor
+                SecondaryColor = secondaryColor,
                 //public string TermsAndConditions { get; set; }
-                //public bool? DealsEnabled =
-                //public bool? CheckInsEnabled =
+                DealsEnabled = true,
+                CheckInsEnabled = true,
 
-                //public List<string> OwnerIds =  //List of ids for users that have admin rights to the store
+                OwnerIds = GetStoreOwnersList(ownerId),
 
                 //public bool WizardStep1Complete =
                 //public bool WizardStep2Complete =
@@ -265,8 +275,11 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         public static Deal CreateTestDealInMemory()
         {
             //Create a store that will run this deal.
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
             string category = GetRandomStoreCategory();
-            var store = NewStore(category, Colors.Green, Colors.DarkOrange);
+            var store = NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
             var deal = new Deal
             {
@@ -529,6 +542,18 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 //public string PercentOffString { get; set; }
 
             return deal;
+        }
+
+        /// <summary>
+        /// Gets the store owners list.
+        /// </summary>
+        /// <param name="ownerId">The owner identifier.</param>
+        /// <returns>An IList Of String[owners]</returns>
+        public static List<string> GetStoreOwnersList(string ownerId)
+        {
+            var owners = new List<string>();
+            owners.Add(ownerId);
+            return owners;
         }
 
         /// <summary>
