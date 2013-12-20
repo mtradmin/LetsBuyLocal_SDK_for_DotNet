@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LetsBuyLocal.SDK.Models
 {
+    /// <summary>
+    /// Handles "pickup" of reserved Deal
+    /// </summary>
+    /// <remarks>Occurs automatically if user has Deal open and at location</remarks>
     public class StoreCheckin : BaseEntity
     {
         [Required]

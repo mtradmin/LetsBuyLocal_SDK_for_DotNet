@@ -12,14 +12,39 @@ namespace LetsBuyLocal.SDK.Models
         public string Description { get; set; }
         [Required]
         public int TotalAvailable { get; set; }
-        public string Hint { get; set; }
+
+
+        public string Hint { get; set; }                //Required?????
         public int ExtensionDays { get; set; }
-        public string OnCompleteAction { get; set; }    //(RunAgain/SaveForLater/Delete)
+
+        /// <summary>
+        /// Identifies action to be taken when deal completes (RunAgain/SaveForLater/Delete)
+        /// </summary>
+        public string OnCompleteAction { get; set; }    
         public DateTime? ExpirationDate { get; set; }
-        public DateTime? StartDate { get; set; }
+
+        /// <summary>
+        /// Date deal starts
+        /// </summary>
+        /// <remarks>Cannot start until previous deal has expired.</remarks>
+        public DateTime? StartDate { get; set; }     
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether [published] (Active).
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [published]; otherwise, <c>false</c>.
+        /// </value>
+        /// <remarks>
+        /// 1. Cannot modify a deal while this value is true.
+        /// 2. Cannot set this value to false if this deal has any reservations made.
+        /// </remarks>
         public bool Published { get; set; }
+     
+        
         public decimal? NormalPrice { get; set; }
         public int? PercentOff { get; set; }
+
         public string CopiedFromId { get; set; }
         public DateTime? PostedToFacebook { get; set; }
         public string FbPostError { get; set; }

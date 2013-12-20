@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Configuration;
 using LetsBuyLocal.SDK.Models;
@@ -49,7 +51,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 State = "WI",                                                               //Required, See: ConfigurationService.GetListOfStandardOptions
                 Zip = GetRandomNumeric(5),                                                  //Required
                 Country = "USA",                                                            //See: Configuration
-                TimeZone = "Central Standard Time",                                         //Required, See: ConfigurationService.GetListOfStandardOptions
+                TimeZone = WiTimeZone(),                                         //Required, See: ConfigurationService.GetListOfStandardOptions
 
                 //public string SundayOpenTime { get; set; }
                 //public string SundayCloseTime { get; set; }
@@ -167,7 +169,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.Zip = GetRandomNumeric(5);
             user.Country = "USA";                                                   //See: GetConfiguration
             user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
-            user.TimeZone = "Central Standard Time";                                //See: GetConfiguration
+            user.TimeZone = WiTimeZone();                                //See: GetConfiguration
             user.IsStoreOwner = false;
             user.ShowStoreAlerts = true;
             user.ShowDealAlerts = true;
@@ -224,7 +226,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.Zip = GetRandomNumeric(5);
             user.Country = "USA";                                                   //See: GetConfiguration
             user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
-            user.TimeZone = "Central Standard Time";                                //See: GetConfiguration
+            user.TimeZone = WiTimeZone();                                //See: GetConfiguration
             user.IsStoreOwner = true;   //This is the field denoting is owner
             user.ShowStoreAlerts = true;
             user.ShowDealAlerts = true;
@@ -380,7 +382,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.Zip = GetRandomNumeric(5);
             user.Country = "USA";                                                   //See: GetConfiguration
             user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
-            user.TimeZone = "Central Standard Time";                                //See: GetConfiguration
+            user.TimeZone = WiTimeZone();                                //See: GetConfiguration
             user.IsStoreOwner = isOwner;
             user.ShowStoreAlerts = true;
             user.ShowDealAlerts = true;
@@ -430,7 +432,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             //store.State = "WI";                                                              //Required, See: ConfigurationService.GetListOfStandardOptions
             store.Zip = GetRandomNumeric(5);                                                  //Required
             //store.Country = "USA";                                                            //See: ConfigurationService.GetListOfStandardOptions
-            //store.TimeZone = "Central Standard Time";                                         //Required, See: ConfigurationService.GetListOfStandardOptions
+            //store.TimeZone = WiTimeZone();                                         //Required, See: ConfigurationService.GetListOfStandardOptions
 
             store.SundayOpenTime = null;
             store.SundayCloseTime = null;
@@ -493,25 +495,21 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Updates the deal.
         /// </summary>
         /// <param name="deal">The deal.</param>
-        /// <returns>The updated deal object.</returns>
-        public static Deal UpdateDeal(Deal deal)
+        /// <param name="startDate">The start date.</param>
+        /// <param name="expDate">The expiration  date.</param>
+        /// <returns>
+        /// The updated deal object.
+        /// </returns>
+        public static Deal UpdateDeal(Deal deal, DateTime? startDate, DateTime? expDate)
         {
-            //******************************************************************************************************************
-            //Regarding datetime values:
-            // "ExceptionMessage": 
-            //"The conversion could not be completed because the supplied DateTime did not have the Kind property set correctly. 
-            //For example, when the Kind property is DateTimeKind.Local, 
-            //the source time zone must be TimeZoneInfo.Local.\r\nParameter name: sourceTimeZone",
-            //******************************************************************************************************************
-
-            deal.TotalAvailable = Convert.ToInt32(GetRandomNumeric(2));        //Required
+            deal.TotalAvailable = Convert.ToInt32(GetRandomNumeric(2));       //Required
             deal.Hint = deal.Hint + " updated";
                 //public int ExtensionDays { get; set; }
-            deal.OnCompleteAction = "RunAgain";                              //(RunAgain/SaveForLater/Delete)
-            deal.ExpirationDate = DateTime.Now.AddMonths(1);                 //Nullable
-            deal.StartDate = DateTime.Now;                                   //Nullable
+            deal.OnCompleteAction = OnCompleteAction.SaveForLater;               //(RunAgain/SaveForLater/Delete)
+            deal.ExpirationDate = expDate;                 //Nullable
+            deal.StartDate = startDate;                                   //Nullable
                 //Published = false
-            deal.NormalPrice = 7.39m;                                             //Nullable
+            deal.NormalPrice = 7.39m;                                        //Nullable
             deal.PercentOff = 3;
                 //public string CopiedFromId { get; set; }
                 //public DateTime? PostedToFacebook { get; set; }
@@ -559,7 +557,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             var categories = resp.Object.StoreCategories;
             return categories;
         }
-
+       
         /// <summary>
         /// Gets the randomly generated geo point.
         /// </summary>
@@ -777,6 +775,35 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
             return longitude;
         }
+
+        /// <summary>
+        /// Gets valid time zones.
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<string> GetTimeZones()
+        {
+            var svc = new ConfigurationService();
+            var resp = svc.GetListOfStandardOptions();
+            var timeZones = resp.Object.TimeZones;
+            return timeZones;
+        }
+
+        /// <summary>
+        /// Gets the valid time zone designation for WI.
+        /// </summary>
+        /// <returns></returns>
+        private static string WiTimeZone()
+        {
+            var zones = GetTimeZones();
+
+            foreach (var zone in zones)
+            {
+                if (zone == "Central Standard Time")
+                    return zone;
+            }
+            return string.Empty;
+        }
+
 
         #endregion
     }

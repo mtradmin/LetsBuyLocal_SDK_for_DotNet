@@ -24,20 +24,50 @@ namespace LetsBuyLocal.SDK.Models
         [Required]
         [StringLength(10, MinimumLength = 10)]
         public string Phone { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }                //Must be IN ConfigurationService.GetListOfStandardOptions
         [Required]
         public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
         [Required]
         public string City { get; set; }
+
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions State
+        /// </summary>
         [Required]
-        public string State { get; set; }                   //Must be IN ConfigurationService.GetListOfStandardOptions
+        public string State { get; set; } 
+                  
         [Required]
         public string Zip { get; set; }
-        public string Country { get; set; }                 //Must be IN ConfigurationService.GetListOfStandardOptions
+
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions TimeZone
+        /// </summary>
         [Required]
-        public string TimeZone { get; set; }                //Must be IN ConfigurationService.GetListOfStandardOptions
+        public string TimeZone { get; set; }                
+
+        /// <summary>
+        /// Determines whether or not user will see the Rewards(Checkins) setup wizard
+        /// </summary>
+        public bool? CheckInsEnabled { get; set; }
+
+        //Location (cash register)
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+
+
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions StoreCategory
+        /// </summary>
+        public string Category { get; set; } 
+               
+        public string AddressLine2 { get; set; }
+
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions Country
+        /// </summary>
+        public string Country { get; set; }
+                
         public string SundayOpenTime { get; set; }
         public string SundayCloseTime { get; set; }
         public string MondayOpenTime { get; set; }
@@ -52,33 +82,41 @@ namespace LetsBuyLocal.SDK.Models
         public string FridayCloseTime { get; set; }
         public string SaturdayOpenTime { get; set; }
         public string SaturdayCloseTime { get; set; }
+
         public string PayPalEmail { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
         public string ReceiptId { get; set; }
         public string RewardProgramType { get; set; }   //null (no Rewards Program), ELECTRONIC, PHYSICAL
+
         public bool Published { get; set; }             //Soft delete flag
         public bool Offline { get; set; }               //Visibility flag
+
         public DateTime? LastDealExpirationDate { get; set; }
+
         public bool PublishAlertsToFb { get; set; }
         public bool PublishDealsToFb{ get; set; }
         public string FbAccount { get; set; }           //Facebook Id
         public string FbPage { get; set; }
         public string FbPageAccessToken { get; set; }
         public bool HasStoreRegisteredForRewards { get; set; }
+
         public string CustomUrl { get; set; }
         public string PrimaryColor { get; set; }        //Hex value
         public string SecondaryColor { get; set; }      //Hex value
         public string TermsAndConditions { get; set; }
-        public bool? DealsEnabled { get; set; }
-        public bool? CheckInsEnabled { get; set; }
 
+        /// <summary>
+        /// Flag determins whether user/owner will have UI interface for Deals
+        /// </summary>
+        public bool? DealsEnabled { get; set; } 
 
+        /// <summary>
+        /// Tie between user/owner(s) and store
+        /// </summary>
         public List<string> OwnerIds { get; set; }  //List of ids for users that have admin rights to the store
 
-        public bool WizardStep1Complete { get; set; }
-        public bool WizardStep2Complete { get; set; }
-        public bool WizardStep3Complete { get; set; }
+        public bool WizardStep1Complete { get; set; }   //Business setup wizard
+        public bool WizardStep2Complete { get; set; }   //Rewards (Checkins) setup wizard
+        public bool WizardStep3Complete { get; set; }   //Deals wizard (store needs at least 1 to be visible)
 
         public int UserRating { get; set; }
 

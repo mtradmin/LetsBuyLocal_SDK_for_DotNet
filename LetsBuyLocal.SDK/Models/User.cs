@@ -14,6 +14,7 @@ namespace LetsBuyLocal.SDK.Models
     {
         public string Password { get; set; }
 
+        //1st screen
         [Required(ErrorMessage = "Email is a required field.")]
         [EmailAddress(ErrorMessage = "Email address is not valid.")]
         public string Email { get; set; }
@@ -21,20 +22,40 @@ namespace LetsBuyLocal.SDK.Models
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Last Name is a required field.")]
         public string LastName { get; set; }
-        public string Image { get; set; }
-        public string Sex { get; set; }
         [Required(ErrorMessage = "Mobile Phone is a required field.")]
         public string MobilePhoneNumber { get; set; }
+
+        //2nd screen
+        public string Image { get; set; }
+
+        /// <summary>
+        /// //Denotes whether or not user is also a business Owner.
+        /// </summary>
+        public bool IsStoreOwner { get; set; }
+                            
+        public string Sex { get; set; }
         public string HomePhoneNumber { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string City { get; set; }
-        public string State { get; set; }
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions State
+        /// </summary>
+        public string State { get; set; } 
+                              
         public string Zip { get; set; }
-        public string Country { get; set; }
+
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions Country
+        /// </summary>
+        public string Country { get; set; } 
         public DateTime? BirthDate { get; set; }
-        public string TimeZone { get; set; }
-        public bool IsStoreOwner { get; set; }
+
+        /// <summary>
+        /// Must be in ConfigurationService.GetListOfStandardOptions TimeZone
+        /// </summary>
+        public string TimeZone { get; set; }                           
+       
         public bool ShowStoreAlerts { get; set; }
         public bool ShowDealAlerts { get; set; }
         public bool ShowCouponAlerts { get; set; }
@@ -42,6 +63,7 @@ namespace LetsBuyLocal.SDK.Models
         public int ReservedDeals { get; set; }
         public int RedeemedDeals { get; set; }
         public int CurrentLevel { get; set; }
+
         //Is set internally
         public bool HasFollowedStore { get; set; }
 

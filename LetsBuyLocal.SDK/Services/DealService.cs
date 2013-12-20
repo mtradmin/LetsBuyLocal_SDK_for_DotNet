@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using LetsBuyLocal.SDK.Models;
 
@@ -99,6 +100,76 @@ namespace LetsBuyLocal.SDK.Services
             var resp = Get<ResponseMessage<bool>>(path);
             return resp;
         }
+
+        /// <summary>
+        /// Unpublishes the deal.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type Deal.</returns>
+        public ResponseMessage<Deal> UnpublishDeal(string id)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("Unpublish");
+            sb.Append("/");
+            sb.Append(id);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<Deal>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets the end date of the last Deal in the queue. 
+        /// (The Start Date for the next deal queue item.)
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type DateTime.</returns>
+        public ResponseMessage<DateTime> GetLatestPublishedDealDate(string storeId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("GetLatestPublishedDate");
+            sb.Append("/");
+            sb.Append(storeId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<DateTime>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets a list of last expired deal 
+        /// and all active/future deals for the specified user and stores they are tracking.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type IList Of Deal.</returns>
+        public ResponseMessage<IList<Deal>> GetListOfDealsByStoreAndUser(string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("ListLostActiveAndFuture");
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<IList<Deal>>>(path);
+            return resp;
+        }
+
+        //public ResponseMessage<IList<Deal>> GetListOfActiveDealsByStore(string storeId)
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.Append("Deal");
+        //    sb.Append("/");
+        //    sb.Append("ListActive");
+        //    var path = sb.ToString();
+
+        //    var resp = Post<ResponseMessage<IList<Deal>>>(path, arrayofvalues);
+        //}
 
     }
 }
