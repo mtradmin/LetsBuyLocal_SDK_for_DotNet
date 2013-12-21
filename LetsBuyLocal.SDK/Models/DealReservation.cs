@@ -2,13 +2,13 @@
 
 namespace LetsBuyLocal.SDK.Models
 {
-    public class DealPurchase : BaseEntity
+    public class DealReservation : BaseEntity
     {
         public string StoreId { get; set; }
         public string DealId { get; set; }
         public string UserId { get; set; }
         public string ReceiptId { get; set; }
-        public DateTime PurchaseDate { get; set; }
+        public DateTime ReservationDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string RedemptionId { get; set; }
 

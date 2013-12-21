@@ -160,16 +160,67 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
-        //public ResponseMessage<IList<Deal>> GetListOfActiveDealsByStore(string storeId)
-        //{
-        //    var sb = new StringBuilder();
-        //    sb.Append("Deal");
-        //    sb.Append("/");
-        //    sb.Append("ListActive");
-        //    var path = sb.ToString();
+        /// <summary>
+        /// Gets the list of active deals by store.
+        /// </summary>
+        /// <param name="stores">The ArrayOfValues (stores) object.</param>
+        /// <returns>
+        /// A ResponseMessage containing an object of type IList Of Deal
+        /// </returns>
+        public ResponseMessage<IList<Deal>> GetListOfActiveDealsByStore(ArrayOfValues stores)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("ListActive");
+            var path = sb.ToString();
 
-        //    var resp = Post<ResponseMessage<IList<Deal>>>(path, arrayofvalues);
-        //}
+            var resp = Post<ResponseMessage<IList<Deal>>>(path, stores);
+            return resp;
+        }
+
+
+        /// <summary>
+        /// Gets the list of recent lost deals by store and user.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type Ilist Of Deal</returns>
+        public ResponseMessage<IList<Deal>> GetListOfLostDealsByStoreAndUser(string storeId, string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("ListLost");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<IList<Deal>>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets the list of active and future deals by store and user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="stores">The stores as an ArrayOfValues.</param>
+        /// <returns>A ResponseMessage containing an object of type IList Of Deal</returns>
+        public ResponseMessage<IList<Deal>> GetListOfActiveAndFutureDealsByStoreAndUser(string userId, ArrayOfValues stores)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("ListActiveAndFuture");
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<IList<Deal>>>(path, stores);
+            return resp;
+        }
 
     }
 }

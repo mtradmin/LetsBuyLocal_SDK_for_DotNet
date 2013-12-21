@@ -13,8 +13,12 @@ namespace LetsBuyLocal.SDK.Models
         [Required]
         public int TotalAvailable { get; set; }
 
-
-        public string Hint { get; set; }                //Required?????
+        /// <summary>
+        /// Short hint about deal.
+        /// </summary>
+        /// <remarks>Required, if Published.</remarks>
+        public string Hint { get; set; }  
+              
         public int ExtensionDays { get; set; }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace LetsBuyLocal.SDK.Models
 
         public string PercentOffString { get; set; }
 
-        public DealPurchase UserPurchase { get; set; }
+        public DealReservation UserPurchase { get; set; }
 
         public Store Store { get; set; }
     }

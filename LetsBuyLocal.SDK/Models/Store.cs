@@ -88,6 +88,17 @@ namespace LetsBuyLocal.SDK.Models
         public string RewardProgramType { get; set; }   //null (no Rewards Program), ELECTRONIC, PHYSICAL
 
         public bool Published { get; set; }             //Soft delete flag
+
+        /// <summary>
+        /// Gets or sets a value indicating whether visible or not[offline].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [offline]; otherwise, <c>false</c>.
+        /// </value>
+        /// <remarks>
+        /// 1. Will automatically go offline after 15 days if has no published deals.
+        /// 2. Will automatically come online when publish a deal.
+        /// </remarks>
         public bool Offline { get; set; }               //Visibility flag
 
         public DateTime? LastDealExpirationDate { get; set; }

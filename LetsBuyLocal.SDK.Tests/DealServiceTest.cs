@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Management.Instrumentation;
 using System.Threading;
+using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,7 +16,16 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
-            var deal = TestingHelper.CreateTestDealInMemory();
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            //Now create the deal
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var resp = svc.CreateDeal(deal);
 
             Assert.IsNotNull(resp.Object);
@@ -26,8 +36,16 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create a deal to get
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
             var id = createdResp.Object.Id;
@@ -41,15 +59,28 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create a deal to update
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
             //Make updates
-            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, DateTime.Now, DateTime.Now.AddDays(30));
+            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, false, DateTime.Now, DateTime.Now.AddDays(3));
             var resp = svc.UpdateDeal(updatedDeal);
-
             Assert.IsNotNull(resp.Object);
+
+            //Publish it
+            Deal pubDeal = resp.Object;
+            pubDeal.Published = true;
+            var pubResp = svc.UpdateDeal(pubDeal);
+            Assert.IsNotNull(pubResp.Object);
         }
 
         [TestMethod]
@@ -57,8 +88,16 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create a deal to delete
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
             var resp = svc.DeleteDeal(createdResp.Object.Id);
@@ -70,8 +109,16 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create a deal for this test.
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
             //Check that the method was able to return its response, since the number could be 0.
@@ -85,8 +132,16 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create a deal for this test.
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
             var resp = svc.DealHasActiveReservations(createdResp.Object.Id);
@@ -99,12 +154,20 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create and publish a Deal to unpublish
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
-            //Make updates
-            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, DateTime.Now, DateTime.Now.AddDays(30));
+            //Make updates (including publishing it).
+            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, true, DateTime.Now, DateTime.Now.AddDays(30));
             updatedDeal.Published = true;
             var pubDeal = svc.UpdateDeal(updatedDeal).Object;
 
@@ -117,15 +180,21 @@ namespace LetsBuyLocal.SDK.Tests
         public void GetLatestPublishedDealDate()
         {
             var svc = new DealService();
+
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
             
-            //ToDo: This will fail until can publish a deal; restest when that method works!
             //Create a deal and publish it
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var createdResp = svc.CreateDeal(deal);
 
             //Make updates
-            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, DateTime.Now, DateTime.Now.AddDays(30));
-            updatedDeal.Published = true;
+            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, true, DateTime.Now, DateTime.Now.AddDays(30));
             var pubDeal = svc.UpdateDeal(updatedDeal).Object;
 
             var resp = svc.GetLatestPublishedDealDate(pubDeal.StoreId);
@@ -137,49 +206,42 @@ namespace LetsBuyLocal.SDK.Tests
         {
             var svc = new DealService();
 
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
             //Create 3 published deals (expired, active, future)
-            var dealA = TestingHelper.CreateTestDealInMemory();
+            var dealA = TestingHelper.CreateTestDealInMemory(store);
             var createdRespA = svc.CreateDeal(dealA);
 
-            var dealB = TestingHelper.CreateTestDealInMemory();
+            var dealB = TestingHelper.CreateTestDealInMemory(store);
             var createdRespB = svc.CreateDeal(dealB);
 
-            var dealC = TestingHelper.CreateTestDealInMemory();
+            var dealC = TestingHelper.CreateTestDealInMemory(store);
             var createdRespC = svc.CreateDeal(dealC);
 
             //Set up some times
             var earliestTime = DateTime.Now;
 
             //Make updates for expired deal
-            var updatedDealA = TestingHelper.UpdateDeal(createdRespA.Object, earliestTime, earliestTime.AddMilliseconds(60));
-            updatedDealA.OnCompleteAction = OnCompleteAction.SaveForLater;
+            var updatedDealA = TestingHelper.UpdateDeal(createdRespA.Object, true, earliestTime, earliestTime.AddMilliseconds(60));
             var expiredDeal = svc.UpdateDeal(updatedDealA).Object;
-            //Publish it
-            expiredDeal.Published = true;
-            expiredDeal = svc.UpdateDeal(expiredDeal).Object;
-
             //Make sure the expired deal has expired
             Thread.Sleep(60);
 
             //Make updates for active deal
-            var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, earliestTime.AddMilliseconds(61), earliestTime.AddDays(30));
-            updatedDealB.ExpirationDate = DateTime.Now.AddDays(30);
-            updatedDealB.OnCompleteAction = OnCompleteAction.SaveForLater;
+            var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, true);
             var activeDeal = svc.UpdateDeal(updatedDealB).Object;
-            //Publish it
-            activeDeal.Published = true;
-            activeDeal = svc.UpdateDeal(activeDeal).Object;
 
-            var updatedDealC = TestingHelper.UpdateDeal(createdRespC.Object, earliestTime.AddDays(35), earliestTime.AddDays(40));
-            updatedDealC.ExpirationDate = DateTime.Now.AddDays(60);
-            updatedDealC.OnCompleteAction = OnCompleteAction.RunAgain;
+            //Make updates for future deal
+            var updatedDealC = TestingHelper.UpdateDeal(createdRespC.Object, true, earliestTime.AddDays(35), earliestTime.AddDays(30));
             var futureDeal = svc.UpdateDeal(updatedDealC).Object;
-            //Publish it
-            futureDeal.Published = true;
-            futureDeal = svc.UpdateDeal(futureDeal).Object;
 
             //Create a user and have user track this store
-            var userSvc = new UserService();
             var user = TestingHelper.NewUser(userSvc, false);
             user.StoreIds.Add(expiredDeal.Id);
             var userResp = userSvc.UpdateUser(user);
@@ -188,6 +250,124 @@ namespace LetsBuyLocal.SDK.Tests
             var resp = svc.GetListOfDealsByStoreAndUser(userResp.Object.Id);
             Assert.IsNotNull(resp.Object);
             Assert.AreEqual(3, resp.Object.Count);
+        }
+
+        [TestMethod]
+        public void GetListOfActiveDealsByStoreTest()
+        {
+            var svc = new DealService();
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create 2 new stores for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var categoryA = TestingHelper.GetRandomStoreCategory();
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            var categoryB = TestingHelper.GetRandomStoreCategory();
+            var storeB = TestingHelper.NewStore(categoryA, Colors.Green, Colors.DarkOrange, owner.Id);
+
+
+            //Create a published deal for each store
+
+            //Store A
+            var dealStoreA = TestingHelper.CreateTestDealInMemory(storeA);
+            var createdRespA = svc.CreateDeal(dealStoreA);
+
+            var updatedDealStoreA = TestingHelper.UpdateDeal(createdRespA.Object, true);
+            var activeDealStoreA = svc.UpdateDeal(updatedDealStoreA).Object;                //Updates deal
+
+            //Store B
+            var dealStoreB = TestingHelper.CreateTestDealInMemory(storeB);
+            var createdRespB = svc.CreateDeal(dealStoreB);
+
+            var updatedDealStoreB = TestingHelper.UpdateDeal(createdRespB.Object, true);
+            var activeDealStoreB = svc.UpdateDeal(updatedDealStoreB).Object;                //Updates deal
+
+            //Add both stores to a string array of stores.
+            var stores = new[] {storeA.Id, storeB.Id};
+
+            //Get an array of values (stores)
+            var values = new ArrayOfValues {Values = stores};
+
+            var resp = svc.GetListOfActiveDealsByStore(values);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void GetListOfLostDealsByStoreAndUserTest()
+        {
+            var svc = new DealService();
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a new store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            //Create a published deal for the store
+            var deal = TestingHelper.CreateTestDealInMemory(store);
+            var createdResp = svc.CreateDeal(deal);
+            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, true, DateTime.Now, DateTime.Now.AddMilliseconds(1));
+            var activeDeal = svc.UpdateDeal(updatedDeal).Object;                //Updates deal
+
+            //Create a user who is following this store.
+            var user = TestingHelper.NewUser(userSvc, false);
+
+            var stores = new[] {store.Id};
+            var values = new ArrayOfValues {Values = stores};
+
+            var followingResp = userSvc.CreateListOfStoresUserFollowing(user.Id, values);
+
+            //Get the deals lost by user at one of the stores.
+            var resp = svc.GetListOfLostDealsByStoreAndUser(store.Id, user.Id);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void GetListOfActiveAndFutureDealsByStoreAndUserTest()
+        {
+            var svc = new DealService();
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a new store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            //Create 2 stores
+            var categoryA = TestingHelper.GetRandomStoreCategory();
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            var categoryB = TestingHelper.GetRandomStoreCategory();
+            var storeB = TestingHelper.NewStore(categoryB, Colors.CornflowerBlue, Colors.DarkMagenta, owner.Id);
+
+            //Create a published deal for the storeA
+            var dealA = TestingHelper.CreateTestDealInMemory(storeA);
+            var createdRespA = svc.CreateDeal(dealA);
+            var updatedDealA = TestingHelper.UpdateDeal(createdRespA.Object, true, DateTime.Now, DateTime.Now.AddDays(30));
+            var activeDeal = svc.UpdateDeal(updatedDealA).Object;                //Updates deal
+
+            //Create a future deal for storeB
+            var dealB = TestingHelper.CreateTestDealInMemory(storeB);
+            var createdRespB = svc.CreateDeal(dealB);
+            var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, false, DateTime.Now.AddDays(5));
+            var futureDeal = svc.UpdateDeal(updatedDealB).Object;
+
+            //Create a user who is following this store.
+            var user = TestingHelper.NewUser(userSvc, false);
+
+            var stores = new[] { storeA.Id, storeB.Id };
+            var values = new ArrayOfValues { Values = stores };
+
+            var followingResp = userSvc.CreateListOfStoresUserFollowing(user.Id, values);   //Sets user to following these stores
+
+            var resp = svc.GetListOfActiveAndFutureDealsByStoreAndUser(user.Id, values);
+            Assert.IsTrue(resp.Object.Count == 2);
+
+            //ToDo: Check if this still fails once can publish a deal (update when Published = true)
         }
 
     }

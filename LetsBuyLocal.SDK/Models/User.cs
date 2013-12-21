@@ -31,6 +31,7 @@ namespace LetsBuyLocal.SDK.Models
         /// <summary>
         /// //Denotes whether or not user is also a business Owner.
         /// </summary>
+        /// <remarks>Is automatically set [True] when user creates first Store they own.</remarks>
         public bool IsStoreOwner { get; set; }
                             
         public string Sex { get; set; }
@@ -88,7 +89,12 @@ namespace LetsBuyLocal.SDK.Models
         public bool? SendOffersByUsMail { get; set; }
         #endregion
 
-        public List<string> StoreIds { get; set; } //List of Ids for stores that the user wants to track
+
+        /// <summary>
+        /// List of stores that user owns.
+        /// </summary>
+        /// <remarks>If list not empty, IsStoreOwner automatically set to [True].</remarks>
+        public List<string> StoreIds { get; set; }
 
         public List<string> StoreRatings { get; set; } //List of concatenated StoreIds and their rating [ StoreId|Rating ]
 

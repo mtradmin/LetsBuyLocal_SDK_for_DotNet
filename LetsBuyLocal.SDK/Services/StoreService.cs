@@ -77,7 +77,10 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append("Url");
             var path = sb.ToString();
 
-            var resp = Post<ResponseMessage<Store>>(path, store.Website);
+            var obj = new AnObject();
+            obj.value = store.Website;
+
+            var resp = Post<ResponseMessage<Store>>(path, obj);
             return resp;
         }
 
@@ -317,6 +320,44 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
+        /// Gets details about the current status of the store.
+        /// (ie., Does it have currently active deals, rewards, etc.
+        /// </summary>
+        /// <returns>A ResponseMessage containing an object of type StoreDealStatus</returns>
+        public ResponseMessage<StoreDealStatus> GetStoreStatus(string storeId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Status");
+            sb.Append("/");
+            sb.Append(storeId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<StoreDealStatus>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets the number of users following the store
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type Int32.</returns>
+        public ResponseMessage<Int32> GetNumberStoreFollowers(string storeId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("Followers");
+            sb.Append("/");
+            sb.Append(storeId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<Int32>>(path);
+            return resp;
+        }
+
+        /// <summary>
         /// Checks the user in at a store.
         /// </summary>
         /// <param name="storeId">The store identifier.</param>
@@ -339,5 +380,25 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
+
+
     }
+
+
+    //ToDo: Move this class into Shared folder
+    //********************************************************************************************************************************************************
+    //Inline class used to form an object with one named parameter (value).
+
+
+    /// <summary>
+    /// Provides an object with a single, named parameter for API methods requiring it
+    /// </summary>
+    public class AnObject
+    {
+        public string value { get; set; }
+
+    }
+
+    //********************************************************************************************************************************************************
+
 }
