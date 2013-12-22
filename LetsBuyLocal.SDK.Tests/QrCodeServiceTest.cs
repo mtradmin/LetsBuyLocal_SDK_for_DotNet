@@ -38,6 +38,9 @@ namespace LetsBuyLocal.SDK.Tests
             sb.Append(".png");
             var path = sb.ToString();
 
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+    
             File.WriteAllBytes(path, resp);
 
             Assert.IsTrue(File.Exists(path));

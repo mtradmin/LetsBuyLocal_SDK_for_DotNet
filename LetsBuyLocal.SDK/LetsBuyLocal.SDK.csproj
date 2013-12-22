@@ -51,6 +51,7 @@
     <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\Authorization.cs" />
     <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\StringValue.cs" />
     <Compile Include="Models\DateParameter.cs" />
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\Country.cs" />

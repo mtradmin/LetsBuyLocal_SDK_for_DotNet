@@ -30,8 +30,8 @@ namespace LetsBuyLocal.SDK.Tests
                 var createdResp = dSvc.CreateDeal(deal);
 
                 //Create an image to upload
-                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(createdResp.Object.Id);
-                if (copiedImage)
+//                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(createdResp.Object.Id);
+//                if (copiedImage)
                     id = createdResp.Object.Id;
             }
             else if (imageType == ImageTypes.Stores)
@@ -44,8 +44,8 @@ namespace LetsBuyLocal.SDK.Tests
                 var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
                 //Create an image to upload
-                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(store.Id);
-                if (copiedImage)
+//                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(store.Id);
+//                if (copiedImage)
                     id = store.Id;
             }
             else
@@ -55,15 +55,15 @@ namespace LetsBuyLocal.SDK.Tests
                 var user = TestingHelper.NewUser(uSvc, false);
 
                 //Create an image to upload
-                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(user.Id);
-                if (copiedImage)
+//                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(user.Id);
+//                if (copiedImage)
                     id = user.Id;
             }
 
             //Now, try to upload the image
             if (id != String.Empty)
             {
-                var resp = svc.UploadImage(id, imageType);
+                var resp = svc.UploadImage(id, imageType, TestingHelper.CreateImage("TESTING"));
                 Assert.IsTrue(resp.Object);
             }
             else

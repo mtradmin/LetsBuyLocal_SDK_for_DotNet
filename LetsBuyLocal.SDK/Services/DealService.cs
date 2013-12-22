@@ -145,8 +145,9 @@ namespace LetsBuyLocal.SDK.Services
         /// and all active/future deals for the specified user and stores they are tracking.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="storeIds">List of store identifiers</param>
         /// <returns>A ResponseMessage containing an object of type IList Of Deal.</returns>
-        public ResponseMessage<IList<Deal>> GetListOfDealsByStoreAndUser(string userId)
+        public ResponseMessage<IList<Deal>> GetListOfDealsByStoreAndUser(string userId, string[] storeIds)
         {
             var sb = new StringBuilder();
             sb.Append("Deal");
@@ -156,7 +157,8 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append(userId);
             var path = sb.ToString();
 
-            var resp = Post<ResponseMessage<IList<Deal>>>(path);
+            var stores = new ArrayOfValues() { Values = storeIds };
+            var resp = Post<ResponseMessage<IList<Deal>>>(path, stores);
             return resp;
         }
 

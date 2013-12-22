@@ -2,6 +2,9 @@
 using System.Configuration;
 using System.Net;
 using Newtonsoft.Json;
+using System.IO;
+using System.Text;
+using System.Net.Http;
 
 namespace LetsBuyLocal.SDK.Services
 {
@@ -12,6 +15,8 @@ namespace LetsBuyLocal.SDK.Services
     {
         private static readonly string BaseUrl;
         private static readonly string ApiVersion;
+        private string BoundaryNo = DateTime.Now.Ticks.ToString();
+        private Stream UploadStream;
 
         /// <summary>
         /// Initializes BaseService, setting base URL and API version for path.
@@ -98,6 +103,32 @@ namespace LetsBuyLocal.SDK.Services
         }
 
         /// <summary>
+        /// Uploads a file to the server
+        /// </summary>
+        /// <typeparam name="T">Type of object</typeparam>
+        /// <param name="path">Object path</param>
+        /// <param name="file">File stream</param>
+        /// <returns>A response object</returns>
+        protected T Upload<T>(string path, Stream file)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Authorization", ConfigurationManager.AppSettings["AuthorizationToken"]);
+
+            //if there is a store api key, send it
+            if (ConfigurationManager.AppSettings["StoreApiKey"] != null)
+            {
+                client.DefaultRequestHeaders.Add("StoreApiKey", ConfigurationManager.AppSettings["StoreApiKey"]);
+            }
+
+            var content = new StreamContent(file);
+            var mpcontent = new MultipartFormDataContent();
+            mpcontent.Add(content, "image/png", "tmp.png");
+
+            var response = client.PostAsync(BuildPath(path), mpcontent).Result.Content.ReadAsStringAsync().Result; 
+            return JsonConvert.DeserializeObject<T>(response);
+        }
+
+        /// <summary>
         ///     Gets a WebClient with the appropriate information added to the Headers.
         /// </summary>
         /// <returns>A WebClient object</returns>
@@ -125,5 +156,6 @@ namespace LetsBuyLocal.SDK.Services
         {
             return BaseUrl + ApiVersion + "/" + path;
         }
+
     }
 }

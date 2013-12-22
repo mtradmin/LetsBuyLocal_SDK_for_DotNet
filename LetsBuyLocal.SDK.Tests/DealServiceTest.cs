@@ -4,6 +4,7 @@ using System.Threading;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace LetsBuyLocal.SDK.Tests
 {
@@ -142,27 +143,31 @@ namespace LetsBuyLocal.SDK.Tests
             var createdRespA = svc.CreateDeal(dealA);
 
             var dealB = TestingHelper.CreateTestDealInMemory();
+            dealB.StoreId = dealA.StoreId;
             var createdRespB = svc.CreateDeal(dealB);
 
             var dealC = TestingHelper.CreateTestDealInMemory();
+            dealC.StoreId = dealA.StoreId;
             var createdRespC = svc.CreateDeal(dealC);
 
             //Set up some times
             var earliestTime = DateTime.Now;
 
             //Make updates for expired deal
-            var updatedDealA = TestingHelper.UpdateDeal(createdRespA.Object, earliestTime, earliestTime.AddMilliseconds(60));
+            var updatedDealA = TestingHelper.UpdateDeal(createdRespA.Object, earliestTime, earliestTime.AddMinutes(1));
             updatedDealA.OnCompleteAction = OnCompleteAction.SaveForLater;
             var expiredDeal = svc.UpdateDeal(updatedDealA).Object;
             //Publish it
             expiredDeal.Published = true;
+            expiredDeal.StartDate = DateTime.Now;
+            expiredDeal.ExpirationDate = DateTime.Now.AddMinutes(1);
             expiredDeal = svc.UpdateDeal(expiredDeal).Object;
 
             //Make sure the expired deal has expired
-            Thread.Sleep(60);
+            Thread.Sleep(60000);
 
             //Make updates for active deal
-            var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, earliestTime.AddMilliseconds(61), earliestTime.AddDays(30));
+            var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, earliestTime.AddMinutes(1), earliestTime.AddDays(30));
             updatedDealB.ExpirationDate = DateTime.Now.AddDays(30);
             updatedDealB.OnCompleteAction = OnCompleteAction.SaveForLater;
             var activeDeal = svc.UpdateDeal(updatedDealB).Object;
@@ -181,11 +186,12 @@ namespace LetsBuyLocal.SDK.Tests
             //Create a user and have user track this store
             var userSvc = new UserService();
             var user = TestingHelper.NewUser(userSvc, false);
-            user.StoreIds.Add(expiredDeal.Id);
+            user.StoreIds = new List<string>();
+            user.StoreIds.Add(expiredDeal.StoreId);
             var userResp = userSvc.UpdateUser(user);
 
             //Now see what we get
-            var resp = svc.GetListOfDealsByStoreAndUser(userResp.Object.Id);
+            var resp = svc.GetListOfDealsByStoreAndUser(userResp.Object.Id, new string[] { expiredDeal.StoreId });
             Assert.IsNotNull(resp.Object);
             Assert.AreEqual(3, resp.Object.Count);
         }

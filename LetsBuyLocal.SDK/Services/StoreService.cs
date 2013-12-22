@@ -77,7 +77,8 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append("Url");
             var path = sb.ToString();
 
-            var resp = Post<ResponseMessage<Store>>(path, store.Website);
+            var url = new StringValue() { Value = store.Website };
+            var resp = Post<ResponseMessage<Store>>(path, url);
             return resp;
         }
 
@@ -232,7 +233,7 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append("Exists");
             var s = sb.ToString();
 
-            var store = new Store {Website = url};
+            var store = new StringValue {Value = url};
 
             var resp = Post<ResponseMessage<Store>>(s, store);
             return resp;

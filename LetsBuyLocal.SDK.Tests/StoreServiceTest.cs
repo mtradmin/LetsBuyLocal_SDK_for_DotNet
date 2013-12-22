@@ -294,6 +294,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             var category = TestingHelper.GetRandomStoreCategory();
             var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
+            store.Published = true;
             var geoPointA = TestingHelper.GetGeoPoint();
             store = svc.UpdateStoreLocation(store.Id, geoPointA).Object;
 

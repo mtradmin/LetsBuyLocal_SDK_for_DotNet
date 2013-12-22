@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LetsBuyLocal.SDK.Models;
+using System.IO;
 
 namespace LetsBuyLocal.SDK.Services
 {
@@ -14,8 +15,9 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="type">The type.</param>
+        /// <param name="image">image stream.</param>
         /// <returns>A ResponseMessage containing an object of type Boolean.</returns>
-        public ResponseMessage<bool> UploadImage(string id, string type)
+        public ResponseMessage<bool> UploadImage(string id, string type, Stream image)
         {
             var sb = new StringBuilder();
             sb.Append("Image");
@@ -27,7 +29,7 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append(type);
             var path = sb.ToString();
 
-            var resp = Post<ResponseMessage<bool>>(path);
+            var resp = Upload<ResponseMessage<bool>>(path, image);
             return resp;
         }
     }
