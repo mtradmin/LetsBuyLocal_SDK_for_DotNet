@@ -38,8 +38,8 @@ namespace LetsBuyLocal.SDK.Tests
             sb.Append(".png");
             var path = sb.ToString();
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(pathDownload + imageFolder))
+                Directory.CreateDirectory(pathDownload + imageFolder);
     
             File.WriteAllBytes(path, resp);
 
