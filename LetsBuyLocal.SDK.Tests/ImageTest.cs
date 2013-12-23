@@ -26,7 +26,16 @@ namespace LetsBuyLocal.SDK.Tests
             {
                 //Will need to create a Deal and get its Id
                 var dSvc = new DealService();
-                var deal = TestingHelper.CreateTestDealInMemory();
+
+                //Create a new store for this test
+                var storeSvc = new StoreService();
+                var userSvc = new UserService();
+                var owner = TestingHelper.NewUser(userSvc, true);
+
+                var category = TestingHelper.GetRandomStoreCategory();
+                var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+                var deal = TestingHelper.CreateTestDealInMemory(store);
                 var createdResp = dSvc.CreateDeal(deal);
 
                 //Create an image to upload

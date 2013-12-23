@@ -27,13 +27,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </returns>
         public static User NewUser(UserService svc, bool isAnOwner)
         {
-            User user;
-
-            if (isAnOwner)
-                user = CreateNewTestUserInMemory();
-            else
-                user = CreateNewTestStoreOwnerInMemory();
-
+            User user = CreateNewTestUserInMemory();
             var testUser = svc.CreateUser(user).Object;
 
             return testUser;
@@ -45,7 +39,10 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <param name="category">The store category.</param>
         /// <param name="primaryColor">Primary color.</param>
         /// <param name="secondaryColor">Secondary color.</param>
-        /// <returns>A  Store.</returns>
+        /// <param name="ownerId">The owner identifier.</param>
+        /// <returns>
+        /// A  Store.
+        /// </returns>
         public static Store NewStore(string category, string primaryColor, string secondaryColor, string ownerId)
         {
             var svc = new StoreService();
@@ -182,64 +179,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             user.Country = "USA";                                                   //See: GetConfiguration
             user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
             user.TimeZone = WiTimeZone();                                //See: GetConfiguration
-            user.IsStoreOwner = false;
-            user.ShowStoreAlerts = true;
-            user.ShowDealAlerts = true;
-            user.ShowCouponAlerts = true;
-            user.FacebookUserId = null;                     //Numeric string: https://developers.facebook.com/docs/graph-api/reference/user/
-            user.ReservedDeals = 0;
-            user.RedeemedDeals = 0;
-            user.CurrentLevel = 0;
-            //user.HasFollowedStore = false;                //Is set internally
-            user.AgreedToTerms = DateTime.Now;              //Nullable
-
-            //Size Information
-            user.ShoeSize = GetRandomNumeric(2);
-            user.GloveSize = GetRandomNumeric(1);
-            user.FavoriteBrand = GetRandomString(25);
-            user.TshirtSize = GetRandomString(2);
-            user.PantsWaist = GetRandomNumeric(2);
-            user.FavoriteColor = "Green";
-            user.Dress = GetRandomString(2);
-            user.PantsInseam = GetRandomNumeric(2);
-            user.ShareSizeInfo = false;
-
-            //Marketing Information                         //All fields nullable
-            user.SendOffersByEmail = null;
-            user.SendOffersByText = null;
-            user.SendOffersByFacebook = null;
-            user.SendOffersByUsMail = null;
-
-            return user;
-        }
-
-        /// <summary>
-        /// Creates the new test store owner in memory.
-        /// </summary>
-        /// <returns>A User object for an owner.</returns>
-        public static User CreateNewTestStoreOwnerInMemory()
-        {
-            var user = new User();
-            string baseEmailName = ConfigurationManager.AppSettings["BaseEmailName"];
-            string atEmail = ConfigurationManager.AppSettings["AtEmail"];
-
-            user.Password = GetRandomString(8);
-            user.Email = GetEmailAlias(baseEmailName, atEmail);                 //Required & valid
-            user.FirstName = GetRandomString(25);                 //Required & valid
-            user.LastName = GetRandomString(25);                  //Required & valid
-            user.Sex = GetSex();
-            user.Image = @"C:\Users\Public\Pictures\Sample Pictures/Koala.jpg";
-            user.MobilePhoneNumber = GetRandomPhoneNumber(10);        //Required
-            user.HomePhoneNumber = String.Empty;
-            user.AddressLine1 = GetRandomNumeric(3) + GetRandomString(25);
-            user.AddressLine2 = String.Empty;
-            user.City = GetRandomString(12);
-            user.State = "WI";
-            user.Zip = GetRandomNumeric(5);
-            user.Country = "USA";                                                   //See: GetConfiguration
-            user.BirthDate = DateTime.Now.AddYears(-(GetRandomInteger(14, 115)));   //Nullable
-            user.TimeZone = WiTimeZone();                                //See: GetConfiguration
-            user.IsStoreOwner = true;   //This is the field denoting is owner
+            //user.IsStoreOwner = null;                         //Flag is set when store user owns is created.
             user.ShowStoreAlerts = true;
             user.ShowDealAlerts = true;
             user.ShowCouponAlerts = true;
@@ -274,22 +214,15 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Creates a test deal in memory.
         /// </summary>
         /// <returns>A Deal object.</returns>
-        public static Deal CreateTestDealInMemory()
+        public static Deal CreateTestDealInMemory(Store store)
         {
-            //Create a store that will run this deal.
-            var userSvc = new UserService();
-            var owner = TestingHelper.NewUser(userSvc, true);
-
-            string category = GetRandomStoreCategory();
-            var store = NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
-
             var deal = new Deal
             {
                 StoreId = store.Id,                                             //Required
                 Title = "This deal is " + GetRandomString(25),                  //Required
                 Description = GetRandomString(50),
                 TotalAvailable = Convert.ToInt32(GetRandomNumeric(2)),          //Required
-                //Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
+                Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
                 //public int ExtensionDays { get; set; }
                 //OnCompleteAction = "RunAgain",                                //(RunAgain/SaveForLater/Delete)
                 //ExpirationDate = DateTime.Now.AddMonths(1),                   //Nullable
@@ -470,7 +403,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             store.ReceiptId = null;
             store.RewardProgramType = null;            //null (no Rewards Program), ELECTRONIC, PHYSICAL
             store.Published = true;                      //Soft delete flag
-            store.Offline = false;                        //Visibility flag
+            //store.Offline = false;                        //Visibility flag, handled by API
             store.LastDealExpirationDate = null;
             store.PublishAlertsToFb = false;
             store.PublishDealsToFb = false;
@@ -515,16 +448,16 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <returns>
         /// The updated deal object.
         /// </returns>
-        public static Deal UpdateDeal(Deal deal, DateTime? startDate, DateTime? expDate)
+        public static Deal UpdateDeal(Deal deal,  bool published, DateTime? startDate = null, DateTime? expDate = null)
         {
             deal.TotalAvailable = Convert.ToInt32(GetRandomNumeric(2));       //Required
-            deal.Hint = deal.Hint + " updated";
+            deal.Hint = deal.Hint + " updated";                                 //Required, if published
                 //public int ExtensionDays { get; set; }
             deal.OnCompleteAction = OnCompleteAction.SaveForLater;               //(RunAgain/SaveForLater/Delete)
             deal.ExpirationDate = expDate;                 //Nullable
-            deal.StartDate = startDate;                                   //Nullable
-                //Published = false
-            deal.NormalPrice = 7.39m;                                        //Nullable
+            deal.StartDate = startDate;                                   //Nullable, if null will be set by API, based on last deal's expiration date
+            deal.Published = published;
+            deal.NormalPrice = 7.39m;                                        //Nullable, must exist in tandem with PercentOff
             deal.PercentOff = 3;
                 //public string CopiedFromId { get; set; }
                 //public DateTime? PostedToFacebook { get; set; }
@@ -687,7 +620,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 return false;
         }
 
-        public static Stream CreateImage(String text)
+        public static byte[] CreateImage(String text)
         {
             var font = new Font("Times New Roman", 12.0f);
 
@@ -720,7 +653,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             var ms = new MemoryStream();
             img.Save(ms, ImageFormat.Png);
             ms.Position = 0;
-            return ms;
+            return ms.ToArray();
 
         }
 

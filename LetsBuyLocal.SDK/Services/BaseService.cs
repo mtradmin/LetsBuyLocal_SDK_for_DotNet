@@ -109,7 +109,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="path">Object path</param>
         /// <param name="file">File stream</param>
         /// <returns>A response object</returns>
-        protected T Upload<T>(string path, Stream file)
+        protected T Upload<T>(string path, byte[] file)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", ConfigurationManager.AppSettings["AuthorizationToken"]);
@@ -120,12 +120,16 @@ namespace LetsBuyLocal.SDK.Services
                 client.DefaultRequestHeaders.Add("StoreApiKey", ConfigurationManager.AppSettings["StoreApiKey"]);
             }
 
-            var content = new StreamContent(file);
-            var mpcontent = new MultipartFormDataContent();
-            mpcontent.Add(content, "image/png", "tmp.png");
+            using (var ms = new MemoryStream(file))
+            {
+                ms.Position = 0;
+                var content = new StreamContent(ms);
+                var mpcontent = new MultipartFormDataContent();
+                mpcontent.Add(content, "image/png", "tmp.png");
 
-            var response = client.PostAsync(BuildPath(path), mpcontent).Result.Content.ReadAsStringAsync().Result; 
-            return JsonConvert.DeserializeObject<T>(response);
+                var response = client.PostAsync(BuildPath(path), mpcontent).Result.Content.ReadAsStringAsync().Result;
+                return JsonConvert.DeserializeObject<T>(response);
+            }
         }
 
         /// <summary>

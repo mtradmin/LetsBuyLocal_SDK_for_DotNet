@@ -17,7 +17,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="type">The type.</param>
         /// <param name="image">image stream.</param>
         /// <returns>A ResponseMessage containing an object of type Boolean.</returns>
-        public ResponseMessage<bool> UploadImage(string id, string type, Stream image)
+        public ResponseMessage<bool> UploadImage(string id, string type, byte[] image)
         {
             var sb = new StringBuilder();
             sb.Append("Image");

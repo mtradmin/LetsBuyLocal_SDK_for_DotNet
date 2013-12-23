@@ -21,7 +21,7 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp.Object);
 
             //Create a new user (owner) for this test.
-            var owner = TestingHelper.CreateNewTestStoreOwnerInMemory();
+            var owner = TestingHelper.CreateNewTestUserInMemory();
             var ownerResp = svc.CreateUser(owner);
             Assert.IsNotNull((ownerResp.Object));
         }

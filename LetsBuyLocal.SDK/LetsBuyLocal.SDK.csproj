@@ -56,7 +56,7 @@
     <Compile Include="Models\ErrorMessage.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Deal.cs" />
-    <Compile Include="Models\DealPurchase.cs" />
+    <Compile Include="Models\DealReservation.cs" />
     <Compile Include="Models\DealRedemption.cs" />
     <Compile Include="Models\DealUnlock.cs" />
     <Compile Include="Models\Device.cs" />

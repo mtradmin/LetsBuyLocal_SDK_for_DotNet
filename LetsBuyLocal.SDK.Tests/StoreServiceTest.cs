@@ -105,17 +105,22 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void LoadStoreDetailsByUserTest()
         {
+            //Create a new store for this test
             var svc = new StoreService();
+            var userSvc = new UserService();
+            var owner = TestingHelper.NewUser(userSvc, true);
 
-            //Create a deal (and store) for this test
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            //Create a deal for this test
             var dealSvc = new DealService();
-            var deal = TestingHelper.CreateTestDealInMemory();
+            var deal = TestingHelper.CreateTestDealInMemory(store);
             var dealResp = dealSvc.CreateDeal(deal);
             if (dealResp.Object == null)
                 throw new ApplicationException("Unable to create a deal as part of the set up for this test.");
 
             //Create a user for this test
-            var userSvc = new UserService();
             var user = TestingHelper.NewUser(userSvc, false);
             if (user == null)
                 throw new ApplicationException("Unable to create a user as part of the set up for this test.");
@@ -248,6 +253,35 @@ namespace LetsBuyLocal.SDK.Tests
         }
 
         [TestMethod]
+        public void GetLastStoreCheckinForUserTest()
+        {
+            var svc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
+
+            //Create a user for this test
+            var user = TestingHelper.NewUser(userSvc, false);
+
+            //Co-locate the store and user.
+            var geoPoint = TestingHelper.GetGeoPoint();
+            store = svc.UpdateStoreLocation(store.Id, geoPoint).Object;
+
+            //Now check the user in at store
+            var CheckinResp = svc.CheckInAtStore(store.Id, user.Id, geoPoint);  //Used to create the Checkin.
+
+            //And get the Checkin
+            var resp = svc.GetLastStoreCheckinForUser(store.Id, user.Id);
+            Assert.IsNotNull(resp.Object);
+
+            
+        }
+
+        [TestMethod]
         public void StoreExistsForUrlTest()
         {
             var svc = new StoreService();
@@ -273,14 +307,17 @@ namespace LetsBuyLocal.SDK.Tests
             var userSvc = new UserService();
             var owner = TestingHelper.NewUser(userSvc, true);
 
-            var category = TestingHelper.GetRandomStoreCategory();
-            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
+            var categoryA = TestingHelper.GetRandomStoreCategory();
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Brown, Colors.BurlyWood, owner.Id);
 
+            //Now create another store for the same owner
+            var categoryB = TestingHelper.GetRandomStoreCategory();
+            var storeB = TestingHelper.NewStore(categoryA, Colors.DarkRed, Colors.BurlyWood, owner.Id);
 
-            //Now get this store for this owner
+            //Now get these stores for this owner
             var resp = svc.GetStoresForOwner(owner.Id);
             Assert.IsNotNull(resp.Object);
-            //ToDo: Once know how store-owner relationship maintained, create 2 stores for owner and Assert count == 2.
+            Assert.IsTrue(resp.Object.Count == 2);
         }
 
         [TestMethod]
@@ -321,6 +358,59 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsTrue(resp.Object);
         }
 
+        [TestMethod]
+        public void GetStoreStatusTest()
+        {
+            var svc = new StoreService();
+            var userSvc = new UserService();
+            var dealSvc = new DealService();
+
+            //Create a new store for this test
+            var storeSvc = new StoreService();
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            //Create a deal for this store
+            var deal = TestingHelper.CreateTestDealInMemory(store);
+            var testDeal = dealSvc.CreateDeal(deal);
+
+            //ToDo: Once can update deals, Update the deal so status active and check if has deals (active)
+
+            //Create a reward for this test
+            var rewardSvc = new RewardService();
+            var reward = TestingHelper.NewReward(rewardSvc, store.Id);
+            var rewardResp = rewardSvc.CreateReward(reward);
+            Assert.IsNotNull(rewardResp.Object);
+
+            var resp = svc.GetStoreStatus(store.Id);
+            Assert.IsTrue(resp.Object.HasRewards);
+        }
+
+        [TestMethod]
+        public void GetNumberStoreFollowersTest()
+        {
+            var svc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a store for this test.
+            var owner = TestingHelper.NewUser(userSvc, true);
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.CornflowerBlue, Colors.BurlyWood, owner.Id);
+
+            //Create a user for this test
+            var user = TestingHelper.NewUser(userSvc, false);
+
+            //Update the user
+            var stores = new[] { store.Id };
+            var values = new ArrayOfValues { Values = stores };
+            var listResp = userSvc.CreateListOfStoresUserFollowing(user.Id, values);    //Variable not used, but creates list!
+
+            //Now check how many users following store.
+            var resp = svc.GetNumberStoreFollowers(store.Id);
+            Assert.IsTrue(resp.Object == 2);                                            //Owner and user
+        }
 
         [TestMethod]
         public void CheckInAtStoreTest()
