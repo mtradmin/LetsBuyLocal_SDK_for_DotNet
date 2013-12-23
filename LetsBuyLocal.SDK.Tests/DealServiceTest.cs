@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Management.Instrumentation;
 using System.Threading;
 using LetsBuyLocal.SDK.Models;
@@ -341,10 +342,9 @@ namespace LetsBuyLocal.SDK.Tests
         public void GetListOfActiveAndFutureDealsByStoreAndUserTest()
         {
             var svc = new DealService();
-            var storeSvc = new StoreService();
             var userSvc = new UserService();
 
-            //Create a new store for this test
+            //Create a new owner for this test
             var owner = TestingHelper.NewUser(userSvc, true);
 
             //Create 2 stores
@@ -364,7 +364,7 @@ namespace LetsBuyLocal.SDK.Tests
             var dealB = TestingHelper.CreateTestDealInMemory(storeB);
             var createdRespB = svc.CreateDeal(dealB);
             var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, true, DateTime.Now.AddDays(35), DateTime.Now.AddDays(40));
-            var futureDeal = svc.UpdateDeal(updatedDealB).Object;
+            var futureDeal = svc.UpdateDeal(updatedDealB).Object;               //Updates deal
 
             //Create a user who is following this store.
             var user = TestingHelper.NewUser(userSvc, false);
@@ -376,9 +376,121 @@ namespace LetsBuyLocal.SDK.Tests
 
             var resp = svc.GetListOfActiveAndFutureDealsByStoreAndUser(user.Id, values);
             Assert.IsTrue(resp.Object.Count == 2);
-
-            //ToDo: Check if this still fails once can publish a deal (update when Published = true)
         }
 
+        [TestMethod]
+        public void GetListOfAllDealsByStoreTest()
+        {
+            var svc = new DealService();
+            var userSvc = new UserService();
+
+            //Create a new owner for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            //Create 3 stores
+            var categoryA = TestingHelper.GetRandomStoreCategory();
+            var storeA = TestingHelper.NewStore(categoryA, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            var categoryB = TestingHelper.GetRandomStoreCategory();
+            var storeB = TestingHelper.NewStore(categoryB, Colors.CornflowerBlue, Colors.DarkMagenta, owner.Id);
+
+            var categoryC = TestingHelper.GetRandomStoreCategory();
+            var storeC = TestingHelper.NewStore(categoryC, Colors.Gray, Colors.DarkRed, owner.Id);
+
+            //Create an expired deal for storeC
+            var dealC = TestingHelper.CreateTestDealInMemory(storeC);
+            var createdRespC = svc.CreateDeal(dealC);
+            var updatedDealC = TestingHelper.UpdateDeal(createdRespC.Object, true, DateTime.Now,
+                DateTime.Now.AddMilliseconds(1));                               //Updates deal
+
+            //Create a published deal for the storeA
+            var dealA = TestingHelper.CreateTestDealInMemory(storeA);
+            var createdRespA = svc.CreateDeal(dealA);
+            var updatedDealA = TestingHelper.UpdateDeal(createdRespA.Object, true, DateTime.Now, DateTime.Now.AddDays(30));
+            var activeDeal = svc.UpdateDeal(updatedDealA).Object;                //Updates deal
+
+            //Create a future deal for storeB
+            var dealB = TestingHelper.CreateTestDealInMemory(storeB);
+            var createdRespB = svc.CreateDeal(dealB);
+            var updatedDealB = TestingHelper.UpdateDeal(createdRespB.Object, true, DateTime.Now.AddDays(35), DateTime.Now.AddDays(40));
+            var futureDeal = svc.UpdateDeal(updatedDealB).Object;               //Updates deal
+
+            //Build the array of values.
+            var stores = new[] { storeA.Id, storeB.Id, storeC.Id };
+            var values = new ArrayOfValues { Values = stores };
+
+            var resp = svc.GetListOfAllDealsByStore(values);
+            Assert.IsTrue(resp.Object.Count == 3);
+        }
+
+        [TestMethod]
+        public void GetDealByRedemptionIdTest()
+        {
+            //var svc = new DealService();
+            //var resp = svc.GetDealByRedemptionId(redemptionId);
+            //Assert.IsNotNull(resp.Object);
+
+            Assert.Fail();
+        }
+
+
+        [TestMethod]
+        public void RedeemDealTest()
+        {
+            var svc = new DealService();
+
+            //var resp = svc.RedeemDeal(dealId, purchaseId, userId);
+            //Assert.IsNotNull(resp.Object);
+
+            Assert.Fail();
+            //ToDo: Write tests to split child objects out from this object.
+        }
+
+        [TestMethod]
+        public void ReserveDealTest()
+        {
+            //var svc = new DealService();
+
+
+            //var resp = svc.ReserveDeal(dealId, userId, storeId, receiptId);
+            //Assert.IsNotNull(resp.Object);
+            ////ToDo: Write tests to split child objects out from this object.
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void UnlockDealTest()
+        {
+            var svc = new DealService();
+            var storeSvc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a new store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+            //Create a published deal for the store
+            var deal = TestingHelper.CreateTestDealInMemory(store);
+            var createdResp = svc.CreateDeal(deal);
+            var updatedDeal = TestingHelper.UpdateDeal(createdResp.Object, true, DateTime.Now, DateTime.Now.AddMilliseconds(1));
+            var activeDeal = svc.UpdateDeal(updatedDeal).Object;                
+
+            //Create a user who is following this store.
+            var user = TestingHelper.NewUser(userSvc, false);
+            var stores = new[] { store.Id };
+            var values = new ArrayOfValues { Values = stores };
+            var followingResp = userSvc.CreateListOfStoresUserFollowing(user.Id, values);   //Updates user's list of stores is following
+
+            var receiptId = TestingHelper.GetRandomString(15);
+
+            var resp = svc.UnlockDeal(activeDeal.Id, user.Id, store.Id, receiptId);
+            Assert.IsNotNull(resp);
+            if (user.KeysToTheCity != null)
+                Assert.IsNotNull(resp.Object);
+
+            //ToDo: Once know how to create a user with KeysToTheCity, create a 2nd user following this deal and check that resp.Object is not null
+        }
     }
 }

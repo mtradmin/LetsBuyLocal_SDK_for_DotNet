@@ -2,6 +2,18 @@
 
 namespace LetsBuyLocal.SDK.Models
 {
+    /// <summary>
+    /// Represents the reservation of a Deal by a User.
+    /// </summary>
+    /// <remarks>
+    /// 1. User must have reservation (points) available - User.Field????
+    ///     - Increase with checkins
+    /// 2. Can reserve Deal early if have KeyToTheCity
+    ///     - 10 checkins = a KeyToTheCity
+    /// 3. Expires after 24 hours (when does clock start for early reservations????)
+    /// 
+    /// Note: Renamed from "DealPurchase".
+    /// </remarks>
     public class DealReservation : BaseEntity
     {
         public string StoreId { get; set; }

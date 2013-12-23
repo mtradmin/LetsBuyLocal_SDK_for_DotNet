@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Shared;
@@ -324,6 +325,7 @@ namespace LetsBuyLocal.SDK.Tests
         public void LocateStoreTest()
         {
             var svc = new StoreService();
+            var dealSvc = new DealService();
 
             //Create a store at a location for this test
             var userSvc = new UserService();
@@ -332,6 +334,20 @@ namespace LetsBuyLocal.SDK.Tests
             var category = TestingHelper.GetRandomStoreCategory();
             var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
             store.Published = true;
+
+            //Create a published (active)  deal for this store
+            var deal = TestingHelper.CreateTestDealInMemory(store);
+            var testDeal = dealSvc.CreateDeal(deal).Object;
+            var updatedDeal = TestingHelper.UpdateDeal(testDeal, true, DateTime.Now, DateTime.Now.AddDays(30));
+            var activeDeal = dealSvc.UpdateDeal(updatedDeal).Object;        //Creates active deal               
+
+            //Create a reward for this test
+            var rewardSvc = new RewardService();
+            var reward = TestingHelper.NewReward(rewardSvc, store.Id);
+            var rewardResp = rewardSvc.CreateReward(reward);
+            Assert.IsNotNull(rewardResp.Object);
+
+            //Now get its location
             var geoPointA = TestingHelper.GetGeoPoint();
             store = svc.UpdateStoreLocation(store.Id, geoPointA).Object;
 
@@ -372,11 +388,15 @@ namespace LetsBuyLocal.SDK.Tests
             var category = TestingHelper.GetRandomStoreCategory();
             var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
 
-            //Create a deal for this store
-            var deal = TestingHelper.CreateTestDealInMemory(store);
-            var testDeal = dealSvc.CreateDeal(deal);
+            //Create an unpublished (inactive) deal for this store
+            var deal2 = TestingHelper.CreateTestDealInMemory(store);
+            var inactiveDeal = dealSvc.CreateDeal(deal2).Object;            //Creates inactive deal
 
-            //ToDo: Once can update deals, Update the deal so status active and check if has deals (active)
+            //Create a published (active)  deal for this store
+            var deal = TestingHelper.CreateTestDealInMemory(store);
+            var testDeal = dealSvc.CreateDeal(deal).Object;
+            var updatedDeal = TestingHelper.UpdateDeal(testDeal, true, DateTime.Now, DateTime.Now.AddDays(30));
+            var activeDeal = dealSvc.UpdateDeal(updatedDeal).Object;        //Creates active deal               
 
             //Create a reward for this test
             var rewardSvc = new RewardService();
@@ -386,6 +406,8 @@ namespace LetsBuyLocal.SDK.Tests
 
             var resp = svc.GetStoreStatus(store.Id);
             Assert.IsTrue(resp.Object.HasRewards);
+            Assert.IsTrue(resp.Object.HasDeals);
+            Assert.IsTrue(resp.Object.HasInactiveDeals);
         }
 
         [TestMethod]
@@ -434,6 +456,71 @@ namespace LetsBuyLocal.SDK.Tests
             //Now check the user in at store
             var resp = svc.CheckInAtStore(store.Id, user.Id, geoPoint);
             Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void AddRewardsCardForUserTest()
+        {
+            var svc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
+
+            //Create a user for this test
+            var user = TestingHelper.NewUser(userSvc, false);
+
+            //Create a rewardsNumber
+            var rewardsNumber = TestingHelper.GetRandomString(15);
+
+            var resp = svc.AddRewardsCardForUser(store.Id, user.Id, rewardsNumber);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void RemoveRewardsCardForUserTest()
+        {
+            var svc = new StoreService();
+            var userSvc = new UserService();
+
+            //Create a store for this test
+            var owner = TestingHelper.NewUser(userSvc, true);
+
+            var category = TestingHelper.GetRandomStoreCategory();
+            var store = TestingHelper.NewStore(category, Colors.Brown, Colors.BurlyWood, owner.Id);
+
+            //Create a user for this test
+            var user = TestingHelper.NewUser(userSvc, false);
+
+            var resp = svc.RemoveRewardsCardForUser(store.Id, user.Id);
+            Assert.IsNotNull(resp.Object);
+        }
+
+        [TestMethod]
+        public void GetRewardsCardBalanceTest()
+        {
+            var svc = new StoreService();
+            //ToDo: Need to generate a valid MoreThanRewardsUserId here.
+
+            //var resp = svc.GetRewardsCardBalance(mtrUserId);
+            //Assert.IsNotNull(resp.Object);
+
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void GetRewardsCardInvoicesAndDetailsTest()
+        {
+            var svc = new StoreService();
+            //ToDo: Need to generate a valid MoreThanRewardsUserId with invoice here.
+
+            //var resp = svc.GetRewardsCardInvoicesAndDetails(mtrUserId, startPageNo, perPage, inludeDetails);
+            //Assert.IsNotNull(resp.Object);
+
+            Assert.Fail();
         }
 
     }

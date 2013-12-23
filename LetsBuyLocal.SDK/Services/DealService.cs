@@ -224,5 +224,122 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
+        /// <summary>
+        /// Gets the list of all deals by store.
+        /// </summary>
+        /// <param name="stores">The stores as an ArrayOfValues.</param>
+        /// <returns>A ResponseMessage containing an object of type IList Of Deal</returns>
+        public ResponseMessage<IList<Deal>> GetListOfAllDealsByStore(ArrayOfValues stores)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("ListAll");
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<IList<Deal>>>(path, stores);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets the deal by redemption identifier.
+        /// </summary>
+        /// <param name="redemptionId">The redemption identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type Deal.</returns>
+        public ResponseMessage<Deal> GetDealByRedemptionId(string redemptionId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("GetRedemption");
+            sb.Append("/");
+            sb.Append(redemptionId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<Deal>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Redeems the deal.
+        /// </summary>
+        /// <param name="dealId">The deal identifier.</param>
+        /// <param name="purchaseId">The purchase identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>A ResponseMessage containing an object.</returns>
+        public ResponseMessage<object> RedeemDeal(string dealId, string purchaseId, string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("Redeem");
+            sb.Append("/");
+            sb.Append(dealId);
+            sb.Append("/");
+            sb.Append(purchaseId);
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<object>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Reserves the deal.
+        /// </summary>
+        /// <param name="dealId">The deal identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="receiptId">The receipt identifier.</param>
+        /// <returns>A ResponseMessage containing an object.</returns>
+        public ResponseMessage<object> ReserveDeal(string dealId, string userId, string storeId, string receiptId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("Reserve");
+            sb.Append("/");
+            sb.Append(dealId);
+            sb.Append("/");
+            sb.Append(userId);
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(receiptId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<object>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Unlocks the deal.
+        /// </summary>
+        /// <param name="dealId">The deal identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="receiptId">The receipt identifier.</param>
+        /// <returns>A ResponseMessage containing an object.</returns>
+        public ResponseMessage<Object> UnlockDeal(string dealId, string userId, string storeId, string receiptId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Deal");
+            sb.Append("/");
+            sb.Append("Unlock");
+            sb.Append("/");
+            sb.Append(dealId);
+            sb.Append("/");
+            sb.Append(userId);
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(receiptId);
+            var path = sb.ToString();
+
+            var resp = Post<ResponseMessage<object>>(path);
+            return resp;
+        }
+
     }
 }

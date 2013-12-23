@@ -244,6 +244,11 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="ownerId">The owner identifier.</param>
         /// <returns>A ResponseMessage containing an object of type IList Of Store.</returns>
+        /// <remarks>
+        /// A store will only be found if it is not "offline." 
+        ///     - Must have at least one deal published
+        ///     - Must have at least one reward created for the store
+        /// </remarks>
         public ResponseMessage<IList<Store>> GetStoresForOwner(string ownerId)
         {
             var sb = new StringBuilder();
@@ -378,6 +383,105 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
+        /// <summary>
+        /// Adds the (Rider) rewards card to the store for user.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="rewardsNumber">The rewards card number.</param>
+        /// <returns>A ResponseMessage containing an object of type ???.</returns>
+        public ResponseMessage<object> AddRewardsCardForUser(string storeId, string userId, string rewardsNumber)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("RewardsCard");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(userId);
+            sb.Append("/");
+            sb.Append(rewardsNumber);
+            var path = sb.ToString();
+
+            //ToDo: Identify type of object returned within ResponseMessage and what it is.
+            var resp = Post<ResponseMessage<object>>(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Removes the rewards card to the store for user.
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>
+        /// A ResponseMessage containing an object of type String Array (user identifier, store identifier).
+        /// </returns>
+        public ResponseMessage<object> RemoveRewardsCardForUser(string storeId, string userId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("RewardsCard");
+            sb.Append("/");
+            sb.Append(storeId);
+            sb.Append("/");
+            sb.Append(userId);
+            var path = sb.ToString();
+
+            var resp = Delete<ResponseMessage<object>>(path);
+            return resp;
+        }
+
+        //MoreThanRewardsUserId
+        /// <summary>
+        /// Gets the rewards card balance for the MoreThanRewards user.
+        /// </summary>
+        /// <param name="mtrUserId">The MoreThanRewardsUser identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type ???</returns>
+        public ResponseMessage<object> GetRewardsCardBalance(string mtrUserId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("RewardsCard");
+            sb.Append("/");
+            sb.Append(mtrUserId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<object>>(path);
+            return resp;
+
+            //ToDo: Identify type of object returned within ResponseMessage and what it is.
+        }
+
+        /// <summary>
+        /// Gets paged rewards card invoices and their details.
+        /// </summary>
+        /// <param name="mtrUserId">The MoreThanRewardsUser identifier.</param>
+        /// <param name="startPageNo">The start page number.</param>
+        /// <param name="perPage">The number of results per page.</param>
+        /// <param name="includeDetails">if set to <c>true</c> [include details].</param>
+        /// <returns></returns>
+        public ResponseMessage<object> GetRewardsCardInvoicesAndDetails(string mtrUserId, int startPageNo, int perPage, bool includeDetails)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("RewardsCardInvoices");
+            sb.Append("/");
+            sb.Append(mtrUserId);
+            sb.Append("/");
+            sb.Append(startPageNo);
+            sb.Append("/");
+            sb.Append(perPage);
+            sb.Append("/");
+            sb.Append(includeDetails);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<object>>(path);
+            return resp;
+        }
 
 
     }

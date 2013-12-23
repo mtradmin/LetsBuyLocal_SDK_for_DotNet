@@ -15,8 +15,6 @@ namespace LetsBuyLocal.SDK.Services
     {
         private static readonly string BaseUrl;
         private static readonly string ApiVersion;
-        private string BoundaryNo = DateTime.Now.Ticks.ToString();
-        private Stream UploadStream;
 
         /// <summary>
         /// Initializes BaseService, setting base URL and API version for path.

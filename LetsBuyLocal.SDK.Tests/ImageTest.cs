@@ -12,7 +12,7 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void UploadImageTest()
         {
-            bool copiedImage = false;
+            //bool copiedImage = false;
             var svc = new ImageService();
             var id = string.Empty;
 
