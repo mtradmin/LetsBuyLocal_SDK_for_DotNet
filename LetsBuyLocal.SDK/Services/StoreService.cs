@@ -17,7 +17,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage of type Store
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to create store.  + ex.Message</exception>
         public ResponseMessage<Store> CreateStore(Store store)
         {
             var resp = Post<ResponseMessage<Store>>("Store", store);
@@ -31,7 +30,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage of type Store
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to get specified store.  + ex.Message</exception>
         public ResponseMessage<Store> GetStoreById(string id)
         {
             var resp = Get<ResponseMessage<Store>>("Store" + "/" + id);
@@ -44,7 +42,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="id">The store identifier string.</param>
         /// <param name="store">The store.</param>
         /// <returns>The store</returns>
-        /// <exception cref="System.ApplicationException">Unable to update specified store.  + ex.Message</exception>
         public ResponseMessage<Store> UpdateStore(string id, Store store)
         {
             var resp = Put<ResponseMessage<Store>>("Store" + "/" + store.Id, store);
@@ -56,7 +53,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>True, if successful; else, false.</returns>
-        /// <exception cref="System.ApplicationException">Unable to delete specified store.  + ex.Message</exception>
         public ResponseMessage<bool> DeleteStore(string id)
         {
             var resp = Delete<ResponseMessage<bool>>("Store/" + id);
@@ -68,7 +64,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="store">The store.</param>
         /// <returns> A ResponsMessage containing an object of type Store.</returns>
-        /// <exception cref="System.ApplicationException">Unable to get specified store by its Url.  + ex.Message</exception>
         public ResponseMessage<Store> GetStoreByUrl(Store store)
         {
             var sb = new StringBuilder();
@@ -87,7 +82,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The store's identifier string.</param>
         /// <returns>ResponseMessage of type String</returns>
-        /// <exception cref="System.ApplicationException">Unable to get specified store's API Key.  + ex.Message</exception>
         public ResponseMessage<Store> GetStoreApiKey(string id)
         {
             var sb = new StringBuilder();
@@ -107,7 +101,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="storeId">The store identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>A ResponseMessage containing an object of type Store</returns>
-        /// <exception cref="System.ApplicationException">Unable to load the specified store's details for the specified user.  + ex.Message</exception>
         public ResponseMessage<Store> LoadStoreDetailsByUser(string storeId, string userId)
         {
 		    var sb = new StringBuilder();
@@ -149,7 +142,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="storeId">The store identifier.</param>
         /// <param name="settings">The FBSettings object.</param>
         /// <returns>A ResponseMessage containing an object of type Store.</returns>
-        /// <exception cref="System.ApplicationException">Unable to link specified store to a Facebook account.  + ex.Message</exception>
         public ResponseMessage<Store> LinkStoreToFacebookAccount(string storeId, FBSettings settings)
         {
             var sb = new StringBuilder();
@@ -168,7 +160,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="storeId">The store identifier.</param>
         /// <returns>A ResponseMessage containing an object of type Store.</returns>
-        /// <exception cref="System.ApplicationException">Unable to remove Facebook account from specified store.  + ex.Message</exception>
         public ResponseMessage<Store> RemoveFacebookAccountFromStore(string storeId)
         {
             var sb = new StringBuilder();
@@ -389,7 +380,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="storeId">The store identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <param name="rewardsNumber">The rewards card number.</param>
-        /// <returns>A ResponseMessage containing an object of type ???.</returns>
+        /// <returns>A ResponseMessage containing an object (string) with the MoreThanRewardsUser identifier.</returns>
         public ResponseMessage<object> AddRewardsCardForUser(string storeId, string userId, string rewardsNumber)
         {
             var sb = new StringBuilder();
@@ -483,24 +474,32 @@ namespace LetsBuyLocal.SDK.Services
             return resp;
         }
 
+        /// <summary>
+        /// Gets the rewards card invoice details.
+        /// </summary>
+        /// <param name="mtrUserId">The MTR user identifier.</param>
+        /// <param name="dealerId">The dealer identifier.</param>
+        /// <param name="invoiceId">The invoice identifier.</param>
+        /// <returns>A ResponseMessage containing an object of type ???</returns>
+        public ResponseMessage<object> GetRewardsCardInvoiceDetails(string mtrUserId, string dealerId, string invoiceId)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Store");
+            sb.Append("/");
+            sb.Append("RewardsCardInvoiceDetails");
+            sb.Append("/");
+            sb.Append(mtrUserId);
+            sb.Append("/");
+            sb.Append(dealerId);
+            sb.Append("/");
+            sb.Append(invoiceId);
+            var path = sb.ToString();
+
+            var resp = Get<ResponseMessage<object>>(path);
+            return resp;
+        }
+
 
     }
-
-
-    //ToDo: Move this class into Shared folder
-    //********************************************************************************************************************************************************
-    //Inline class used to form an object with one named parameter (value).
-
-
-    /// <summary>
-    /// Provides an object with a single, named parameter for API methods requiring it
-    /// </summary>
-    public class AnObject
-    {
-        public string value { get; set; }
-
-    }
-
-    //********************************************************************************************************************************************************
 
 }

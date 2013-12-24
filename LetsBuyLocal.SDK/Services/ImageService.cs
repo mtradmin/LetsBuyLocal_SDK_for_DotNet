@@ -8,6 +8,9 @@ using System.IO;
 
 namespace LetsBuyLocal.SDK.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ImageService : BaseService
     {
         /// <summary>

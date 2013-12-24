@@ -143,10 +143,13 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </summary>
         /// <param name="svc">The RewardService.</param>
         /// <param name="storeId">The store identifier.</param>
-        /// <returns>A new Reward object from the service's response.</returns>
-        public static Reward NewReward(RewardService svc, string storeId)
+        /// <param name="sortOrder">The sort order.</param>
+        /// <returns>
+        /// A new Reward object from the service's response.
+        /// </returns>
+        public static Reward NewReward(RewardService svc, string storeId, int sortOrder)
         {
-            var reward = CreateNewRewardInMemory(storeId);
+            var reward = CreateNewRewardInMemory(storeId, sortOrder);
             var testReward = svc.CreateReward(reward);
             return testReward.Object;
         }
@@ -213,7 +216,10 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Creates a test deal in memory.
         /// </summary>
-        /// <returns>A Deal object.</returns>
+        /// <param name="store">The store.</param>
+        /// <returns>
+        /// A Deal object.
+        /// </returns>
         public static Deal CreateTestDealInMemory(Store store)
         {
             var deal = new Deal
@@ -253,7 +259,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Creates the device in memory.
         /// </summary>
-        /// <returns>A new Device object.</returns>
+        /// <returns>
+        /// A new Device object.
+        /// </returns>
         public static Device CreateDeviceInMemory()
         {
             var device = new Device
@@ -268,6 +276,8 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Creates the test alert object.
         /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="storeId">The store identifier.</param>
         /// <returns></returns>
         public static Alert CreateNewTestAlertInMemory(string type, string storeId)
         {
@@ -285,22 +295,25 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Creates the new reward in memory.
         /// </summary>
         /// <param name="storeId">The store identifier.</param>
-        /// <returns>A new Reward object.</returns>
-        public static Reward CreateNewRewardInMemory(string storeId)
+        /// <param name="sortOrder">The sort order.</param>
+        /// <returns>
+        /// A new Reward object.
+        /// </returns>
+        public static Reward CreateNewRewardInMemory(string storeId, int sortOrder )
         {
             var reward = new Reward
             {
                 Title = GetRandomString(25),
                 Description = GetRandomString(50),
                 Hint = "Hint Hint: " + GetRandomString(10),
-                //SortOrder                
+                SortOrder = sortOrder,
                 StoreId = storeId,
                 ExpireDate = DateTime.Now.AddDays(10.0)
             };
 
             return reward;
         }
-        
+
         /// <summary>
         /// Updates user.
         /// </summary>
@@ -366,7 +379,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Updates the store.
         /// </summary>
         /// <param name="store">The store.</param>
-        /// <returns>A store object.</returns>
+        /// <returns>
+        /// A store object.
+        /// </returns>
         public static Store UpdateStore(Store store)
         {
             store.Website = "http://www." + GetRandomString(10) + ".com";       //Required
@@ -443,6 +458,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Updates the deal.
         /// </summary>
         /// <param name="deal">The deal.</param>
+        /// <param name="published">if set to <c>true</c> [published].</param>
         /// <param name="startDate">The start date.</param>
         /// <param name="expDate">The expiration  date.</param>
         /// <returns>
@@ -483,7 +499,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets the store owners list.
         /// </summary>
         /// <param name="ownerId">The owner identifier.</param>
-        /// <returns>An IList Of String[owners]</returns>
+        /// <returns>
+        /// An IList Of String[owners]
+        /// </returns>
         public static List<string> GetStoreOwnersList(string ownerId)
         {
             var owners = new List<string>();
@@ -509,7 +527,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Gets the store categories.
         /// </summary>
-        /// <returns>A List of StoreCategories strings.</returns>
+        /// <returns>
+        /// A List of StoreCategories strings.
+        /// </returns>
         public static IList<string> GetStoreCategories()
         {
             var svc = new ConfigurationService();
@@ -517,11 +537,13 @@ namespace LetsBuyLocal.SDK.Tests.Shared
             var categories = resp.Object.StoreCategories;
             return categories;
         }
-       
+
         /// <summary>
         /// Gets the randomly generated geo point.
         /// </summary>
-        /// <returns>A GeoPoint object.</returns>
+        /// <returns>
+        /// A GeoPoint object.
+        /// </returns>
         public static GeoPoint GetGeoPoint()
         {
             decimal latitude = GetRandomLatitudeApproxWi();
@@ -535,7 +557,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets a random alphanumeric string of the specified length
         /// </summary>
         /// <param name="len">Length of desired string as an integer</param>
-        /// <returns>A string of the desired length</returns>
+        /// <returns>
+        /// A string of the desired length
+        /// </returns>
         public static string GetRandomString(int len)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
@@ -555,7 +579,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets a random phone number with the specified number of digits
         /// </summary>
         /// <param name="len">Number of digits desired in number as an integer</param>
-        /// <returns>A number of the specified length as a string</returns>
+        /// <returns>
+        /// A number of the specified length as a string
+        /// </returns>
         public static string GetRandomNumeric(int len)
         {
             const string chars = "1234567890";
@@ -576,7 +602,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets a random device token for the specified type of device
         /// </summary>
         /// <param name="platform">A string specifying the type of device (ios or android)</param>
-        /// <returns>A device token string for the specified platform</returns>
+        /// <returns>
+        /// A device token string for the specified platform
+        /// </returns>
         public static string GetDeviceToken(string platform)
         {
             if (platform.ToLower() == "ios")
@@ -587,9 +615,11 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         }
 
         /// <summary>
-        /// Gets a randomly generated device type (ios or android platform) 
+        /// Gets a randomly generated device type (ios or android platform)
         /// </summary>
-        /// <returns>The platform (device type) string: ios or android</returns>
+        /// <returns>
+        /// The platform (device type) string: ios or android
+        /// </returns>
         public static string GetPlatform()
         {
             var rand = new Random();
@@ -604,7 +634,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// into the ForUpload folder and renames it using the id passed in.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>True, if successful; else, false.</returns>
+        /// <returns>
+        /// True, if successful; else, false.
+        /// </returns>
         public static bool AbleToCopyAndRenameSourceImage(string id)
         {
             const string sourcePath = @"C:\Users\Public\Pictures\Sample Pictures\Chrysanthemum.png";
@@ -620,6 +652,11 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 return false;
         }
 
+        /// <summary>
+        /// Creates the image.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns>A byte array containing the image.</returns>
         public static byte[] CreateImage(String text)
         {
             var font = new Font("Times New Roman", 12.0f);
@@ -664,7 +701,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// Gets a random phone number string that does not use the digits 0 or 1.
         /// </summary>
         /// <param name="len">The length.</param>
-        /// <returns>A phone number string</returns>
+        /// <returns>
+        /// A phone number string
+        /// </returns>
         private static string GetRandomPhoneNumber(int len)
         {
             const string chars = "23456789";
@@ -700,7 +739,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </summary>
         /// <param name="baseEmailName">Name of the base email.</param>
         /// <param name="atEmail">At email.</param>
-        /// <returns>An email alias string.</returns>
+        /// <returns>
+        /// An email alias string.
+        /// </returns>
         private static string GetEmailAlias(string baseEmailName, string atEmail)
         {
             var sb = new StringBuilder();
@@ -717,7 +758,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Gets a randomly generated sex (Female/Male).
         /// </summary>
-        /// <returns>Either F or M as a string</returns>
+        /// <returns>
+        /// Either F or M as a string
+        /// </returns>
         private static string GetSex()
         {
             var rand = new Random();
@@ -732,7 +775,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </summary>
         /// <param name="lat">The latitude.</param>
         /// <param name="longitude">The longitude.</param>
-        /// <returns>A geopoint object</returns>
+        /// <returns>
+        /// A geopoint object
+        /// </returns>
         private static GeoPoint GetNewGeoPoint(decimal lat, decimal longitude)
         {
             var geoPoint = new GeoPoint {Latitude = lat, Longitude = longitude};
@@ -742,7 +787,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Gets the random latitude for a location roughly somewhere in WI.
         /// </summary>
-        /// <returns>A decimal representing latitude</returns>
+        /// <returns>
+        /// A decimal representing latitude
+        /// </returns>
         private static decimal GetRandomLatitudeApproxWi()
         {
             var dbl = new Random();
@@ -759,7 +806,9 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Gets the random longitude for a location roughly somewhere in WI.
         /// </summary>
-        /// <returns>A decimal representing longitude</returns>
+        /// <returns>
+        /// A decimal representing longitude
+        /// </returns>
         private static decimal GetRandomLongitudeApproxWi()
         {
             var dbl = new Random();
@@ -776,7 +825,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Gets valid time zones.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An enumeration of valid time zones.</returns>
         private static IEnumerable<string> GetTimeZones()
         {
             var svc = new ConfigurationService();
@@ -788,7 +837,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// <summary>
         /// Gets the valid time zone designation for WI.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The time zone for Wisconsin.</returns>
         private static string WiTimeZone()
         {
             var zones = GetTimeZones();

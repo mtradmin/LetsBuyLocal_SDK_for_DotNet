@@ -13,7 +13,6 @@ namespace LetsBuyLocal.SDK.Services
         /// Gets the list of standard options.
         /// </summary>
         /// <returns>A ResponseMessage containing an object of type OptionSets</returns>
-        /// <exception cref="System.ApplicationException">Unable to get list of standard options.  + ex.Message</exception>
         public ResponseMessage<OptionSets> GetListOfStandardOptions()
         {
             var resp = Get<ResponseMessage<OptionSets>>("Configuration");

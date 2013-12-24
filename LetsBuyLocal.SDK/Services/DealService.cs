@@ -26,7 +26,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The Deal identifier.</param>
         /// <returns>A ResponseMessage containing an object of type Deal.</returns>
-        /// <exception cref="System.ApplicationException">Unable to get specified deal.  + ex.Message</exception>
         public ResponseMessage<Deal> GetDealById(string id)
         {
             var resp = Get<ResponseMessage<Deal>>("Deal" + "/" + id);
@@ -38,7 +37,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="deal">The deal.</param>
         /// <returns>A ResponseMessage containing an object of type Deal.</returns>
-        /// <exception cref="System.ApplicationException">Unable to update specified deal.  + ex.Message</exception>
         public ResponseMessage<Deal> UpdateDeal(Deal deal)
         {
             var resp = Put<ResponseMessage<Deal>>("Deal" + "/" + deal.Id, deal);
@@ -50,7 +48,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A ResponseMessage containing an object of type bool.</returns>
-        /// <exception cref="System.ApplicationException">Unable to delete the specified deal.  + ex.Message</exception>
         public ResponseMessage<bool> DeleteDeal(string id)
         {
             var resp = Delete<ResponseMessage<bool>>("Deal/" + id);
@@ -62,9 +59,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A ResponseMessage containing an object of type Int32.</returns>
-        /// <exception cref="System.ApplicationException">
-        /// Unable to get the number of available reservations for the specified deal.  + ex.Message
-        /// </exception>
         public ResponseMessage<Int32> GetNumberAvailableReservations(string id)
         {
             var sb = new StringBuilder();
@@ -84,9 +78,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A ResponseMessage containing an object of type Boolean.</returns>
-        /// <exception cref="System.ApplicationException">
-        /// Unable to determine if the specified deal has any active reservations.  + ex.Message
-        /// </exception>
         public ResponseMessage<bool> DealHasActiveReservations(string id)
         {
             var sb = new StringBuilder();

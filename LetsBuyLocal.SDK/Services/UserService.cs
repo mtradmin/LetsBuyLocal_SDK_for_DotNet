@@ -17,7 +17,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage object of type User
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to create new user.  + ex.Message</exception>
         public ResponseMessage<User> CreateUser(User user)
         {
             var resp = Post<ResponseMessage<User>>("User", user);
@@ -31,7 +30,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage object of type User
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to get user by Id.  + ex.Message</exception>
         public ResponseMessage<User> GetUserById(string id)
         {
             var resp = Get<ResponseMessage<User>>("User" + "/" + id);
@@ -45,7 +43,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage object of type User
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to update user.  + ex.Message</exception>
         public ResponseMessage<User> UpdateUser(User user)
         {
             var resp = Put<ResponseMessage<User>>("User" + "/" + user.Id, user);
@@ -62,7 +59,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage object of type User
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to update when user last read an alert from this store. + ex.Message</exception>
         public ResponseMessage<User> UserReadStoreAlert(string userId, string storeId, DateParameter dateParam)
         {
             //Updates Date when last read Alert by Store
@@ -87,7 +83,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="storeId">The Id string for the specified Store</param>
         /// <param name="dateParam">The DateParameter object containing the datetime</param>
         /// <returns></returns>
-        /// <exception cref="System.ApplicationException">Unable to update date when user last viewed a deal from this store. + ex.Message</exception>
         public ResponseMessage<User> UserViewedDeal(string userId, string storeId, DateParameter dateParam)
         {
             //Updates Date when last viewed Deal by Store
@@ -113,7 +108,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A  ResponseMethod containing an IList of Store object.
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to create list of stores that user is following.  + ex.Message</exception>
         /// <remarks>
         /// The underlying API is a full update.  So you have to send the full list of stores every time.
         /// If you want to remove a store, then you just don’t send the id to the api.
@@ -140,7 +134,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="userId">The user identifier.</param>
         /// <param name="deviceId">The device identifier.</param>
         /// <returns></returns>
-        /// <exception cref="System.ApplicationException">Unable to assign this device to this user. + ex.Message</exception>
         public ResponseMessage<bool> AssignDeviceToUser(string userId, string deviceId)
         {
             var sb = new StringBuilder();

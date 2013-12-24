@@ -2,9 +2,18 @@
 
 namespace LetsBuyLocal.SDK.Models
 {
+    /// <summary>
+    /// Represents alerts sent to user.
+    /// </summary>
     public class UserAlerts : BaseEntity
     {
-        //Id is UserId
-        public List<string> DeletedAlertIds { get; set; } //List of Alert Ids that have been deleted
+        /// <summary>
+        /// Gets or sets the list of alerts that have been deleted.
+        /// </summary>
+        /// <value>
+        /// The deleted alert ids.
+        /// </value>
+        /// <remarks>Id is UserId.</remarks>
+        public List<string> DeletedAlertIds { get; set; }
     }
 }

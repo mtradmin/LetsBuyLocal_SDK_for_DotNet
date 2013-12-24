@@ -14,7 +14,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="error">The error.</param>
         /// <returns>A ResponseMessage containing an object of type Error.</returns>
-        /// <exception cref="System.ApplicationException">Unable to create error message.  + ex.Message</exception>
         public ResponseMessage<bool> CreateError(Error error)
         {
             var resp = Post<ResponseMessage<bool>>("Error", error);

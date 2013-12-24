@@ -26,7 +26,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="id">The identifier string.</param>
         /// <returns>A ResponseMessage containing an object of type Device.</returns>
-        /// <exception cref="System.ApplicationException">Unable to get specified device.  + ex.Message</exception>
         public ResponseMessage<Device> GetDeviceById(string id)
         {
             var resp = Get<ResponseMessage<Device>>("Device" + "/" + id);
@@ -38,7 +37,6 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="devices">The devices as an ArrayOfValues.</param>
         /// <returns>A List of Decice objects.</returns>
-        /// <exception cref="System.ApplicationException">Unable to get the list of devices details.  + ex.Message</exception>
         public ResponseMessage<IList<Device>> GetDeviceDetailsForDevices(ArrayOfValues devices)
         {
             var resp = Post<ResponseMessage<IList<Device>>>("Deal/List", devices);

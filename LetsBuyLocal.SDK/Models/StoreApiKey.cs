@@ -10,6 +10,12 @@ namespace LetsBuyLocal.SDK.Models
     /// </remarks>
     public class StoreApiKey : BaseEntity
     {
+        /// <summary>
+        /// Gets or sets the store identifier.
+        /// </summary>
+        /// <value>
+        /// The store identifier.
+        /// </value>
         [Required]
         public string StoreId { get; set; }
     }

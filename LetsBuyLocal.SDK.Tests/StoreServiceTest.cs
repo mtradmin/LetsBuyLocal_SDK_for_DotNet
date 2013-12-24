@@ -343,7 +343,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a reward for this test
             var rewardSvc = new RewardService();
-            var reward = TestingHelper.NewReward(rewardSvc, store.Id);
+            var reward = TestingHelper.NewReward(rewardSvc, store.Id, 1);
             var rewardResp = rewardSvc.CreateReward(reward);
             Assert.IsNotNull(rewardResp.Object);
 
@@ -400,7 +400,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a reward for this test
             var rewardSvc = new RewardService();
-            var reward = TestingHelper.NewReward(rewardSvc, store.Id);
+            var reward = TestingHelper.NewReward(rewardSvc, store.Id, 1);
             var rewardResp = rewardSvc.CreateReward(reward);
             Assert.IsNotNull(rewardResp.Object);
 
@@ -458,6 +458,10 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp.Object);
         }
 
+        /// <summary>
+        /// Tests the add rewards card for user test.
+        /// </summary>
+        /// <remarks>Valid rewards numbers: NP1337, ET0251, and BT2126 for testing.</remarks>
         [TestMethod]
         public void AddRewardsCardForUserTest()
         {
@@ -474,7 +478,7 @@ namespace LetsBuyLocal.SDK.Tests
             var user = TestingHelper.NewUser(userSvc, false);
 
             //Create a rewardsNumber
-            var rewardsNumber = TestingHelper.GetRandomString(15);
+            const string rewardsNumber = "NP1337"; //A valid rewards number for testing purposes.
 
             var resp = svc.AddRewardsCardForUser(store.Id, user.Id, rewardsNumber);
             Assert.IsNotNull(resp.Object);
@@ -518,6 +522,18 @@ namespace LetsBuyLocal.SDK.Tests
             //ToDo: Need to generate a valid MoreThanRewardsUserId with invoice here.
 
             //var resp = svc.GetRewardsCardInvoicesAndDetails(mtrUserId, startPageNo, perPage, inludeDetails);
+            //Assert.IsNotNull(resp.Object);
+
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void GetRewardsCardInvoiceDetailsTest()
+        {
+            var svc = new StoreService();
+            //ToDo: Need to generate a valid MoreThanRewardsUserId with invoice here, including dealerId
+
+            //var resp = svc.GetRewardsCardInvoiceDetails(mtrUserId, dealerId, invoiceId);
             //Assert.IsNotNull(resp.Object);
 
             Assert.Fail();

@@ -15,7 +15,6 @@ namespace LetsBuyLocal.SDK.Services
         /// <returns>
         /// A ResponseMessage returning the details of all available training videos.
         /// </returns>
-        /// <exception cref="System.ApplicationException">Unable to get the list of training videos.  + ex.Message</exception>
         public ResponseMessage<IList<Video>> GetVideos()
         {
             var resp = Get<ResponseMessage<IList<Video>>>("Training");
