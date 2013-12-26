@@ -1,5 +1,4 @@
-﻿using System;
-using LetsBuyLocal.SDK.Models;
+﻿using LetsBuyLocal.SDK.Models;
 using System.Collections.Generic;
 
 namespace LetsBuyLocal.SDK.Services

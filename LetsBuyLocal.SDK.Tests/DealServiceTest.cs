@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Management.Instrumentation;
 using System.Threading;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
@@ -253,12 +251,11 @@ namespace LetsBuyLocal.SDK.Tests
 
             //Create a user and have user track this store
             var user = TestingHelper.NewUser(userSvc, false);
-            user.StoreIds = new List<string>();
-            user.StoreIds.Add(expiredDeal.StoreId);
+            user.StoreIds = new List<string> {expiredDeal.StoreId};
             var userResp = userSvc.UpdateUser(user);
 
             //Now see what we get
-            var resp = svc.GetListOfDealsByStoreAndUser(userResp.Object.Id, new string[] { expiredDeal.StoreId });
+            var resp = svc.GetListOfDealsByStoreAndUser(userResp.Object.Id, new[] { expiredDeal.StoreId });
             Assert.IsNotNull(resp.Object);
             Assert.AreEqual(3, resp.Object.Count);
         }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,62 +12,11 @@ namespace LetsBuyLocal.SDK.Tests
         [TestMethod]
         public void UploadImageTest()
         {
-            //bool copiedImage = false;
             var svc = new ImageService();
-            var id = string.Empty;
 
-            // Choose an image type randomly.
-            var types = new[] {ImageTypes.Deals, ImageTypes.Stores, ImageTypes.Users};
-            var random = new Random();
-            int i = random.Next(0, 2);
-            var imageType = types[i];
-
-            if (imageType == ImageTypes.Deals)
-            {
-                //Will need to create a Deal and get its Id
-                var dSvc = new DealService();
-
-                //Create a new store for this test
-                var storeSvc = new StoreService();
-                var userSvc = new UserService();
-                var owner = TestingHelper.NewUser(userSvc, true);
-
-                var category = TestingHelper.GetRandomStoreCategory();
-                var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
-
-                var deal = TestingHelper.CreateTestDealInMemory(store);
-                var createdResp = dSvc.CreateDeal(deal);
-
-                //Create an image to upload
-//                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(createdResp.Object.Id);
-//                if (copiedImage)
-                    id = createdResp.Object.Id;
-            }
-            else if (imageType == ImageTypes.Stores)
-            {
-                //Will need to create a Store and get its Id
-                var userSvc = new UserService();
-                var owner = TestingHelper.NewUser(userSvc, true);
-
-                string category = TestingHelper.GetRandomStoreCategory();
-                var store = TestingHelper.NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
-
-                //Create an image to upload
-//                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(store.Id);
-//                if (copiedImage)
-                    id = store.Id;
-            }
-            else
-            {
-                //Create a User and get its Id
-                var uSvc = new UserService();
-                var user = TestingHelper.NewUser(uSvc, false);
-
-                //Create an image to upload
-//                copiedImage = TestingHelper.AbleToCopyAndRenameSourceImage(user.Id);
-//                if (copiedImage)
-                    id = user.Id;
-            }
+            //Create an image
+            var imageType = TestingHelper.GetRandomImageType();
+            var id = TestingHelper.CreateImageOfSpecifiedType(imageType);
 
             //Now, try to upload the image
             if (id != String.Empty)
@@ -79,6 +28,49 @@ namespace LetsBuyLocal.SDK.Tests
             {
                 Assert.Fail();
             }
+        }
+
+
+        [TestMethod]
+        public void GetImageByIdTest()
+        {
+            var svc = new ImageService();
+
+            //Create an image
+            var imageType = TestingHelper.GetRandomImageType();
+            var id = TestingHelper.CreateImageOfSpecifiedType(imageType);
+
+            //Upload it
+            var uploadResp = svc.UploadImage(id, imageType, TestingHelper.CreateImage("TESTING"));
+
+            //Now get it
+            var resp = svc.GetImageById(id);
+
+            //Now let's check if it can be written to file
+            var path = TestingHelper.WriteImageToFilePath(id, resp);
+
+            Assert.IsTrue(File.Exists(path));
+        }
+
+        [TestMethod]
+        public void GetImageByIdAndTypeTest()
+        {
+            var svc = new ImageService();
+
+            //Create an image
+            var imageType = TestingHelper.GetRandomImageType();
+            var id = TestingHelper.CreateImageOfSpecifiedType(imageType);
+
+            //Upload it
+            var uploadResp = svc.UploadImage(id, imageType, TestingHelper.CreateImage("TESTING"));
+
+            //Now get it
+            var resp = svc.GetImageByIdAndType(id, imageType);
+
+            //Now let's check if it can be written to file
+            var path = TestingHelper.WriteImageToFilePath(id, resp);
+
+            Assert.IsTrue(File.Exists(path));
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-
-namespace LetsBuyLocal.SDK.Models
+﻿namespace LetsBuyLocal.SDK.Models
 {
     /// <summary>
     /// Represents the value of a a string entity.

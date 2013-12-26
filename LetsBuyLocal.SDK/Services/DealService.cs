@@ -148,7 +148,7 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append(userId);
             var path = sb.ToString();
 
-            var stores = new ArrayOfValues() { Values = storeIds };
+            var stores = new ArrayOfValues { Values = storeIds };
             var resp = Post<ResponseMessage<IList<Deal>>>(path, stores);
             return resp;
         }

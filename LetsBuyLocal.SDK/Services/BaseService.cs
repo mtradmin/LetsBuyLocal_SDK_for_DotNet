@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Net;
 using Newtonsoft.Json;
 using System.IO;
-using System.Text;
 using System.Net.Http;
 
 namespace LetsBuyLocal.SDK.Services
@@ -122,8 +121,7 @@ namespace LetsBuyLocal.SDK.Services
             {
                 ms.Position = 0;
                 var content = new StreamContent(ms);
-                var mpcontent = new MultipartFormDataContent();
-                mpcontent.Add(content, "image/png", "tmp.png");
+                var mpcontent = new MultipartFormDataContent {{content, "image/png", "tmp.png"}};
 
                 var response = client.PostAsync(BuildPath(path), mpcontent).Result.Content.ReadAsStringAsync().Result;
                 return JsonConvert.DeserializeObject<T>(response);

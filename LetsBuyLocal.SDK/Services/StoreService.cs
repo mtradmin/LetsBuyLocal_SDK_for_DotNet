@@ -72,7 +72,7 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append("Url");
             var path = sb.ToString();
 
-            var url = new StringValue() { Value = store.Website };
+            var url = new StringValue { Value = store.Website };
             var resp = Post<ResponseMessage<Store>>(path, url);
             return resp;
         }
@@ -430,20 +430,18 @@ namespace LetsBuyLocal.SDK.Services
         /// </summary>
         /// <param name="mtrUserId">The MoreThanRewardsUser identifier.</param>
         /// <returns>A ResponseMessage containing an object of type ???</returns>
-        public ResponseMessage<object> GetRewardsCardBalance(string mtrUserId)
+        public ResponseMessage<DynamicObject<UserRewards>> GetRewardsCardBalance(string mtrUserId)
         {
             var sb = new StringBuilder();
             sb.Append("Store");
             sb.Append("/");
-            sb.Append("RewardsCard");
+            sb.Append("RewardsCardBalance");
             sb.Append("/");
             sb.Append(mtrUserId);
             var path = sb.ToString();
 
-            var resp = Get<ResponseMessage<object>>(path);
+            var resp = Get<ResponseMessage<DynamicObject<UserRewards>>>(path);
             return resp;
-
-            //ToDo: Identify type of object returned within ResponseMessage and what it is.
         }
 
         /// <summary>
@@ -454,7 +452,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="perPage">The number of results per page.</param>
         /// <param name="includeDetails">if set to <c>true</c> [include details].</param>
         /// <returns></returns>
-        public ResponseMessage<object> GetRewardsCardInvoicesAndDetails(string mtrUserId, int startPageNo, int perPage, bool includeDetails)
+        public ResponseMessage<DynamicObject<Pagination<List<Invoice>>>> GetRewardsCardInvoicesAndDetails(string mtrUserId, int startPageNo, int perPage, bool includeDetails)
         {
             var sb = new StringBuilder();
             sb.Append("Store");
@@ -470,7 +468,7 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append(includeDetails);
             var path = sb.ToString();
 
-            var resp = Get<ResponseMessage<object>>(path);
+            var resp = Get<ResponseMessage<DynamicObject<Pagination<List<Invoice>>>>>(path);
             return resp;
         }
 
@@ -481,7 +479,7 @@ namespace LetsBuyLocal.SDK.Services
         /// <param name="dealerId">The dealer identifier.</param>
         /// <param name="invoiceId">The invoice identifier.</param>
         /// <returns>A ResponseMessage containing an object of type ???</returns>
-        public ResponseMessage<object> GetRewardsCardInvoiceDetails(string mtrUserId, string dealerId, string invoiceId)
+        public ResponseMessage<DynamicObject<Invoice>> GetRewardsCardInvoiceDetails(string mtrUserId, string dealerId, string invoiceId)
         {
             var sb = new StringBuilder();
             sb.Append("Store");
@@ -495,7 +493,7 @@ namespace LetsBuyLocal.SDK.Services
             sb.Append(invoiceId);
             var path = sb.ToString();
 
-            var resp = Get<ResponseMessage<object>>(path);
+            var resp = Get<ResponseMessage<DynamicObject<Invoice>>>(path);
             return resp;
         }
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Configuration;
 using LetsBuyLocal.SDK.Models;
@@ -228,7 +226,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
                 Title = "This deal is " + GetRandomString(25),                  //Required
                 Description = GetRandomString(50),
                 TotalAvailable = Convert.ToInt32(GetRandomNumeric(2)),          //Required
-                Hint = "Hint hint: " + TestingHelper.GetRandomString(10),
+                Hint = "Hint hint: " + GetRandomString(10),
                 //public int ExtensionDays { get; set; }
                 //OnCompleteAction = "RunAgain",                                //(RunAgain/SaveForLater/Delete)
                 //ExpirationDate = DateTime.Now.AddMonths(1),                   //Nullable
@@ -504,8 +502,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
         /// </returns>
         public static List<string> GetStoreOwnersList(string ownerId)
         {
-            var owners = new List<string>();
-            owners.Add(ownerId);
+            var owners = new List<string> {ownerId};
             return owners;
         }
 
@@ -648,8 +645,7 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
             if (File.Exists(newPath))
                 return true;
-            else
-                return false;
+            return false;
         }
 
         /// <summary>
@@ -694,6 +690,95 @@ namespace LetsBuyLocal.SDK.Tests.Shared
 
         }
 
+        /// <summary>
+        /// Gets the random type of the image.
+        /// </summary>
+        /// <returns>An ImageTypes value.</returns>
+        public static string GetRandomImageType()
+        {
+            // Choose an image type randomly.
+            var types = new[] { ImageTypes.Deals, ImageTypes.Stores, ImageTypes.Users };
+            var random = new Random();
+            int i = random.Next(0, 2);
+            var imageType = types[i];
+            return imageType;
+        }
+
+        /// <summary>
+        /// Creates the specified type of the image of.
+        /// </summary>
+        /// <param name="imageType">Type of the image.</param>
+        /// <returns>The Id for the image</returns>
+        public static string CreateImageOfSpecifiedType(string imageType)
+        {
+            if (imageType == ImageTypes.Deals)
+            {
+                //Will need to create a Deal and get its Id
+                var dSvc = new DealService();
+
+                //Create a new store
+                var storeSvc = new StoreService();
+                var userSvc = new UserService();
+                var owner = NewUser(userSvc, true);
+
+                var category = GetRandomStoreCategory();
+                var store = NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+
+                //Now the deal
+                var deal = CreateTestDealInMemory(store);
+                var createdResp = dSvc.CreateDeal(deal);
+                return createdResp.Object.Id;
+            }
+            
+            if (imageType == ImageTypes.Stores)
+            {
+                //Will need to create a Store and get its Id
+                var userSvc = new UserService();
+                var owner = NewUser(userSvc, true);
+                var category = GetRandomStoreCategory();
+                var store = NewStore(category, Colors.Green, Colors.DarkOrange, owner.Id);
+                return store.Id;
+            }
+            
+            if(imageType == ImageTypes.Users)
+            {
+                //Create a User and get its Id
+                var uSvc = new UserService();
+                var user = NewUser(uSvc, false);
+                return user.Id;
+            }
+           
+            //Or...
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Writes the image to its file path.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="resp">The array of bytes from the response</param>
+        /// <returns>
+        /// The path the bytes were written to.
+        /// </returns>
+        public static string WriteImageToFilePath(string id, byte[] resp)
+        {
+            var pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var pathDownload = Path.Combine(pathUser, "Downloads");
+            var imageFolder = ConfigurationManager.AppSettings["ImagePath"];
+
+            var sb = new StringBuilder();
+            sb.Append(pathDownload);
+            sb.Append(imageFolder);
+            sb.Append(id);
+            sb.Append(".png");
+            var path = sb.ToString();
+
+            if (!Directory.Exists(pathDownload + imageFolder))
+                Directory.CreateDirectory(pathDownload + imageFolder);
+
+            File.WriteAllBytes(path, resp);
+            return path;
+        }
 
         #region Private Helper Methods
 

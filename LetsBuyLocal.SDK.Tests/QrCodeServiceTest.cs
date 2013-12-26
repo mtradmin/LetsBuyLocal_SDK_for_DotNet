@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.IO;
 using System.Text;
-using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +27,7 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp);
 
             //Now let's check if it can be written to file
-            var path = WriteImageToFilePath(store, resp);
+            var path = TestingHelper.WriteImageToFilePath(store.Id, resp);
 
             Assert.IsTrue(File.Exists(path));
         }
@@ -54,7 +53,7 @@ namespace LetsBuyLocal.SDK.Tests
             Assert.IsNotNull(resp);
 
             //Now let's check if it can be written to file
-            var path = WriteImageToFilePath(deal, resp);
+            var path = TestingHelper.WriteImageToFilePath(deal.Id, resp);
 
             Assert.IsTrue(File.Exists(path));
         }
@@ -87,37 +86,7 @@ namespace LetsBuyLocal.SDK.Tests
 
             Assert.IsTrue(File.Exists(path));
         }
-
-
-
-
-
-
-        /// <summary>
-        /// Writes the image to its file path.
-        /// </summary>
-        /// <param name="entity">The store.</param>
-        /// <param name="resp">The resp.</param>
-        /// <returns>The path the bytes were written to.</returns>
-        private static string WriteImageToFilePath(BaseEntity entity, byte[] resp)
-        {
-            var pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var pathDownload = Path.Combine(pathUser, "Downloads");
-            var imageFolder = ConfigurationManager.AppSettings["ImagePath"];
-
-            var sb = new StringBuilder();
-            sb.Append(pathDownload);
-            sb.Append(imageFolder);
-            sb.Append(entity.Id);
-            sb.Append(".png");
-            var path = sb.ToString();
-
-            if (!Directory.Exists(pathDownload + imageFolder))
-                Directory.CreateDirectory(pathDownload + imageFolder);
-
-            File.WriteAllBytes(path, resp);
-            return path;
-        }
+       
 
     }
 }

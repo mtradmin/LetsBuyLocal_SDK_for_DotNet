@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using LetsBuyLocal.SDK.Models;
 using LetsBuyLocal.SDK.Services;
 using LetsBuyLocal.SDK.Tests.Shared;
@@ -126,9 +125,7 @@ namespace LetsBuyLocal.SDK.Tests
             var originalList = svc.ListAllRewardsForStore(store.Id).Object;
 
             //Swap the order in a new list
-            var rewards = new List<Reward>();
-            rewards.Add(originalList[1]);
-            rewards.Add(originalList[0]);
+            var rewards = new List<Reward> {originalList[1], originalList[0]};
 
             var resp = svc.UpdateRewardsSortOrder(rewards);
             Assert.IsTrue(resp.Object);

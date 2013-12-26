@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using LetsBuyLocal.SDK.Models;
-using System.IO;
 
 namespace LetsBuyLocal.SDK.Services
 {
@@ -33,6 +29,43 @@ namespace LetsBuyLocal.SDK.Services
             var path = sb.ToString();
 
             var resp = Upload<ResponseMessage<bool>>(path, image);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets an image by identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>A Byte array whose content is a PNG image stream.</returns>
+        public Byte[] GetImageById(string id)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Image");
+            sb.Append("/");
+            sb.Append(id);
+            var path = sb.ToString();
+
+            var resp = GetImageBytes(path);
+            return resp;
+        }
+
+        /// <summary>
+        /// Gets the image by identifier and image type.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="imageType">Type of the image.</param>
+        /// <returns>A Byte array whose content is a PNG image stream.</returns>
+        public Byte[] GetImageByIdAndType(string id, string imageType)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Image");
+            sb.Append("/");
+            sb.Append(id);
+            sb.Append("/");
+            sb.Append(imageType);
+
+            var path = sb.ToString();
+            var resp = GetImageBytes(path);
             return resp;
         }
     }
