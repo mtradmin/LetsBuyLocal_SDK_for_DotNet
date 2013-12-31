@@ -18,7 +18,7 @@ namespace LetsBuyLocal.SDK.Tests
             var userSvc = new UserService();
             var testUser = userSvc.CreateUser(user).Object;
 
-            //Verify that only two properties are required for an existing user.
+            //Verify that only two properties are required for an existing user .
             var minUser = new User {Email = testUser.Email, Password = testUser.Password};
 
             var resp = svc.Authenticate(minUser);
